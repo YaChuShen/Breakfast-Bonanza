@@ -2,55 +2,48 @@ import {
   Box,
   Center,
   ChakraProvider,
+  Circle,
   Container,
   HStack,
   Image,
   Text,
 } from "@chakra-ui/react";
-import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
-import foodList from "../contents/foodList";
-import { useForm } from "react-hook-form";
+import { FormProvider, useForm } from "react-hook-form";
+import { useState } from "react";
+import values from "../helpers/customerForm";
+import FoodTemplate from "../Components/FoodTemplate";
+// import CustomerTemplate from "../Components/CustomerTemplate";
+import dynamic from "next/dynamic";
+import Pan from "../Components/Pan";
+
+const CustomerTemplate = dynamic(
+  () => import("../Components/CustomerTemplate"),
+  {
+    ssr: false,
+  }
+);
 
 function HomePage() {
-  const orderItem = "hotdog";
-
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { errors },
-    control,
-  } = useForm({ defaultValues: { customer1: "eggs" } });
-
+  const methods = useForm({ defaultValues: values });
   return (
     <ChakraProvider>
-      <Container>
-        <Center
-          draggable='true'
-          cursor='grab'
-          // border='1px solid black'
-          borderRadius='50%'
-          w='5em'
-          h='5em'>
-          {/* <Text>我是蛋</Text> */}
-          <Image src='/eggs.png'></Image>
-        </Center>
-        <Box
-          mt='10'
-          w='50%'
-          h='20em'
-          border='1px solid black'
-          id='customer1'
-          value={orderItem}
-          onDragEnter={(e) => {
-            console.log(e.target);
-          }}
-          // ondrop='drop_handler(event);'
-          // ondragover='dragover_handler(event);'
-        >
-          Drop Zone
-        </Box>
-      </Container>
+      <FormProvider {...methods}>
+        <Container py='2em' bg='gray'>
+          <HStack spacing={10}>
+            <CustomerTemplate id='customer1' src='customer1' />
+            <CustomerTemplate id='customer2' src='customer2' />
+          </HStack>
+          <Box pt='8em'>
+            <Pan />
+            <HStack spacing={10}>
+              <FoodTemplate value='egg' src='egg' svg />
+              <FoodTemplate value='coffee' src='coffee' w='3.5em' svg />
+              <FoodTemplate value='hotDog' src='hotDog' svg />
+              <FoodTemplate value='toast' src='toast' svg />
+            </HStack>
+          </Box>
+        </Container>
+      </FormProvider>
     </ChakraProvider>
   );
 }
