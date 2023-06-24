@@ -9,4 +9,11 @@ export const cookedList = [
   },
 ];
 
+export const tosterList = [
+  {
+    init: { src: "toasterIn0", value: "toast0" },
+    done: { src: "toasterIn1", value: "toast0" },
+  },
+];
+
 export default cookedList;

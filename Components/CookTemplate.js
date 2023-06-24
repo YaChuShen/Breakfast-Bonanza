@@ -3,12 +3,12 @@ import React, { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import cookedList from "../contents/cookedList";
 
-const CookTemplate = ({ tool }) => {
+const CookTemplate = ({ tool, w = "14em" }) => {
   const { setValue, watch } = useFormContext();
   const data = watch();
   const [cooking, setcooking] = useState(false);
-  const [cookedGroup, setCookedGroup] = useState();
   const [maturity, setMaturity] = useState(false);
+  const [cookedGroup, setCookedGroup] = useState();
 
   useEffect(() => {
     if (cooking) {
@@ -21,7 +21,6 @@ const CookTemplate = ({ tool }) => {
 
   return (
     <Box
-      w='8em'
       onDragEnter={() => {
         if (!cooking) {
           setCookedGroup(
@@ -41,22 +40,20 @@ const CookTemplate = ({ tool }) => {
       <Box pos='relative'>
         <Image
           src={`/${tool}.svg`}
-          w='8em'
           pointerEvents={"none"}
           userSelect='none'
+          w={w}
         />
         {cooking && (
-          <Center draggable='true' pos='absolute' top={7} left={5}>
+          <Center draggable='true' pos='absolute' top={7} left={"4.3em"}>
             {maturity ? (
               <Center
                 draggable='true'
                 cursor='grab'
                 borderRadius='50%'
                 w='5em'
-                onDragStart={() => {
-                  setValue("targetItem", cookedGroup?.done.value);
-                }}
                 onDragEnd={() => {
+                  setValue("targetItem", cookedGroup?.done.value);
                   setcooking(false);
                   setMaturity(false);
                 }}>

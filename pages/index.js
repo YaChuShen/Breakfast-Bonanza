@@ -16,6 +16,7 @@ import FoodTemplate from "../Components/FoodTemplate";
 // import CustomerTemplate from "../Components/CustomerTemplate";
 import dynamic from "next/dynamic";
 import CookTemplate from "../Components/CookTemplate";
+import Toster from "../Components/Toster";
 
 const CustomerTemplate = dynamic(
   () => import("../Components/CustomerTemplate"),
@@ -24,7 +25,7 @@ const CustomerTemplate = dynamic(
   }
 );
 
-const materialArr = ["egg", "coffee", "hotDog0", "toast"];
+const materialArr = ["egg", "coffee", "hotDog0", "toast0"];
 
 function HomePage() {
   const methods = useForm({ defaultValues: values });
@@ -32,7 +33,7 @@ function HomePage() {
   return (
     <ChakraProvider>
       <FormProvider {...methods}>
-        <Box py='2em' bg='gray' w='100%'>
+        <Box py='2em' bg='gray.50' w='100%'>
           <Center>
             <VStack>
               <HStack spacing={10} alignItems='center' justifyContent='center'>
@@ -40,7 +41,10 @@ function HomePage() {
                 <CustomerTemplate id='customer2' src='customer2' />
               </HStack>
               <VStack pt='8em' spacing={10}>
-                <CookTemplate tool={"pan"} />
+                <HStack>
+                  <CookTemplate tool={"pan"} />
+                  <Toster w='11em' />
+                </HStack>
                 <HStack spacing={10}>
                   {materialArr.map((e) => (
                     <FoodTemplate value={e} src={e} />
