@@ -4,14 +4,14 @@ import { useFormContext } from "react-hook-form";
 
 const FoodTemplate = ({ value, src, w = "5em", setCrackEggs, ...props }) => {
   const { setValue } = useFormContext();
-
+  const isCoffee = value === "coffee";
   return (
     <Center
       {...props}
       draggable='true'
       cursor='grab'
       borderRadius='50%'
-      w={w}
+      w={isCoffee ? "3.5em" : w}
       onDragStart={() => {
         console.log("start");
         setValue("targetItem", value);

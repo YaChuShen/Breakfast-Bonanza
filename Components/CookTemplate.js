@@ -1,32 +1,37 @@
 import { Box, Center, Image } from "@chakra-ui/react";
-import React, { useState, Component, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
-import SVG from "./Svg";
-import FoodTemplate from "./FoodTemplate";
+import cookedList from "../contents/cookedList";
 
-const Pan = () => {
+const CookTemplate = ({ tool }) => {
   const { setValue, watch } = useFormContext();
   const data = watch();
-  const [crackEggs, setCrackEggs] = useState(false);
+  const [cooking, setcooking] = useState(false);
+  const [cookedGroup, setCookedGroup] = useState();
   const [maturity, setMaturity] = useState(false);
 
   useEffect(() => {
-    if (crackEggs) {
+    if (cooking) {
       const s = setTimeout(() => {
         setMaturity(true);
       }, [5000]);
       return () => clearTimeout(s);
     }
-  }, [crackEggs]);
-
-  console.log(maturity);
+  }, [cooking]);
 
   return (
     <Box
-      border='1px solid red'
+      w='8em'
+      onDragEnter={() => {
+        if (!cooking) {
+          setCookedGroup(
+            cookedList.find((e) => e.init.value === data.targetItem)
+          );
+        }
+      }}
       onDrop={(e) => {
-        if (data.targetItem === "egg") {
-          setCrackEggs(true);
+        if (data.targetItem === cookedGroup?.init.value) {
+          setcooking(true);
         }
       }}
       onDragOver={(e) => {
@@ -34,8 +39,13 @@ const Pan = () => {
         e.stopPropagation();
       }}>
       <Box pos='relative'>
-        <Image src='pan.svg' w='8em' pointerEvents={"none"} userSelect='none' />
-        {crackEggs && (
+        <Image
+          src={`/${tool}.svg`}
+          w='8em'
+          pointerEvents={"none"}
+          userSelect='none'
+        />
+        {cooking && (
           <Center draggable='true' pos='absolute' top={7} left={5}>
             {maturity ? (
               <Center
@@ -44,16 +54,16 @@ const Pan = () => {
                 borderRadius='50%'
                 w='5em'
                 onDragStart={() => {
-                  setValue("targetItem", "sunnyEgg");
+                  setValue("targetItem", cookedGroup?.done.value);
                 }}
                 onDragEnd={() => {
-                  setCrackEggs(false);
+                  setcooking(false);
                   setMaturity(false);
                 }}>
-                <Image src={`/sunnyEgg.svg`}></Image>
+                <Image src={`/${cookedGroup?.done.src}.svg`}></Image>
               </Center>
             ) : (
-              <Image src='/sunnyEgg0.svg' w='5em' />
+              <Image src={`/${cookedGroup?.init.src}.svg`} w='5em' />
             )}
           </Center>
         )}
@@ -62,4 +72,4 @@ const Pan = () => {
   );
 };
 
-export default Pan;
+export default CookTemplate;

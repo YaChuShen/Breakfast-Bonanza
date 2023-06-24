@@ -1,4 +1,4 @@
-import { Box, Circle, Image, Text } from "@chakra-ui/react";
+import { Box, Center, Circle, Image, Text } from "@chakra-ui/react";
 import React, { useEffect } from "react";
 import { useFormContext } from "react-hook-form";
 import foodList from "../contents/foodList";
@@ -15,6 +15,7 @@ const CustomerTemplate = ({ id, src }) => {
   const data = watch();
   const status = data[id].status;
   const wishFood = data[id].order ?? "";
+  const isCoffee = wishFood === "coffee";
 
   useEffect(() => {
     const controlTime = (s, time) => {
@@ -39,7 +40,13 @@ const CustomerTemplate = ({ id, src }) => {
         e.preventDefault();
         e.stopPropagation();
       }}>
-      <Image src={`/${wishFood}.svg`} w='4em' zIndex={2} />
+      <Center
+        visibility={status !== "eating" ? "visible" : "hidden"}
+        w={isCoffee ? "3em" : "4em"}
+        h='4em'>
+        <Image src={`/${wishFood}.svg`} w='100%' zIndex={2} />
+      </Center>
+
       <Circle bg={statusColor[status]} w='10em' h='10em' pos='relative'>
         <Image
           top={3}

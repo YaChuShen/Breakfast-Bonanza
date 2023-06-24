@@ -7,6 +7,7 @@ import {
   HStack,
   Image,
   Text,
+  VStack,
 } from "@chakra-ui/react";
 import { FormProvider, useForm } from "react-hook-form";
 import { useState } from "react";
@@ -14,7 +15,7 @@ import values from "../helpers/customerForm";
 import FoodTemplate from "../Components/FoodTemplate";
 // import CustomerTemplate from "../Components/CustomerTemplate";
 import dynamic from "next/dynamic";
-import Pan from "../Components/Pan";
+import CookTemplate from "../Components/CookTemplate";
 
 const CustomerTemplate = dynamic(
   () => import("../Components/CustomerTemplate"),
@@ -23,26 +24,32 @@ const CustomerTemplate = dynamic(
   }
 );
 
+const materialArr = ["egg", "coffee", "hotDog0", "toast"];
+
 function HomePage() {
   const methods = useForm({ defaultValues: values });
+
   return (
     <ChakraProvider>
       <FormProvider {...methods}>
-        <Container py='2em' bg='gray'>
-          <HStack spacing={10}>
-            <CustomerTemplate id='customer1' src='customer1' />
-            <CustomerTemplate id='customer2' src='customer2' />
-          </HStack>
-          <Box pt='8em'>
-            <Pan />
-            <HStack spacing={10}>
-              <FoodTemplate value='egg' src='egg' svg />
-              <FoodTemplate value='coffee' src='coffee' w='3.5em' svg />
-              <FoodTemplate value='hotDog' src='hotDog' svg />
-              <FoodTemplate value='toast' src='toast' svg />
-            </HStack>
-          </Box>
-        </Container>
+        <Box py='2em' bg='gray' w='100%'>
+          <Center>
+            <VStack>
+              <HStack spacing={10} alignItems='center' justifyContent='center'>
+                <CustomerTemplate id='customer1' src='customer1' />
+                <CustomerTemplate id='customer2' src='customer2' />
+              </HStack>
+              <VStack pt='8em' spacing={10}>
+                <CookTemplate tool={"pan"} />
+                <HStack spacing={10}>
+                  {materialArr.map((e) => (
+                    <FoodTemplate value={e} src={e} />
+                  ))}
+                </HStack>
+              </VStack>
+            </VStack>
+          </Center>
+        </Box>
       </FormProvider>
     </ChakraProvider>
   );
