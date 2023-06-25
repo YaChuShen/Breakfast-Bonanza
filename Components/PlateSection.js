@@ -52,8 +52,8 @@ const PlateSection = ({ data, setValue }) => {
       if (okFood) {
         return { left: foodPosition[category], index: foodIndex[category] };
       }
-      return null;
     }
+    return null;
   };
 
   const showUp = isValide && food.length > 0 && foodRules(food[0]);
