@@ -2,20 +2,22 @@ import { Center, Image } from "@chakra-ui/react";
 import React from "react";
 import { useFormContext } from "react-hook-form";
 
+const size = {
+  coffee: "3.5em",
+  toast: "8em",
+};
+
 const FoodTemplate = ({ value, src, w = "5em", setCrackEggs, ...props }) => {
   const { setValue } = useFormContext();
-  const isCoffee = value === "coffee";
   return (
     <Center
       {...props}
       draggable='true'
       cursor='grab'
-      w={isCoffee ? "3.5em" : w}
       onDragStart={() => {
-        console.log("start");
         setValue("targetItem", value);
       }}>
-      <Image src={`/${src}.svg`}></Image>
+      <Image src={`/${src}.svg`} w={size[value] ?? w}></Image>
     </Center>
   );
 };

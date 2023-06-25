@@ -1,7 +1,8 @@
 import { Box, Center, Image } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
-import cookedList from "../contents/cookedList";
+import stoveList from "../contents/cookedList";
+import settingPlateRules from "../helpers/settingPlateRules";
 
 const CookTemplate = ({ tool, w = "14em" }) => {
   const { setValue, watch } = useFormContext();
@@ -19,12 +20,14 @@ const CookTemplate = ({ tool, w = "14em" }) => {
     }
   }, [cooking]);
 
+  console.log(settingPlateRules(data.plateContent, cookedGroup?.done.value));
+
   return (
     <Box
       onDragEnter={() => {
         if (!cooking) {
           setCookedGroup(
-            cookedList.find((e) => e.init.value === data.targetItem)
+            stoveList.find((e) => e.init.value === data.targetItem)
           );
         }
       }}
@@ -50,9 +53,19 @@ const CookTemplate = ({ tool, w = "14em" }) => {
               <Center
                 // draggable='true'
                 onClick={() => {
-                  setValue("plateContent", cookedGroup?.done.value);
-                  setcooking(false);
-                  setMaturity(false);
+                  if (
+                    settingPlateRules(
+                      data.plateContent,
+                      cookedGroup?.done.value
+                    )
+                  ) {
+                    setValue("plateContent", [
+                      ...data.plateContent,
+                      cookedGroup?.done.value,
+                    ]);
+                    setcooking(false);
+                    setMaturity(false);
+                  }
                 }}
                 cursor='grab'
                 borderRadius='50%'

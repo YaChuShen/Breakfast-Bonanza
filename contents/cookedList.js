@@ -1,4 +1,4 @@
-export const cookedList = [
+export const stoveList = [
   {
     init: { src: "sunnyEgg0", value: "egg" },
     done: { src: "sunnyEgg", value: "sunnyEgg" },
@@ -16,4 +16,4 @@ export const tosterList = [
   },
 ];
 
-export default cookedList;
+export default stoveList;

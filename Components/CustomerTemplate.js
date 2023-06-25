@@ -36,7 +36,7 @@ const CustomerTemplate = ({ id, src }) => {
         e.preventDefault();
         if (data[id].order === data.targetItem) {
           setValue(`${id}.status`, "eating");
-          setValue(`plateContent`, null);
+          setValue(`plateContent`, []);
           const controlNextOrder = () => {
             const t = setTimeout(() => {
               setValue(`${id}.order`, sample(foodList));
@@ -47,7 +47,7 @@ const CustomerTemplate = ({ id, src }) => {
         } else {
           if (status === "eating") return;
           setValue(`${id}.status`, "errors");
-          setValue(`plateContent`, null);
+          setValue(`plateContent`, []);
         }
         console.log("DROP CUSTOMER");
       }}
@@ -57,7 +57,7 @@ const CustomerTemplate = ({ id, src }) => {
       }}>
       <Center
         visibility={status !== "eating" ? "visible" : "hidden"}
-        w={isCoffee ? "3em" : "4em"}
+        w={isCoffee ? "3em" : "7em"}
         h='4em'>
         <Image src={`/${wishFood}.svg`} w='100%' zIndex={2} />
       </Center>

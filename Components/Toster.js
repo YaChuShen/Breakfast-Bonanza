@@ -2,6 +2,7 @@ import { Box, Center, HStack, Image } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { tosterList } from "../contents/cookedList";
+import settingPlateRules from "../helpers/settingPlateRules";
 
 const statusList = {
   cooking: "toasterIn0",
@@ -44,20 +45,21 @@ const Toster = ({ tool, w = "14em" }) => {
         e.preventDefault();
         e.stopPropagation();
       }}>
-      <Box pos='relative'>
+      <Box
+        pos='relative'
+        onClick={() => {
+          if (isDone && settingPlateRules(data.plateContent, "toast")) {
+            setValue("plateContent", [...data.plateContent, "toast"]);
+            setStatus(null);
+          }
+        }}>
         {status ? (
           <Image
             src={`/${statusList[status]}.svg`}
-            pointerEvents={!isDone && "none"}
+            pointerEvents='none'
             cursor={isDone && "pointer"}
             userSelect='none'
             w={w}
-            onClick={() => {
-              if (isDone) {
-                setValue("plateContent", "toast");
-                setStatus(null);
-              }
-            }}
           />
         ) : (
           <Image

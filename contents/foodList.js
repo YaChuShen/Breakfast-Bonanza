@@ -1,2 +1,7 @@
-const foodList = ["sunnyEgg", "hotDog", "coffee", "toast"];
+const foodList = [
+  "sunnyEgg&hotDog",
+  "toast&hotDog",
+  "coffee",
+  "toast&sunnyEgg",
+];
 export default foodList;
