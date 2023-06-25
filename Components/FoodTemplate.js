@@ -10,7 +10,6 @@ const FoodTemplate = ({ value, src, w = "5em", setCrackEggs, ...props }) => {
       {...props}
       draggable='true'
       cursor='grab'
-      borderRadius='50%'
       w={isCoffee ? "3.5em" : w}
       onDragStart={() => {
         console.log("start");

@@ -48,15 +48,15 @@ const CookTemplate = ({ tool, w = "14em" }) => {
           <Center draggable='true' pos='absolute' top={7} left={"4.3em"}>
             {maturity ? (
               <Center
-                draggable='true'
-                cursor='grab'
-                borderRadius='50%'
-                w='5em'
-                onDragEnd={() => {
-                  setValue("targetItem", cookedGroup?.done.value);
+                // draggable='true'
+                onClick={() => {
+                  setValue("plateContent", cookedGroup?.done.value);
                   setcooking(false);
                   setMaturity(false);
-                }}>
+                }}
+                cursor='grab'
+                borderRadius='50%'
+                w='5em'>
                 <Image src={`/${cookedGroup?.done.src}.svg`}></Image>
               </Center>
             ) : (

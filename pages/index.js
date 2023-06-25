@@ -17,6 +17,7 @@ import FoodTemplate from "../Components/FoodTemplate";
 import dynamic from "next/dynamic";
 import CookTemplate from "../Components/CookTemplate";
 import Toster from "../Components/Toster";
+import Plate from "../Components/Plate";
 
 const CustomerTemplate = dynamic(
   () => import("../Components/CustomerTemplate"),
@@ -29,7 +30,9 @@ const materialArr = ["egg", "coffee", "hotDog0", "toast0"];
 
 function HomePage() {
   const methods = useForm({ defaultValues: values });
+  const data = methods.watch();
 
+  console.log(data);
   return (
     <ChakraProvider>
       <FormProvider {...methods}>
@@ -40,6 +43,7 @@ function HomePage() {
                 <CustomerTemplate id='customer1' src='customer1' />
                 <CustomerTemplate id='customer2' src='customer2' />
               </HStack>
+              <Plate data={data} setValue={methods.setValue} />
               <VStack pt='8em' spacing={10}>
                 <HStack>
                   <CookTemplate tool={"pan"} />

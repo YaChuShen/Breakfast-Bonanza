@@ -34,6 +34,21 @@ const CustomerTemplate = ({ id, src }) => {
     <Box
       onDrop={(e) => {
         e.preventDefault();
+        if (data[id].order === data.targetItem) {
+          setValue(`${id}.status`, "eating");
+          setValue(`plateContent`, null);
+          const controlNextOrder = () => {
+            const t = setTimeout(() => {
+              setValue(`${id}.order`, sample(foodList));
+            }, [5000]);
+            return () => clearTimeout(t);
+          };
+          controlNextOrder();
+        } else {
+          if (status === "eating") return;
+          setValue(`${id}.status`, "errors");
+          setValue(`plateContent`, null);
+        }
         console.log("DROP CUSTOMER");
       }}
       onDragOver={(e) => {
@@ -53,22 +68,7 @@ const CustomerTemplate = ({ id, src }) => {
           pos='absolute'
           src={`${src}.svg`}
           w='10em'
-          id='customer1'
-          onDragEnter={(e) => {
-            if (data[id].order === data.targetItem) {
-              setValue(`${id}.status`, "eating");
-              const controlNextOrder = (s, time) => {
-                const t = setTimeout(() => {
-                  setValue(`${id}.order`, sample(foodList));
-                }, [5000]);
-                return () => clearTimeout(t);
-              };
-              controlNextOrder();
-            } else {
-              if (status === "eating") return;
-              setValue(`${id}.status`, "errors");
-            }
-          }}></Image>
+          id='customer1'></Image>
       </Circle>
     </Box>
   );

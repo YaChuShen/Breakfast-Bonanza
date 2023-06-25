@@ -14,7 +14,6 @@ const Toster = ({ tool, w = "14em" }) => {
   const data = watch();
   const [cookedGroup, setCookedGroup] = useState();
   const [status, setStatus] = useState();
-  const [showUp, setShowUp] = useState();
   const isCooking = status === "cooking";
   const isDone = status === "done";
 
@@ -53,6 +52,12 @@ const Toster = ({ tool, w = "14em" }) => {
             cursor={isDone && "pointer"}
             userSelect='none'
             w={w}
+            onClick={() => {
+              if (isDone) {
+                setValue("plateContent", "toast");
+                setStatus(null);
+              }
+            }}
           />
         ) : (
           <Image
@@ -62,33 +67,6 @@ const Toster = ({ tool, w = "14em" }) => {
             w={w}
           />
         )}
-        {/* {isDone && (
-          <Box
-            pos='absolute'
-            zIndex={0}
-            cursor='grab'
-            bottom='4em'
-            left={8}
-            w='8em'
-            h='full'
-            draggable='true'
-            onDragStart={() => {
-              setShowUp(true);
-              // setStatus(null);
-            }}>
-            <Image
-              opacity={showUp ? 1 : 0}
-              src={`toast.svg`}
-              draggable='true'
-              w={w}
-              onDragEnd={() => {
-                setValue("targetItem", "toast");
-                setShowUp(false);
-                setStatus(null);
-              }}
-            />
-          </Box>
-        )} */}
 
         <Box
           onClick={() => {
