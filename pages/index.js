@@ -10,7 +10,6 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { FormProvider, useForm } from "react-hook-form";
-import { useState } from "react";
 import values from "../helpers/customerForm";
 import FoodTemplate from "../Components/FoodTemplate";
 // import CustomerTemplate from "../Components/CustomerTemplate";
@@ -44,7 +43,7 @@ function HomePage() {
                 alignItems='center'
                 justifyContent='center'
                 py='20'>
-                {range(2).map((e, i) => (
+                {range(data.customer).map((e, i) => (
                   <CustomerTemplate
                     id={`customer${i + 1}`}
                     src={`customer${i + 1}`}

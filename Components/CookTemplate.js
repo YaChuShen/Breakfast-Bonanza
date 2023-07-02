@@ -4,6 +4,7 @@ import { useFormContext } from "react-hook-form";
 import stoveList from "../contents/cookedList";
 import settingPlateRules from "../helpers/settingPlateRules";
 import autoPlateSystem from "../helpers/autoPlateSystem";
+import Progress from "./Progress";
 
 const CookTemplate = ({ tool, w = "14em" }) => {
   const { setValue, watch } = useFormContext();
@@ -48,6 +49,9 @@ const CookTemplate = ({ tool, w = "14em" }) => {
           userSelect='none'
           w={w}
         />
+        {(cooking || maturity) && (
+          <Progress time={250} pos='absolute' size='30px' top={5} left={0} />
+        )}
         {cooking && (
           <Center draggable='true' pos='absolute' top={7} left={"4.3em"}>
             {maturity ? (

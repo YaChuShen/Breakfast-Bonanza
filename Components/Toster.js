@@ -1,10 +1,9 @@
-import { Box, Center, HStack, Image } from "@chakra-ui/react";
+import { Box, Center, CircularProgress, HStack, Image } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { tosterList } from "../contents/cookedList";
-import settingPlateRules from "../helpers/settingPlateRules";
 import autoPlateSystem from "../helpers/autoPlateSystem";
-import { range } from "lodash";
+import Progress from "./Progress";
 
 const statusList = {
   cooking: "toasterIn0",
@@ -18,10 +17,11 @@ const Toster = ({ tool, w = "14em" }) => {
   const [cookedGroup, setCookedGroup] = useState();
   const [status, setStatus] = useState();
   const isCooking = status === "cooking";
+  const isMaturity = status === "maturity";
   const isDone = status === "done";
 
   useEffect(() => {
-    if (status === "cooking") {
+    if (isCooking) {
       const s = setTimeout(() => {
         setStatus("maturity");
       }, [5000]);
@@ -55,6 +55,10 @@ const Toster = ({ tool, w = "14em" }) => {
             setStatus(null);
           }
         }}>
+        {(isCooking || isMaturity) && (
+          <Progress time={250} pos='absolute' size='30px' top={5} left={5} />
+        )}
+
         {status ? (
           <Image
             src={`/${statusList[status]}.svg`}
