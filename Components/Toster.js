@@ -3,6 +3,8 @@ import React, { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { tosterList } from "../contents/cookedList";
 import settingPlateRules from "../helpers/settingPlateRules";
+import autoPlateSystem from "../helpers/autoPlateSystem";
+import { range } from "lodash";
 
 const statusList = {
   cooking: "toasterIn0",
@@ -48,8 +50,8 @@ const Toster = ({ tool, w = "14em" }) => {
       <Box
         pos='relative'
         onClick={() => {
-          if (isDone && settingPlateRules(data.plateContent, "toast")) {
-            setValue("plateContent", [...data.plateContent, "toast"]);
+          autoPlateSystem(data, cookedGroup?.done.value, isDone, setValue);
+          if (isDone) {
             setStatus(null);
           }
         }}>

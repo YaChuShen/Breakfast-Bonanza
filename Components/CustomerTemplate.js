@@ -34,9 +34,10 @@ const CustomerTemplate = ({ id, src }) => {
     <Box
       onDrop={(e) => {
         e.preventDefault();
+        const key = `plateContent${data?.targetPlate}`;
         if (data[id].order === data.targetItem) {
           setValue(`${id}.status`, "eating");
-          setValue(`plateContent`, []);
+          setValue(key, []);
           const controlNextOrder = () => {
             const t = setTimeout(() => {
               setValue(`${id}.order`, sample(foodList));
@@ -47,7 +48,7 @@ const CustomerTemplate = ({ id, src }) => {
         } else {
           if (status === "eating") return;
           setValue(`${id}.status`, "errors");
-          setValue(`plateContent`, []);
+          setValue(key, []);
         }
         console.log("DROP CUSTOMER");
       }}
@@ -61,14 +62,8 @@ const CustomerTemplate = ({ id, src }) => {
         h='4em'>
         <Image src={`/${wishFood}.svg`} w='100%' zIndex={2} />
       </Center>
-
       <Circle bg={statusColor[status]} w='10em' h='10em' pos='relative'>
-        <Image
-          top={3}
-          pos='absolute'
-          src={`${src}.svg`}
-          w='10em'
-          id='customer1'></Image>
+        <Image top={3} pos='absolute' src={`${src}.svg`} w='10em'></Image>
       </Circle>
     </Box>
   );
