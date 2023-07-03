@@ -5,7 +5,6 @@ const notValidArr = ["hotDog", "sunnyEgg"];
 const rules = (plateContent) => {
   return { toast: notValidArr.includes(plateContent[0]) };
 };
-
 const settingPlateRules = (plateContent, currentValue) => {
   if (
     plateContent[0] === currentValue ||

@@ -12,7 +12,6 @@
     "@chakra-ui/react": "^2.7.1",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
-    "eslint": "^8.43.0",
     "framer-motion": "^10.12.16",
     "lodash": "^4.17.21",
     "next": "13.4.7",
@@ -21,5 +20,9 @@
     "react-beautiful-dnd": "^13.1.1",
     "react-dom": "18.2.0",
     "react-hook-form": "^7.45.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.44.0",
+    "eslint-plugin-react": "^7.32.2"
   }
 }
