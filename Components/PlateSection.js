@@ -64,6 +64,14 @@ const PlateSection = ({ data, setValue, index }) => {
     <Center
       pos='relative'
       draggable='true'
+      onDrop={(e) => {
+        setValue(key, [...food, data.targetItem]);
+        setValue("targetItem", null);
+      }}
+      onDragOver={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+      }}
       onDragStart={() => {
         setValue("targetItem", food.join("&"));
         setValue("targetPlate", index + 1);

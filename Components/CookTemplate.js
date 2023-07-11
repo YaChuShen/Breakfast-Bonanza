@@ -66,26 +66,13 @@ const CookTemplate = ({ tool, w = "14em" }) => {
                   );
                   setcooking(false);
                   setMaturity(false);
-                  // if (
-                  //   settingPlateRules(
-                  //     data.plateContent1,
-                  //     cookedGroup?.done.value
-                  //   )
-                  // ) {
-                  //   setValue("plateContent1", [
-                  //     ...data.plateContent1,
-                  //     cookedGroup?.done.value,
-                  //   ]);
-                  //   setcooking(false);
-                  //   setMaturity(false);
-                  // } else {
-                  //   setValue("plateContent2", [
-                  //     ...data.plateContent2,
-                  //     cookedGroup?.done.value,
-                  //   ]);
-                  //   setcooking(false);
-                  //   setMaturity(false);
-                  // }
+                }}
+                onDragStart={() => {
+                  setValue("targetItem", cookedGroup?.done.value);
+                }}
+                onDragEnd={() => {
+                  setcooking(false);
+                  setMaturity(false);
                 }}
                 cursor='grab'
                 borderRadius='50%'
