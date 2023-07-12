@@ -41,22 +41,23 @@ const CookTemplate = ({ tool, w = "14em" }) => {
       onDragOver={(e) => {
         e.preventDefault();
         e.stopPropagation();
-      }}>
-      <Box pos='relative'>
+      }}
+    >
+      <Box pos="relative">
         <Image
           src={`/${tool}.svg`}
           pointerEvents={"none"}
-          userSelect='none'
+          userSelect="none"
           w={w}
         />
         {(cooking || maturity) && (
-          <Progress time={250} pos='absolute' size='30px' top={5} left={0} />
+          <Progress time={250} pos="absolute" size="30px" top={5} left={0} />
         )}
         {cooking && (
-          <Center draggable='true' pos='absolute' top={7} left={"4.3em"}>
+          <Center draggable="true" pos="absolute" top={7} left={"4.3em"}>
             {maturity ? (
               <Center
-                draggable='true'
+                draggable="true"
                 onClick={() => {
                   autoPlateSystem(
                     data,
@@ -71,16 +72,19 @@ const CookTemplate = ({ tool, w = "14em" }) => {
                   setValue("targetItem", cookedGroup?.done.value);
                 }}
                 onDragEnd={() => {
-                  setcooking(false);
-                  setMaturity(false);
+                  if (data.targetItem === null) {
+                    setcooking(false);
+                    setMaturity(false);
+                  }
                 }}
-                cursor='grab'
-                borderRadius='50%'
-                w='5em'>
+                cursor="grab"
+                borderRadius="50%"
+                w="5em"
+              >
                 <Image src={`/${cookedGroup?.done.src}.svg`}></Image>
               </Center>
             ) : (
-              <Image src={`/${cookedGroup?.init.src}.svg`} w='5em' />
+              <Image src={`/${cookedGroup?.init.src}.svg`} w="5em" />
             )}
           </Center>
         )}

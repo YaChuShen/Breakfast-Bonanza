@@ -1,8 +1,9 @@
 import { Box, Center, HStack, Image } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import FoodTemplate from "./FoodTemplate";
 import setList from "../contents/setList";
 import { range } from "lodash";
+import { useFormContext } from "react-hook-form";
 
 const validFood = ["sunnyEgg", "hotDog", "toast"];
 
@@ -19,13 +20,13 @@ const foodIndex = {
 const ShadowTelplate = ({ bottom, left, w, rotate, blur }) => {
   return (
     <Box
-      pos='absolute'
+      pos="absolute"
       bottom={bottom}
       left={left}
-      borderRadius='30%'
+      borderRadius="30%"
       w={w}
-      h='1.5em'
-      bg='#D0D0D0'
+      h="1.5em"
+      bg="#D0D0D0"
       filter={`blur(${blur}px)`}
       transform={`rotate(${rotate}deg)`}
     />
@@ -33,8 +34,8 @@ const ShadowTelplate = ({ bottom, left, w, rotate, blur }) => {
 };
 
 const shadow = {
-  toast: <ShadowTelplate bottom={4} left={9} w='4em' rotate={-20} blur={3} />,
-  hotDog: <ShadowTelplate bottom={4} left={9} w='4em' rotate={-20} blur={3} />,
+  toast: <ShadowTelplate bottom={4} left={9} w="4em" rotate={-20} blur={3} />,
+  hotDog: <ShadowTelplate bottom={4} left={9} w="4em" rotate={-20} blur={3} />,
 };
 
 const PlateSection = ({ data, setValue, index }) => {
@@ -62,8 +63,8 @@ const PlateSection = ({ data, setValue, index }) => {
 
   return (
     <Center
-      pos='relative'
-      draggable='true'
+      pos="relative"
+      draggable="true"
       onDrop={(e) => {
         setValue(key, [...food, data.targetItem]);
         setValue("targetItem", null);
@@ -75,14 +76,15 @@ const PlateSection = ({ data, setValue, index }) => {
       onDragStart={() => {
         setValue("targetItem", food.join("&"));
         setValue("targetPlate", index + 1);
-      }}>
-      <Image src='plate.svg' w='8em' />
+      }}
+    >
+      <Image src="plate.svg" w="8em" />
       {showUp && (
         <>
           <FoodTemplate
             value={food[0]}
             src={food[0]}
-            pos='absolute'
+            pos="absolute"
             bottom={toastFirst ? 0 : 3}
             left={foodRules(food[0]).left}
             zIndex={foodRules(food[0]).index}
@@ -91,7 +93,7 @@ const PlateSection = ({ data, setValue, index }) => {
             <FoodTemplate
               value={food[1]}
               src={food[1]}
-              pos='absolute'
+              pos="absolute"
               bottom={toastFirst ? 5 : 3}
               left={foodRules(food[1]).left}
               zIndex={foodRules(food[1]).index}

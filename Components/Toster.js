@@ -39,53 +39,64 @@ const Toster = ({ tool, w = "14em" }) => {
         }
       }}
       onDrop={(e) => {
-        if (data.targetItem === cookedGroup?.init.value) {
+        //如果是吐司素材並且不是正在烤與已經烤好的狀態，才可以放新的吐司進去
+        if (
+          data.targetItem === cookedGroup?.init.value &&
+          !isMaturity &&
+          !isDone
+        ) {
           setStatus("cooking");
         }
       }}
       onDragOver={(e) => {
         e.preventDefault();
         e.stopPropagation();
-      }}>
+      }}
+    >
       <Box
-        pos='relative'
+        pos="relative"
+        cursor={isDone && "pointer"}
         onClick={() => {
           autoPlateSystem(data, cookedGroup?.done.value, isDone, setValue);
           if (isDone) {
             setStatus(null);
           }
-        }}>
+        }}
+      >
         {(isCooking || isMaturity) && (
-          <Progress time={250} pos='absolute' size='30px' top={5} left={5} />
+          <Progress time={250} pos="absolute" size="30px" top={5} left={5} />
         )}
 
         {status ? (
           <Image
             src={`/${statusList[status]}.svg`}
-            pointerEvents='none'
+            pointerEvents="none"
             cursor={isDone && "pointer"}
-            userSelect='none'
+            userSelect="none"
             w={w}
           />
         ) : (
           <Image
             src={`/toaster.svg`}
             pointerEvents={"none"}
-            userSelect='none'
+            userSelect="none"
             w={w}
           />
         )}
 
         <Box
           onClick={() => {
-            setStatus("done");
+            if (isMaturity) {
+              setStatus("done");
+            }
           }}
-          w='3em'
-          h='3em'
-          cursor='pointer'
-          pos='absolute'
+          w="3em"
+          h="3em"
+          cursor="pointer"
+          pos="absolute"
           bottom={"3em"}
-          right={2}></Box>
+          right={2}
+        />
       </Box>
     </Box>
   );
