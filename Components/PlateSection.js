@@ -66,8 +66,10 @@ const PlateSection = ({ data, setValue, index }) => {
       pos="relative"
       draggable="true"
       onDrop={(e) => {
-        setValue(key, [...food, data.targetItem]);
-        setValue("targetItem", null);
+        if (showUp) {
+          setValue(key, [...food, data.targetItem]);
+          setValue("targetItem", null);
+        }
       }}
       onDragOver={(e) => {
         e.preventDefault();

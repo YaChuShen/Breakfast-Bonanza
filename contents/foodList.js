@@ -1,6 +1,6 @@
 const foodList = [
-  "sunnyEgg&hotDog",
-  "toast&hotDog",
+  // "sunnyEgg&hotDog",
+  // "toast&hotDog",
   "coffee",
   "toast&sunnyEgg",
 ];
