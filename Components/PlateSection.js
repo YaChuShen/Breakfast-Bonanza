@@ -1,11 +1,14 @@
 import { Box, Center, HStack, Image } from "@chakra-ui/react";
 import React, { useContext, useEffect, useState } from "react";
 import FoodTemplate from "./FoodTemplate";
-import setList from "../contents/setList";
-import { range } from "lodash";
-import { useFormContext } from "react-hook-form";
 
-const validFood = ["sunnyEgg", "hotDog", "toast"];
+const validFood = [
+  "sunnyEgg",
+  "hotDog",
+  "toast",
+  "blueberry-toast",
+  "butter-toast",
+];
 
 const foodPosition = {
   sunnyEgg: "0",
@@ -43,10 +46,16 @@ const PlateSection = ({ data, setValue, index }) => {
   const food = data[key];
   const isValide = food?.every((e) => validFood.includes(e));
   const toastFirst = food?.[0] === "toast";
+  const jam = food?.[1] === "blueberry-toast" || food?.[1] === "butter-toast";
 
   const foodRules = (category) => {
-    const isToast = category === "toast";
+    const isToast =
+      category === "toast" ||
+      category === "blueberry-toast" ||
+      category === "butter-toast";
+
     const okFood = category === "sunnyEgg" || category === "hotDog";
+
     if (toastFirst) {
       if (okFood) return { left: 6, index: 2 };
       if (isToast) return { left: 2, index: 1 };
@@ -83,20 +92,20 @@ const PlateSection = ({ data, setValue, index }) => {
       <Image src="plate.svg" w="8em" />
       {showUp && (
         <>
-          <FoodTemplate
+          {/* <FoodTemplate
             value={food[0]}
             src={food[0]}
             pos="absolute"
             bottom={toastFirst ? 0 : 3}
             left={foodRules(food[0]).left}
             zIndex={foodRules(food[0]).index}
-          />
+          /> */}
           {food.length > 1 && foodRules(food[1]) && (
             <FoodTemplate
               value={food[1]}
               src={food[1]}
               pos="absolute"
-              bottom={toastFirst ? 5 : 3}
+              bottom={toastFirst ? (jam ? 1 : 5) : 3}
               left={foodRules(food[1]).left}
               zIndex={foodRules(food[1]).index}
             />

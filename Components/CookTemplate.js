@@ -2,7 +2,6 @@ import { Box, Center, Circle, Image, Spinner } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import stoveList from "../contents/cookedList";
-import settingPlateRules from "../helpers/settingPlateRules";
 import autoPlateSystem from "../helpers/autoPlateSystem";
 import Progress from "./Progress";
 

@@ -19,6 +19,7 @@ import Toster from "../Components/Toster";
 import PlateSection from "../Components/PlateSection";
 import materialList from "../contents/materialList";
 import { range } from "lodash";
+import Jam from "../Components/Jam";
 
 const CustomerTemplate = dynamic(
   () => import("../Components/CustomerTemplate"),
@@ -30,6 +31,16 @@ const CustomerTemplate = dynamic(
 function HomePage() {
   const methods = useForm({ defaultValues: values });
   const data = methods.watch();
+
+  console.log(data);
+
+  const tools = (
+    <HStack spacing={5}>
+      <CookTemplate tool={"pan"} />
+      <Toster w="11em" />
+      <Jam />
+    </HStack>
+  );
 
   return (
     <ChakraProvider>
@@ -61,15 +72,12 @@ function HomePage() {
                 ))}
               </HStack>
               <VStack spacing={10}>
-                <HStack>
-                  <CookTemplate tool={"pan"} />
-                  <Toster w="11em" />
-                </HStack>
-                <HStack spacing={10}>
+                {tools}
+                {/* <HStack spacing={10}>
                   {materialList.map((e) => (
                     <FoodTemplate value={e} src={e} />
                   ))}
-                </HStack>
+                </HStack> */}
               </VStack>
             </VStack>
           </Center>

@@ -3,8 +3,8 @@ const materialList = [
   "coffee",
   "hotDog0",
   "toast0",
-  "blueberry-can",
-  "butter-can",
+  // "blueberry-can",
+  // "butter-can",
 ];
 
 export default materialList;
