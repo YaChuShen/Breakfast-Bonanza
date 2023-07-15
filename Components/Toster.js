@@ -8,7 +8,9 @@ import Progress from "./Progress";
 const statusList = {
   cooking: "toasterIn0",
   maturity: "toasterIn1",
+  over: "toasterIn2",
   done: "toaster1",
+  overDone: "toaster2",
 };
 
 const Toster = ({ tool, w = "14em" }) => {
@@ -19,6 +21,11 @@ const Toster = ({ tool, w = "14em" }) => {
   const isCooking = status === "cooking";
   const isMaturity = status === "maturity";
   const isDone = status === "done";
+  const isOver = status === "over";
+
+  //如果是吐司原料並且不是正在烤與已經烤好的狀態，才可以放新的吐司進去
+  const canPutIn =
+    data.targetItem === cookedGroup?.init.value && !isMaturity && !isDone;
 
   useEffect(() => {
     if (isCooking) {
@@ -27,7 +34,15 @@ const Toster = ({ tool, w = "14em" }) => {
       }, [5000]);
       return () => clearTimeout(s);
     }
+    if (isMaturity) {
+      const s = setTimeout(() => {
+        setStatus("over");
+      }, [5000]);
+      return () => clearTimeout(s);
+    }
   }, [status]);
+
+  console.log(status);
 
   return (
     <Box
@@ -39,47 +54,40 @@ const Toster = ({ tool, w = "14em" }) => {
         }
       }}
       onDrop={(e) => {
-        //如果是吐司素材並且不是正在烤與已經烤好的狀態，才可以放新的吐司進去
-        if (
-          data.targetItem === cookedGroup?.init.value &&
-          !isMaturity &&
-          !isDone
-        ) {
+        if (canPutIn) {
           setStatus("cooking");
         }
       }}
       onDragOver={(e) => {
         e.preventDefault();
         e.stopPropagation();
-      }}
-    >
+      }}>
       <Box
-        pos="relative"
+        pos='relative'
         cursor={isDone && "pointer"}
         onClick={() => {
           autoPlateSystem(data, cookedGroup?.done.value, isDone, setValue);
           if (isDone) {
             setStatus(null);
           }
-        }}
-      >
+        }}>
         {(isCooking || isMaturity) && (
-          <Progress time={250} pos="absolute" size="30px" top={5} left={5} />
+          <Progress time={250} pos='absolute' size='30px' top={5} left={5} />
         )}
 
         {status ? (
           <Image
             src={`/${statusList[status]}.svg`}
-            pointerEvents="none"
+            pointerEvents='none'
             cursor={isDone && "pointer"}
-            userSelect="none"
+            userSelect='none'
             w={w}
           />
         ) : (
           <Image
             src={`/toaster.svg`}
             pointerEvents={"none"}
-            userSelect="none"
+            userSelect='none'
             w={w}
           />
         )}
@@ -88,12 +96,14 @@ const Toster = ({ tool, w = "14em" }) => {
           onClick={() => {
             if (isMaturity) {
               setStatus("done");
+            } else if (isOver) {
+              setStatus("overDone");
             }
           }}
-          w="3em"
-          h="3em"
-          cursor="pointer"
-          pos="absolute"
+          w='3em'
+          h='3em'
+          cursor='pointer'
+          pos='absolute'
           bottom={"3em"}
           right={2}
         />

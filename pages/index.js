@@ -31,18 +31,19 @@ function HomePage() {
   const methods = useForm({ defaultValues: values });
   const data = methods.watch();
 
+  console.log(data);
+
   return (
     <ChakraProvider>
       <FormProvider {...methods}>
-        <Box py="2em" bg="gray.800" w="100%">
-          <Center h="full">
+        <Box py='2em' bg='gray.800' w='100%'>
+          <Center h='full'>
             <VStack spacing={15}>
               <HStack
                 spacing={20}
-                alignItems="center"
-                justifyContent="center"
-                py="20"
-              >
+                alignItems='center'
+                justifyContent='center'
+                py='20'>
                 {range(data.customer).map((e, i) => (
                   <CustomerTemplate
                     id={`customer${i + 1}`}
@@ -52,18 +53,19 @@ function HomePage() {
                 ))}
               </HStack>
               <HStack spacing={10}>
-                {range(data.plate).map((e) => (
+                {range(data.plate).map((e, i) => (
                   <PlateSection
                     data={data}
                     setValue={methods.setValue}
                     index={e}
+                    key={i}
                   />
                 ))}
               </HStack>
               <VStack spacing={10}>
                 <HStack>
                   <CookTemplate tool={"pan"} />
-                  <Toster w="11em" />
+                  <Toster w='11em' />
                 </HStack>
                 <HStack spacing={10}>
                   {materialList.map((e) => (
