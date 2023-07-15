@@ -1,1 +1,0 @@
-const setList = ["hotDog&sunnyEgg"];

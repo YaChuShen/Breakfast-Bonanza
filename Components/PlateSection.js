@@ -1,11 +1,7 @@
 import { Box, Center, HStack, Image } from "@chakra-ui/react";
 import React, { useContext, useEffect, useState } from "react";
 import FoodTemplate from "./FoodTemplate";
-import setList from "../contents/setList";
-import { range } from "lodash";
-import { useFormContext } from "react-hook-form";
-
-const validFood = ["sunnyEgg", "hotDog", "toast"];
+import { plateToDropFood } from "../contents/rulse";
 
 const foodPosition = {
   sunnyEgg: "0",
@@ -43,7 +39,7 @@ const PlateSection = ({ data, setValue, index }) => {
   const food = data[key];
 
   const { targetPlate, targetItem } = data;
-  const isValide = food?.every((e) => validFood.includes(e));
+  const isValide = food?.every((e) => plateToDropFood.includes(e));
   const toastFirst = food?.[0] === "toast";
 
   const foodDisplayRules = (category) => {
@@ -62,7 +58,6 @@ const PlateSection = ({ data, setValue, index }) => {
   };
 
   const showUp = isValide && food.length > 0 && foodDisplayRules(food[0]);
-  console.log(targetPlate);
   return (
     <Center
       pos='relative'

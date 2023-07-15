@@ -19,6 +19,7 @@ import Toster from "../Components/Toster";
 import PlateSection from "../Components/PlateSection";
 import materialList from "../contents/materialList";
 import { range } from "lodash";
+import TrashCan from "../Components/TrashCan";
 
 const CustomerTemplate = dynamic(
   () => import("../Components/CustomerTemplate"),
@@ -63,7 +64,8 @@ function HomePage() {
                 ))}
               </HStack>
               <VStack spacing={10}>
-                <HStack>
+                <HStack pos='relative'>
+                  <TrashCan />
                   <CookTemplate tool={"pan"} />
                   <Toster w='11em' />
                 </HStack>
