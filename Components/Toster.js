@@ -23,10 +23,14 @@ const Toster = ({ tool, w = "14em" }) => {
   const isMaturity = status === "maturity";
   const isDone = status === "done";
   const isOver = status === "over";
+  const isOverDone = status === "overDone";
   const [move, setMove] = useState();
+  const [haveOverCook, setHaveOverCook] = useState();
   //如果是吐司原料並且不是正在烤與已經烤好的狀態，才可以放新的吐司進去
   const canPutIn =
     data.targetItem === cookedGroup?.init.value && !isMaturity && !isDone;
+
+  let isOverCookToast;
 
   useEffect(() => {
     if (isCooking) {
@@ -40,6 +44,9 @@ const Toster = ({ tool, w = "14em" }) => {
         setStatus("over");
       }, [5000]);
       return () => clearTimeout(s);
+    }
+    if (isOverDone) {
+      setHaveOverCook(true);
     }
   }, [status]);
 
@@ -71,6 +78,28 @@ const Toster = ({ tool, w = "14em" }) => {
     }
   };
 
+  const dragItem = (
+    <Box
+      visibility={move ? "visible" : "hidden"}
+      draggable='true'
+      onDragEnd={() => {
+        if (data.targetItem === null) {
+          setMove(false);
+        }
+      }}
+      onDragStart={() => {
+        setValue("targetItem", cookedGroup?.done.value);
+      }}>
+      <FoodTemplate
+        src={haveOverCook ? "toast2" : "toast"}
+        pos='absolute'
+        top={-2}
+        left={10}
+        w='7em'
+      />
+    </Box>
+  );
+
   return (
     <Box
       onDragEnter={onDragEnter}
@@ -79,35 +108,18 @@ const Toster = ({ tool, w = "14em" }) => {
         e.preventDefault();
         e.stopPropagation();
       }}>
-      <Box pos='relative' cursor={isDone && "pointer"}>
+      <Box pos='relative' cursor={(isDone || isOverDone) && "pointer"}>
         {(isCooking || isMaturity) && (
           <Progress time={250} pos='absolute' size='30px' top={5} left={5} />
         )}
-
-        <Box
-          visibility={move ? "visible" : "hidden"}
-          draggable='true'
-          onDragEnd={() => {
-            if (data.targetItem === null) {
-              setMove(false);
-            }
-          }}
-          onDragStart={() => {
-            setValue("targetItem", cookedGroup?.done.value);
-          }}>
-          <FoodTemplate
-            src={"toast"}
-            pos='absolute'
-            top={-2}
-            left={10}
-            w='8em'
-          />
-        </Box>
+        {dragItem}
         {status ? (
           <Box
+            h='12em'
             pos='relative'
+            onClick={passToPlate}
             onMouseDown={(e) => {
-              if (isMaturity) {
+              if (isMaturity || isOverDone) {
                 setMove(true);
                 setStatus(null);
               }
@@ -115,19 +127,20 @@ const Toster = ({ tool, w = "14em" }) => {
             <Image
               src={`/${statusList[status]}.svg`}
               pointerEvents='none'
-              cursor={isDone && "pointer"}
+              cursor={(isDone || isOver) && "pointer"}
               userSelect='none'
               w={w}
-              onClick={passToPlate}
             />
           </Box>
         ) : (
-          <Image
-            src={`/toaster.svg`}
-            pointerEvents={"none"}
-            userSelect='none'
-            w={w}
-          />
+          <Box w={w} h='12em'>
+            <Image
+              src={`/toaster.svg`}
+              pointerEvents={"none"}
+              userSelect='none'
+              w={w}
+            />
+          </Box>
         )}
 
         <Box

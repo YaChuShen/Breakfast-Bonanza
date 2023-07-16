@@ -63,7 +63,7 @@ const PlateSection = ({ data, setValue, index }) => {
       pos='relative'
       draggable='true'
       onDrop={(e) => {
-        if (!targetPlate) {
+        if (!targetPlate && !targetItem.includes("2")) {
           setValue(key, [...food, targetItem]);
           setValue("targetItem", null);
         }
