@@ -55,13 +55,12 @@ const CustomerTemplate = ({ id, src }) => {
   };
   return (
     <Box
-      userSelect="none"
+      userSelect='none'
       onDrop={(e) => {
         e.preventDefault();
         const key = `plateContent${data?.targetPlate}`;
         if (handleValidateFood()) {
           setValue(`${id}.status`, "eating");
-          setValue(key, []);
           const controlNextOrder = () => {
             const t = setTimeout(() => {
               setValue(`${id}.order`, sample(foodList));
@@ -73,28 +72,28 @@ const CustomerTemplate = ({ id, src }) => {
         } else {
           if (status === "eating") return;
           setValue(`${id}.status`, "errors");
-          setValue(key, []);
         }
+        setValue(key, []);
+        setValue("targetPlate", null);
+
         console.log("DROP CUSTOMER");
       }}
       onDragOver={(e) => {
         e.preventDefault();
         e.stopPropagation();
-      }}
-    >
+      }}>
       <Center
         visibility={status !== "eating" ? "visible" : "hidden"}
         w={isCoffee ? "3em" : "7em"}
-        h="4em"
-      >
-        <Image src={`/${wishFood}.svg`} w="100%" zIndex={2} />
+        h='4em'>
+        <Image src={`/${wishFood}.svg`} w='100%' zIndex={2} />
       </Center>
 
-      <Circle bg={statusColor[status]} w="10em" h="10em" pos="relative">
+      <Circle bg={statusColor[status]} w='10em' h='10em' pos='relative'>
         {overTime ? (
-          <Image top={1} pos="absolute" src={`${src}-angry.svg`} w="9.5em" />
+          <Image top={1} pos='absolute' src={`${src}-angry.svg`} w='9.5em' />
         ) : (
-          <Image top={0} pos="absolute" src={`${src}.svg`} w="9.5em" />
+          <Image top={0} pos='absolute' src={`${src}.svg`} w='9.5em' />
         )}
       </Circle>
     </Box>

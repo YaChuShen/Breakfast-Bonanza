@@ -1,14 +1,7 @@
 import { Box, Center, HStack, Image } from "@chakra-ui/react";
 import React, { useContext, useEffect, useState } from "react";
 import FoodTemplate from "./FoodTemplate";
-
-const validFood = [
-  "sunnyEgg",
-  "hotDog",
-  "toast",
-  "blueberry-toast",
-  "butter-toast",
-];
+import { plateToDropFood } from "../contents/rulse";
 
 const foodPosition = {
   sunnyEgg: "0",
@@ -44,16 +37,14 @@ const shadow = {
 const PlateSection = ({ data, setValue, index }) => {
   const key = `plateContent${index + 1}`;
   const food = data[key];
-  const isValide = food?.every((e) => validFood.includes(e));
+
+  const { targetPlate, targetItem } = data;
+  const isValide = food?.every((e) => plateToDropFood.includes(e));
   const toastFirst = food?.[0] === "toast";
   const jam = food?.[1] === "blueberry-toast" || food?.[1] === "butter-toast";
 
-  const foodRules = (category) => {
-    const isToast =
-      category === "toast" ||
-      category === "blueberry-toast" ||
-      category === "butter-toast";
-
+  const foodDisplayRules = (category) => {
+    const isToast = category === "toast";
     const okFood = category === "sunnyEgg" || category === "hotDog";
 
     if (toastFirst) {
@@ -68,15 +59,14 @@ const PlateSection = ({ data, setValue, index }) => {
     return null;
   };
 
-  const showUp = isValide && food.length > 0 && foodRules(food[0]);
-
+  const showUp = isValide && food.length > 0 && foodDisplayRules(food[0]);
   return (
     <Center
       pos="relative"
       draggable="true"
       onDrop={(e) => {
-        if (showUp) {
-          setValue(key, [...food, data.targetItem]);
+        if (!targetPlate) {
+          setValue(key, [...food, targetItem]);
           setValue("targetItem", null);
         }
       }}
@@ -88,26 +78,29 @@ const PlateSection = ({ data, setValue, index }) => {
         setValue("targetItem", food.join("&"));
         setValue("targetPlate", index + 1);
       }}
+      onDragEnd={(e) => {
+        setValue("targetPlate", null);
+      }}
     >
       <Image src="plate.svg" w="8em" />
       {showUp && (
         <>
-          {/* <FoodTemplate
+          <FoodTemplate
             value={food[0]}
             src={food[0]}
             pos="absolute"
             bottom={toastFirst ? 0 : 3}
-            left={foodRules(food[0]).left}
-            zIndex={foodRules(food[0]).index}
-          /> */}
-          {food.length > 1 && foodRules(food[1]) && (
+            left={foodDisplayRules(food[0]).left}
+            zIndex={foodDisplayRules(food[0]).index}
+          />
+          {food.length > 1 && foodDisplayRules(food[1]) && (
             <FoodTemplate
               value={food[1]}
               src={food[1]}
               pos="absolute"
               bottom={toastFirst ? (jam ? 1 : 5) : 3}
-              left={foodRules(food[1]).left}
-              zIndex={foodRules(food[1]).index}
+              left={foodDisplayRules(food[1]).left}
+              zIndex={foodDisplayRules(food[1]).index}
             />
           )}
         </>

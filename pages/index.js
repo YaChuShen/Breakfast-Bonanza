@@ -20,6 +20,7 @@ import PlateSection from "../Components/PlateSection";
 import materialList from "../contents/materialList";
 import { range } from "lodash";
 import Jam from "../Components/Jam";
+import TrashCan from "../Components/TrashCan";
 
 const CustomerTemplate = dynamic(
   () => import("../Components/CustomerTemplate"),
@@ -63,21 +64,22 @@ function HomePage() {
                 ))}
               </HStack>
               <HStack spacing={10}>
-                {range(data.plate).map((e) => (
+                {range(data.plate).map((e, i) => (
                   <PlateSection
                     data={data}
                     setValue={methods.setValue}
                     index={e}
+                    key={i}
                   />
                 ))}
               </HStack>
               <VStack spacing={10}>
                 {tools}
-                {/* <HStack spacing={10}>
+                <HStack spacing={10}>
                   {materialList.map((e) => (
                     <FoodTemplate value={e} src={e} />
                   ))}
-                </HStack> */}
+                </HStack>
               </VStack>
             </VStack>
           </Center>
