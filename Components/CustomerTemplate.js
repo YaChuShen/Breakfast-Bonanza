@@ -35,7 +35,7 @@ const CustomerTemplate = ({ id, src }) => {
     if (!overTime) {
       const t = setTimeout(() => {
         setOverTime(true);
-      }, [10000]);
+      }, [25000]);
       return () => clearTimeout(t);
     }
   }, [overTime]);
