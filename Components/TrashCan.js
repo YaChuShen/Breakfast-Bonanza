@@ -1,12 +1,24 @@
 import { Box, Image } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { trashCanNoList } from "../contents/rulse";
 
 const TrashCan = () => {
   const { setValue, watch } = useFormContext();
-  const { targetPlate, targetItem } = watch();
+  const { targetPlate, targetItem, trashCanOpen } = watch();
   const [open, setOpen] = useState();
+
+  console.log(trashCanOpen);
+
+  useEffect(() => {
+    if (!open && trashCanOpen) {
+      setOpen(true);
+      setTimeout(() => {
+        setOpen(false);
+        setValue("trashCanOpen", false);
+      }, 1500);
+    }
+  }, [trashCanOpen]);
 
   const onDrop = () => {
     if (!trashCanNoList.includes(targetItem) && open) {
@@ -22,7 +34,7 @@ const TrashCan = () => {
 
   return (
     <Box
-      userSelect='none'
+      userSelect="none"
       onDragLeave={() => {
         setOpen(false);
       }}
@@ -31,14 +43,15 @@ const TrashCan = () => {
         e.stopPropagation();
         setOpen(true);
       }}
-      onDrop={onDrop}>
+      onDrop={onDrop}
+    >
       {open ? (
-        <Image src='/trashCan_open.svg' w='9em' pos='absolute' left={"-16em"} />
+        <Image src="/trashCan_open.svg" w="9em" pos="absolute" left={"-16em"} />
       ) : (
         <Image
-          src='/trashCan.svg'
-          w='9em'
-          pos='absolute'
+          src="/trashCan.svg"
+          w="9em"
+          pos="absolute"
           left={"-16em"}
           cursor={"pointer"}
         />

@@ -90,9 +90,11 @@ const Toaster = ({ tool, w = "14em" }) => {
   };
 
   const overCookOnDoubleClick = () => {
-    if (isOverDone) {
+    if (haveOverCook) {
       setStatus(null);
       setValue("trashCanOpen", true);
+      setHaveOverCook(false);
+      setMove(false);
     }
   };
 
