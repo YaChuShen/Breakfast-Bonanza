@@ -15,7 +15,7 @@ import FoodTemplate from "../Components/FoodTemplate";
 // import CustomerTemplate from "../Components/CustomerTemplate";
 import dynamic from "next/dynamic";
 import CookTemplate from "../Components/CookTemplate";
-import Toster from "../Components/Toster";
+import Toaster from "../Components/Toaster";
 import PlateSection from "../Components/PlateSection";
 import materialList from "../contents/materialList";
 import { range } from "lodash";
@@ -36,9 +36,10 @@ function HomePage() {
   console.log(data);
 
   const tools = (
-    <HStack spacing={5}>
+    <HStack spacing={5} pos="relative">
+      <TrashCan />
       <CookTemplate tool={"pan"} />
-      <Toster w="11em" />
+      <Toaster w="11em" />
       <Jam />
     </HStack>
   );
