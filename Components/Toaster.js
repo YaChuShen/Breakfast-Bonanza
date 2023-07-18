@@ -87,10 +87,7 @@ const Toaster = ({ tool, w = "14em" }) => {
       }}
       onDragStart={() => {
         if (isDone || isOverDone) {
-          setValue(
-            "targetItem",
-            isOverDone ? cookedGroup?.over.value : cookedGroup?.done.value
-          );
+          setValue("targetItem", cookedGroup?.done.value);
           setHaveOverCook(false);
         }
       }}
