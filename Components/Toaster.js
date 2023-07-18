@@ -43,13 +43,13 @@ const Toaster = ({ tool, w = "14em" }) => {
       }, [5000]);
       return () => clearTimeout(s);
     }
-    if (isOverDone) {
+    if (isOver) {
       setHaveOverCook(true);
     }
   }, [status]);
 
   const onDragEnter = () => {
-    if (!isCooking) {
+    if (!status && !haveOverCook) {
       setCookedGroup(toasterList.find((e) => e.init.value === data.targetItem));
     }
   };
@@ -86,11 +86,12 @@ const Toaster = ({ tool, w = "14em" }) => {
         }
       }}
       onDragStart={() => {
-        if (isMaturity || isOver) {
+        if (isDone || isOverDone) {
           setValue(
             "targetItem",
-            isOver ? cookedGroup?.over.value : cookedGroup?.done.value
+            isOverDone ? cookedGroup?.over.value : cookedGroup?.done.value
           );
+          setHaveOverCook(false);
         }
       }}
     >
@@ -103,9 +104,6 @@ const Toaster = ({ tool, w = "14em" }) => {
       />
     </Box>
   );
-
-  console.log(data.targetItem);
-
   return (
     <Box
       onDragEnter={onDragEnter}
@@ -125,8 +123,14 @@ const Toaster = ({ tool, w = "14em" }) => {
             h="12em"
             pos="relative"
             onClick={passToPlate}
+            onDoubleClick={(e) => {
+              if (isOverDone) {
+                setStatus(null);
+                setValue("trashCanOpen", true);
+              }
+            }}
             onMouseDown={(e) => {
-              if (isMaturity || isOverDone) {
+              if (isOverDone) {
                 setMove(true);
                 setStatus(null);
               }

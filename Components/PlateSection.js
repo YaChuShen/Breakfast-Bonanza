@@ -61,8 +61,6 @@ const PlateSection = ({ data, setValue, index }) => {
 
   const showUp = isValide && food.length > 0 && foodDisplayRules(food[0]);
 
-  console.log(targetItem?.includes("2"));
-
   return (
     <Center
       pos="relative"
