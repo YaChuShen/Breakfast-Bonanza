@@ -34,13 +34,13 @@ const Toaster = ({ tool, w = "14em" }) => {
     if (isCooking) {
       const s = setTimeout(() => {
         setStatus("maturity");
-      }, [5000]);
+      }, [3000]);
       return () => clearTimeout(s);
     }
     if (isMaturity) {
       const s = setTimeout(() => {
         setStatus("over");
-      }, [5000]);
+      }, [3000]);
       return () => clearTimeout(s);
     }
     if (isOver) {
@@ -55,7 +55,7 @@ const Toaster = ({ tool, w = "14em" }) => {
   };
 
   const onDrop = () => {
-    if (canPutIn) {
+    if (canPutIn && !haveOverCook) {
       setStatus("cooking");
     }
   };
@@ -76,21 +76,33 @@ const Toaster = ({ tool, w = "14em" }) => {
     }
   };
 
+  const overCookOnDragEnd = () => {
+    if (data.targetItem === null) {
+      setMove(false);
+      setHaveOverCook(false);
+    }
+  };
+
+  const overCookOnDragStart = () => {
+    if (haveOverCook) {
+      setValue("targetItem", cookedGroup?.over.value);
+    }
+  };
+
+  const overCookOnDoubleClick = () => {
+    if (isOverDone) {
+      setStatus(null);
+      setValue("trashCanOpen", true);
+    }
+  };
+
   const dragItem = (
     <Box
       visibility={move ? "visible" : "hidden"}
       draggable="true"
-      onDragEnd={() => {
-        if (data.targetItem === null) {
-          setMove(false);
-        }
-      }}
-      onDragStart={() => {
-        if (isDone || isOverDone) {
-          setValue("targetItem", cookedGroup?.done.value);
-          setHaveOverCook(false);
-        }
-      }}
+      onDragEnd={overCookOnDragEnd}
+      onDragStart={overCookOnDragStart}
+      onDoubleClick={overCookOnDoubleClick}
     >
       <FoodTemplate
         src={haveOverCook ? "toast2" : "toast"}
@@ -112,7 +124,7 @@ const Toaster = ({ tool, w = "14em" }) => {
     >
       <Box pos="relative" cursor={(isDone || isOverDone) && "pointer"}>
         {(isCooking || isMaturity) && (
-          <Progress time={250} pos="absolute" size="30px" top={5} left={5} />
+          <Progress time={150} pos="absolute" size="30px" top={5} left={5} />
         )}
         {dragItem}
         {status ? (
@@ -120,12 +132,6 @@ const Toaster = ({ tool, w = "14em" }) => {
             h="12em"
             pos="relative"
             onClick={passToPlate}
-            onDoubleClick={(e) => {
-              if (isOverDone) {
-                setStatus(null);
-                setValue("trashCanOpen", true);
-              }
-            }}
             onMouseDown={(e) => {
               if (isOverDone) {
                 setMove(true);

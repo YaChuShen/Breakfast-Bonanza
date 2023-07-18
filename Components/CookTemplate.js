@@ -25,13 +25,13 @@ const CookTemplate = ({ tool, w = "14em" }) => {
     if (isCooking) {
       const s = setTimeout(() => {
         setStatus("maturity");
-      }, [5000]);
+      }, [3000]);
       return () => clearTimeout(s);
     }
     if (isMaturity) {
       const s = setTimeout(() => {
         setStatus("over");
-      }, [5000]);
+      }, [3000]);
       return () => clearTimeout(s);
     }
   }, [status]);
@@ -89,7 +89,7 @@ const CookTemplate = ({ tool, w = "14em" }) => {
           w={w}
         />
         {(isCooking || isMaturity) && (
-          <Progress time={250} pos="absolute" size="30px" top={5} left={0} />
+          <Progress time={150} pos="absolute" size="30px" top={5} left={0} />
         )}
         {status && (
           <Center
