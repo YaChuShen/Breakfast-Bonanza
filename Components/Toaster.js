@@ -86,7 +86,12 @@ const Toaster = ({ tool, w = "14em" }) => {
         }
       }}
       onDragStart={() => {
-        setValue("targetItem", cookedGroup?.done.value);
+        if (isMaturity || isOver) {
+          setValue(
+            "targetItem",
+            isOver ? cookedGroup?.over.value : cookedGroup?.done.value
+          );
+        }
       }}
     >
       <FoodTemplate
