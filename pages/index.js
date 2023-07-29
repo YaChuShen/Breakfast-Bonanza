@@ -7,6 +7,7 @@ import {
   Container,
   HStack,
   Image,
+  Stack,
   Text,
   VStack,
 } from "@chakra-ui/react";
@@ -54,7 +55,7 @@ function HomePage() {
   return (
     <ChakraProvider>
       <FormProvider {...methods}>
-        <Box bg='gray.800' w='100%' h='100vh'>
+        <Box bg='gray.800' w='100%' h='100vh' overflow='hidden'>
           <HStack
             spacing={20}
             alignItems='center'
@@ -70,16 +71,21 @@ function HomePage() {
           </HStack>
           <Box pos='relative'>
             <Center>
-              <Image src='/table.svg' w='100em' minW='100em' />
+              <Image
+                src='/table.svg'
+                w='100em'
+                minW='100em'
+                bottom='-7em'
+                pos='relative'
+              />
             </Center>
             <Center>
-              {/* <Box h='20em' w='50%' pos='' border='1px solid blue'> */}
               <HStack
                 spacing={10}
                 w='100%'
                 justifyContent='center'
                 pos='absolute'
-                top={"6em"}>
+                bottom='12.5em'>
                 {range(data.plate).map((e, i) => (
                   <PlateSection
                     data={data}
@@ -89,11 +95,18 @@ function HomePage() {
                   />
                 ))}
               </HStack>
-              <HStack pos='absolute' bottom='8em'>
+              <HStack pos='absolute' bottom='0em'>
                 <Toaster w='10em' />
                 <VStack>
                   <Jam />
-                  <FoodTemplate value={"toast0"} src={"toast0"} />
+                  <FoodTemplate value={"toast0"} src={"toast0"} w='8em' />
+                  <FoodTemplate
+                    value={"toast0"}
+                    src={"toast0"}
+                    w='8em'
+                    pos='absolute'
+                    top={24}
+                  />
                 </VStack>
                 <CookTemplate tool={"pan"} />
                 <VStack>
@@ -101,9 +114,9 @@ function HomePage() {
                   <FoodTemplate value={"hotDog0"} src={"hotDog0"} />
                 </VStack>
                 <FoodTemplate value={"coffee"} src={"coffee"} />
+                <TrashCan />
               </HStack>
             </Center>
-            {/* </Box> */}
           </Box>
         </Box>
       </FormProvider>
