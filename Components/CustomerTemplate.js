@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import foodList from "../contents/foodList";
 import { isEqual, sample } from "lodash";
+import { CUSTOMERNEXTORDER, CUSTOMEROVERTIME } from "../contents/rulse";
 
 const statusColor = {
   eating: "#EDDDD6",
@@ -35,7 +36,7 @@ const CustomerTemplate = ({ id, src }) => {
     if (!overTime) {
       const t = setTimeout(() => {
         setOverTime(true);
-      }, [25000]);
+      }, [CUSTOMEROVERTIME]);
       return () => clearTimeout(t);
     }
   }, [overTime]);
@@ -46,13 +47,14 @@ const CustomerTemplate = ({ id, src }) => {
         return s?.split("&");
       };
       return isEqual(
-        checkContent(data.targetItem).sort(),
-        checkContent(data[id].order).sort()
+        checkContent(data.targetItem)?.sort(),
+        checkContent(data[id].order)?.sort()
       );
     } else {
       return data[id].order === data.targetItem;
     }
   };
+
   return (
     <Box
       userSelect='none'
@@ -64,7 +66,7 @@ const CustomerTemplate = ({ id, src }) => {
           const controlNextOrder = () => {
             const t = setTimeout(() => {
               setValue(`${id}.order`, sample(foodList));
-            }, [5000]);
+            }, [CUSTOMERNEXTORDER]);
             return () => clearTimeout(t);
           };
           setOverTime(false);

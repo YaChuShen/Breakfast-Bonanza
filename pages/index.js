@@ -1,4 +1,5 @@
 import {
+  AspectRatio,
   Box,
   Center,
   ChakraProvider,
@@ -29,6 +30,12 @@ const CustomerTemplate = dynamic(
   }
 );
 
+const table = (
+  <Center>
+    <Image src='/table.svg' w='100em' minW='100em' pos='absolute' bottom='0' />
+  </Center>
+);
+
 function HomePage() {
   const methods = useForm({ defaultValues: values });
   const data = methods.watch();
@@ -36,10 +43,10 @@ function HomePage() {
   console.log(data);
 
   const tools = (
-    <HStack spacing={5} pos="relative">
+    <HStack spacing={5} pos='relative'>
       <TrashCan />
       <CookTemplate tool={"pan"} />
-      <Toaster w="11em" />
+      <Toaster w='11em' />
       <Jam />
     </HStack>
   );
@@ -47,24 +54,32 @@ function HomePage() {
   return (
     <ChakraProvider>
       <FormProvider {...methods}>
-        <Box py="2em" bg="gray.800" w="100%">
-          <Center h="full">
-            <VStack spacing={15}>
+        <Box bg='gray.800' w='100%' h='100vh'>
+          <HStack
+            spacing={20}
+            alignItems='center'
+            justifyContent='center'
+            py='20'>
+            {range(data.customer).map((e, i) => (
+              <CustomerTemplate
+                id={`customer${i + 1}`}
+                src={`customer${i + 1}`}
+                key={i}
+              />
+            ))}
+          </HStack>
+          <Box pos='relative'>
+            <Center>
+              <Image src='/table.svg' w='100em' minW='100em' />
+            </Center>
+            <Center>
+              {/* <Box h='20em' w='50%' pos='' border='1px solid blue'> */}
               <HStack
-                spacing={20}
-                alignItems="center"
-                justifyContent="center"
-                py="20"
-              >
-                {range(data.customer).map((e, i) => (
-                  <CustomerTemplate
-                    id={`customer${i + 1}`}
-                    src={`customer${i + 1}`}
-                    key={i}
-                  />
-                ))}
-              </HStack>
-              <HStack spacing={10}>
+                spacing={10}
+                w='100%'
+                justifyContent='center'
+                pos='absolute'
+                top={"6em"}>
                 {range(data.plate).map((e, i) => (
                   <PlateSection
                     data={data}
@@ -74,16 +89,22 @@ function HomePage() {
                   />
                 ))}
               </HStack>
-              <VStack spacing={10}>
-                {tools}
-                <HStack spacing={10}>
-                  {materialList.map((e) => (
-                    <FoodTemplate value={e} src={e} />
-                  ))}
-                </HStack>
-              </VStack>
-            </VStack>
-          </Center>
+              <HStack pos='absolute' bottom='8em'>
+                <Toaster w='10em' />
+                <VStack>
+                  <Jam />
+                  <FoodTemplate value={"toast0"} src={"toast0"} />
+                </VStack>
+                <CookTemplate tool={"pan"} />
+                <VStack>
+                  <FoodTemplate value={"egg"} src={"egg"} />
+                  <FoodTemplate value={"hotDog0"} src={"hotDog0"} />
+                </VStack>
+                <FoodTemplate value={"coffee"} src={"coffee"} />
+              </HStack>
+            </Center>
+            {/* </Box> */}
+          </Box>
         </Box>
       </FormProvider>
     </ChakraProvider>

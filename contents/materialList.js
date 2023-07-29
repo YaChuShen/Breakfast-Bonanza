@@ -1,10 +1,3 @@
-const materialList = [
-  "egg",
-  "coffee",
-  "hotDog0",
-  "toast0",
-  // "blueberry-can",
-  // "butter-can",
-];
+const materialList = ["egg", "coffee", "hotDog0", "toast0"];
 
 export default materialList;

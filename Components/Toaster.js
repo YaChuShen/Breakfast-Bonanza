@@ -5,6 +5,7 @@ import { toasterList } from "../contents/cookedList";
 import autoPlateSystem from "../helpers/autoPlateSystem";
 import Progress from "./Progress";
 import FoodTemplate from "./FoodTemplate";
+import { MUTURITYTIME, OVERTIME } from "../contents/rulse";
 
 const statusList = {
   cooking: "toasterIn0",
@@ -14,7 +15,7 @@ const statusList = {
   overDone: "toaster2",
 };
 
-const Toaster = ({ tool, w = "14em" }) => {
+const Toaster = ({ tool, w = "14em", ...props }) => {
   const { setValue, watch } = useFormContext();
   const data = watch();
   const [cookedGroup, setCookedGroup] = useState();
@@ -34,13 +35,13 @@ const Toaster = ({ tool, w = "14em" }) => {
     if (isCooking) {
       const s = setTimeout(() => {
         setStatus("maturity");
-      }, [3000]);
+      }, [MUTURITYTIME]);
       return () => clearTimeout(s);
     }
     if (isMaturity) {
       const s = setTimeout(() => {
         setStatus("over");
-      }, [3000]);
+      }, [OVERTIME]);
       return () => clearTimeout(s);
     }
     if (isOver) {
@@ -101,17 +102,16 @@ const Toaster = ({ tool, w = "14em" }) => {
   const dragItem = (
     <Box
       visibility={move ? "visible" : "hidden"}
-      draggable="true"
+      draggable='true'
       onDragEnd={overCookOnDragEnd}
       onDragStart={overCookOnDragStart}
-      onDoubleClick={overCookOnDoubleClick}
-    >
+      onDoubleClick={overCookOnDoubleClick}>
       <FoodTemplate
         src={haveOverCook ? "toast2" : "toast"}
-        pos="absolute"
+        pos='absolute'
         top={-2}
         left={10}
-        w="7em"
+        w='7em'
       />
     </Box>
   );
@@ -123,38 +123,43 @@ const Toaster = ({ tool, w = "14em" }) => {
         e.preventDefault();
         e.stopPropagation();
       }}
-    >
-      <Box pos="relative" cursor={(isDone || isOverDone) && "pointer"}>
+      {...props}>
+      <Box pos='relative' cursor={(isDone || isOverDone) && "pointer"}>
         {(isCooking || isMaturity) && (
-          <Progress time={150} pos="absolute" size="30px" top={5} left={5} />
+          <Progress
+            time={MUTURITYTIME / 20}
+            pos='absolute'
+            size='30px'
+            top={5}
+            left={5}
+          />
         )}
         {dragItem}
         {status ? (
           <Box
-            h="12em"
-            pos="relative"
+            h='12em'
+            pos='relative'
             onClick={passToPlate}
             onMouseDown={(e) => {
               if (isOverDone) {
                 setMove(true);
                 setStatus(null);
               }
-            }}
-          >
+            }}>
             <Image
               src={`/${statusList[status]}.svg`}
-              pointerEvents="none"
+              pointerEvents='none'
               cursor={(isDone || isOver) && "pointer"}
-              userSelect="none"
+              userSelect='none'
               w={w}
             />
           </Box>
         ) : (
-          <Box w={w} h="12em">
+          <Box w={w} h='12em'>
             <Image
               src={`/toaster.svg`}
               pointerEvents={"none"}
-              userSelect="none"
+              userSelect='none'
               w={w}
             />
           </Box>
@@ -162,10 +167,10 @@ const Toaster = ({ tool, w = "14em" }) => {
 
         <Box
           onClick={turnOn}
-          w="3em"
-          h="3em"
-          cursor="pointer"
-          pos="absolute"
+          w='3em'
+          h='3em'
+          cursor='pointer'
+          pos='absolute'
           bottom={"3em"}
           right={2}
         />

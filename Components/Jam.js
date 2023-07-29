@@ -4,25 +4,24 @@ import { useFormContext } from "react-hook-form";
 import autoJamSystem from "/helpers/autoJamSystem";
 
 const jamArr = [
-  { init: "blueberry-can", done: "blueberry-toast" },
-  { init: "butter-can", done: "butter-toast" },
+  { init: "blueberry-can", done: "blueberry" },
+  { init: "butter-can", done: "butter" },
 ];
 
 const Jam = () => {
   const { setValue, watch } = useFormContext();
   const data = watch();
   return (
-    <HStack>
+    <HStack userSelect='none'w>
       {jamArr.map((e, i) => (
         <Box
           key={i}
-          px="2"
-          cursor="pointer"
+          px='2'
+          cursor='pointer'
           onClick={() => {
             autoJamSystem(data, e.done, setValue);
-          }}
-        >
-          <Image src={`/${e.init}.svg`} w="5em"></Image>
+          }}>
+          <Image src={`/${e.init}.svg`} w='5em'></Image>
         </Box>
       ))}
     </HStack>

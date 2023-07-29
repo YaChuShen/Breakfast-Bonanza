@@ -4,6 +4,7 @@ import { useFormContext } from "react-hook-form";
 import stoveList from "../contents/cookedList";
 import autoPlateSystem from "../helpers/autoPlateSystem";
 import Progress from "./Progress";
+import { MUTURITYTIME, OVERTIME } from "../contents/rulse";
 
 const statusList = {
   cooking: "init",
@@ -25,13 +26,13 @@ const CookTemplate = ({ tool, w = "14em" }) => {
     if (isCooking) {
       const s = setTimeout(() => {
         setStatus("maturity");
-      }, [3000]);
+      }, [MUTURITYTIME]);
       return () => clearTimeout(s);
     }
     if (isMaturity) {
       const s = setTimeout(() => {
         setStatus("over");
-      }, [3000]);
+      }, [OVERTIME]);
       return () => clearTimeout(s);
     }
   }, [status]);
@@ -79,33 +80,37 @@ const CookTemplate = ({ tool, w = "14em" }) => {
       onDragOver={(e) => {
         e.preventDefault();
         e.stopPropagation();
-      }}
-    >
-      <Box pos="relative">
+      }}>
+      <Box pos='relative'>
         <Image
           src={`/${tool}.svg`}
           pointerEvents={"none"}
-          userSelect="none"
+          userSelect='none'
           w={w}
         />
         {(isCooking || isMaturity) && (
-          <Progress time={150} pos="absolute" size="30px" top={5} left={0} />
+          <Progress
+            time={MUTURITYTIME / 20}
+            pos='absolute'
+            size='30px'
+            top={5}
+            left={0}
+          />
         )}
         {status && (
           <Center
-            pos="absolute"
+            pos='absolute'
             top={7}
             left={"4.3em"}
-            userSelect="none"
+            userSelect='none'
             pointerEvents={isCooking && "none"}
-            draggable="true"
+            draggable='true'
             onClick={passToPlate}
             onDragStart={foodOnDragStart}
             onDragEnd={foodOnDragEnd}
-            cursor="grab"
-            borderRadius="50%"
-            w="5em"
-          >
+            cursor='grab'
+            borderRadius='50%'
+            w='5em'>
             <Image src={`/${cookedGroup?.[key].src}.svg`} />
           </Center>
         )}

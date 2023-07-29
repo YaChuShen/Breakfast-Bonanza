@@ -8,8 +8,6 @@ const TrashCan = () => {
   const { targetPlate, targetItem, trashCanOpen } = watch();
   const [open, setOpen] = useState();
 
-  console.log(trashCanOpen);
-
   useEffect(() => {
     if (!open && trashCanOpen) {
       setOpen(true);
@@ -34,7 +32,7 @@ const TrashCan = () => {
 
   return (
     <Box
-      userSelect="none"
+      userSelect='none'
       onDragLeave={() => {
         setOpen(false);
       }}
@@ -43,15 +41,14 @@ const TrashCan = () => {
         e.stopPropagation();
         setOpen(true);
       }}
-      onDrop={onDrop}
-    >
+      onDrop={onDrop}>
       {open ? (
-        <Image src="/trashCan_open.svg" w="9em" pos="absolute" left={"-16em"} />
+        <Image src='/trashCan_open.svg' w='9em' pos='absolute' left={"-16em"} />
       ) : (
         <Image
-          src="/trashCan.svg"
-          w="9em"
-          pos="absolute"
+          src='/trashCan.svg'
+          w='9em'
+          pos='absolute'
           left={"-16em"}
           cursor={"pointer"}
         />
