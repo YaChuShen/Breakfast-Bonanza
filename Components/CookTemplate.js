@@ -81,7 +81,7 @@ const CookTemplate = ({ tool, w = "14em" }) => {
         e.preventDefault();
         e.stopPropagation();
       }}>
-      <Box pos='relative'>
+      <Box pos='relative' w={w}>
         <Image
           src={`/${tool}.svg`}
           pointerEvents={"none"}
@@ -109,9 +109,8 @@ const CookTemplate = ({ tool, w = "14em" }) => {
             onDragStart={foodOnDragStart}
             onDragEnd={foodOnDragEnd}
             cursor='grab'
-            borderRadius='50%'
-            w='5em'>
-            <Image src={`/${cookedGroup?.[key].src}.svg`} />
+            borderRadius='50%'>
+            <Image src={`/${cookedGroup?.[key].src}.svg`} w='5em' />
           </Center>
         )}
       </Box>

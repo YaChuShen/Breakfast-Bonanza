@@ -55,7 +55,7 @@ function HomePage() {
   return (
     <ChakraProvider>
       <FormProvider {...methods}>
-        <Box bg='gray.800' w='100%' h='100vh' overflow='hidden'>
+        <Box bg='gray.800' w='100%' h='100vh'>
           <HStack
             spacing={20}
             alignItems='center'
