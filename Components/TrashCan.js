@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { trashCanNoList } from "../contents/rulse";
 
-const TrashCan = () => {
+const TrashCan = ({ ...props }) => {
   const { setValue, watch } = useFormContext();
   const { targetPlate, targetItem, trashCanOpen } = watch();
   const [open, setOpen] = useState();
@@ -41,11 +41,12 @@ const TrashCan = () => {
         e.stopPropagation();
         setOpen(true);
       }}
+      {...props}
       onDrop={onDrop}>
       {open ? (
-        <Image src='/trashCan_open.svg' w='9em' />
+        <Image src='/trashCan_open.svg' w='7em' />
       ) : (
-        <Image src='/trashCan.svg' w='9em' cursor={"pointer"} />
+        <Image src='/trashCan.svg' w='7em' cursor={"pointer"} />
       )}
     </Box>
   );

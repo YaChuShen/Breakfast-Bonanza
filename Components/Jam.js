@@ -12,16 +12,16 @@ const Jam = () => {
   const { setValue, watch } = useFormContext();
   const data = watch();
   return (
-    <HStack userSelect='none'w>
+    <HStack userSelect='none'>
       {jamArr.map((e, i) => (
         <Box
           key={i}
-          px='2'
+          px='0'
           cursor='pointer'
           onClick={() => {
             autoJamSystem(data, e.done, setValue);
           }}>
-          <Image src={`/${e.init}.svg`} w='5em'></Image>
+          <Image src={`/${e.init}.svg`} w='4em'></Image>
         </Box>
       ))}
     </HStack>

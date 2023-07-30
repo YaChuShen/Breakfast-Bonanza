@@ -12,7 +12,7 @@ const statusList = {
   over: "over",
 };
 
-const CookTemplate = ({ tool, w = "14em" }) => {
+const CookTemplate = ({ tool, w = "14em", ...props }) => {
   const { setValue, watch } = useFormContext();
   const data = watch();
   const [cookedGroup, setCookedGroup] = useState();
@@ -75,6 +75,7 @@ const CookTemplate = ({ tool, w = "14em" }) => {
 
   return (
     <Box
+      {...props}
       onDragEnter={onDragEnter}
       onDrop={onDrop}
       onDragOver={(e) => {
@@ -110,7 +111,7 @@ const CookTemplate = ({ tool, w = "14em" }) => {
             onDragEnd={foodOnDragEnd}
             cursor='grab'
             borderRadius='50%'>
-            <Image src={`/${cookedGroup?.[key].src}.svg`} w='5em' />
+            <Image src={`/${cookedGroup?.[key].src}.svg`} w='4.5em' />
           </Center>
         )}
       </Box>

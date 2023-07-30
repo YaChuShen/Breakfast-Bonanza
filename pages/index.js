@@ -55,7 +55,7 @@ function HomePage() {
   return (
     <ChakraProvider>
       <FormProvider {...methods}>
-        <Box bg='gray.800' w='100%' h='100vh'>
+        <Box bg='#F2DBC2' w='100%' h='100vh' overflow='hidden'>
           <HStack
             spacing={20}
             alignItems='center'
@@ -75,7 +75,7 @@ function HomePage() {
                 src='/table.svg'
                 w='100em'
                 minW='100em'
-                bottom='-7em'
+                bottom='1em'
                 pos='relative'
               />
             </Center>
@@ -85,7 +85,7 @@ function HomePage() {
                 w='100%'
                 justifyContent='center'
                 pos='absolute'
-                bottom='12.5em'>
+                bottom='22em'>
                 {range(data.plate).map((e, i) => (
                   <PlateSection
                     data={data}
@@ -95,26 +95,36 @@ function HomePage() {
                   />
                 ))}
               </HStack>
-              <HStack pos='absolute' bottom='0em'>
-                <Toaster w='10em' />
-                <VStack>
-                  <Jam />
-                  <FoodTemplate value={"toast0"} src={"toast0"} w='8em' />
-                  <FoodTemplate
-                    value={"toast0"}
-                    src={"toast0"}
-                    w='8em'
-                    pos='absolute'
-                    top={24}
-                  />
-                </VStack>
-                <CookTemplate tool={"pan"} />
-                <VStack>
-                  <FoodTemplate value={"egg"} src={"egg"} />
-                  <FoodTemplate value={"hotDog0"} src={"hotDog0"} />
-                </VStack>
+              <HStack pos='absolute' bottom='9em' spacing={10}>
+                <HStack spacing={0}>
+                  <Toaster w='10em' />
+                  <VStack>
+                    <Jam />
+                    <FoodTemplate value={"toast0"} src={"toast0"} w='6em' />
+                  </VStack>
+                </HStack>
+                <HStack spacing={0}>
+                  <CookTemplate tool={"pan"} w='13em' zIndex={1} />
+                  <HStack pos='relative' spacing={1}>
+                    <Box pos='absolute' w='10em' left={-5} bottom={-10}>
+                      <Image src='/foodPlate.svg' />
+                    </Box>
+                    <FoodTemplate
+                      value={"egg"}
+                      src={"egg"}
+                      w='3em'
+                      zIndex={1}
+                    />
+                    <FoodTemplate
+                      value={"hotDog0"}
+                      src={"hotDog0"}
+                      w='4.5em'
+                      zIndex={1}
+                    />
+                  </HStack>
+                </HStack>
                 <FoodTemplate value={"coffee"} src={"coffee"} />
-                <TrashCan />
+                <TrashCan pos='absolute' left='-7em' />
               </HStack>
             </Center>
           </Box>

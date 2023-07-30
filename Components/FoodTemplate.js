@@ -5,7 +5,6 @@ import { useFormContext } from "react-hook-form";
 const size = {
   coffee: "3.5em",
   toast: "8em",
-
   "blueberry-toast": "8em",
 };
 
