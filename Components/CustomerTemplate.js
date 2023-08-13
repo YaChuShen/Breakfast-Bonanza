@@ -4,11 +4,26 @@ import { useFormContext } from "react-hook-form";
 import foodList from "../contents/foodList";
 import { isEqual, sample } from "lodash";
 import { CUSTOMERNEXTORDER, CUSTOMEROVERTIME } from "../contents/rulse";
-
+import scoreList from "../contents/scoreList";
 const statusColor = {
   eating: "#EDDDD6",
   waiting: "#92AA8D",
   errors: "#CE5242",
+};
+
+const circleW = 9.56;
+const customerW = 9;
+
+const CustomerImg = ({ src }) => {
+  return (
+    <Image
+      top={1}
+      left={2}
+      pos='absolute'
+      src={`${src}.svg`}
+      w={`${customerW}em`}
+    />
+  );
 };
 
 const CustomerTemplate = ({ id, src }) => {
@@ -55,6 +70,17 @@ const CustomerTemplate = ({ id, src }) => {
     }
   };
 
+  const controlNextOrder = () => {
+    const t = setTimeout(() => {
+      setValue(`${id}.order`, sample(foodList));
+    }, [CUSTOMERNEXTORDER]);
+    return () => clearTimeout(t);
+  };
+
+  const getScore = () => {
+    setValue("score", (data.score += scoreList[data.targetItem]));
+  };
+
   return (
     <Box
       userSelect='none'
@@ -63,14 +89,9 @@ const CustomerTemplate = ({ id, src }) => {
         const key = `plateContent${data?.targetPlate}`;
         if (handleValidateFood()) {
           setValue(`${id}.status`, "eating");
-          const controlNextOrder = () => {
-            const t = setTimeout(() => {
-              setValue(`${id}.order`, sample(foodList));
-            }, [CUSTOMERNEXTORDER]);
-            return () => clearTimeout(t);
-          };
-          setOverTime(false);
           controlNextOrder();
+          getScore();
+          setOverTime(false);
         } else {
           if (status === "eating") return;
           setValue(`${id}.status`, "errors");
@@ -90,12 +111,15 @@ const CustomerTemplate = ({ id, src }) => {
         h='4em'>
         <Image src={`/${wishFood}.svg`} w='100%' zIndex={2} />
       </Center>
-
-      <Circle bg={statusColor[status]} w='10em' h='10em' pos='relative'>
+      <Circle
+        bg={statusColor[status]}
+        w={`${circleW}em`}
+        h={`${circleW}em`}
+        pos='relative'>
         {overTime ? (
-          <Image top={1} pos='absolute' src={`${src}-angry.svg`} w='9.5em' />
+          <CustomerImg src={`${src}-angry`} />
         ) : (
-          <Image top={0} pos='absolute' src={`${src}.svg`} w='9.5em' />
+          <CustomerImg src={src} />
         )}
       </Circle>
     </Box>

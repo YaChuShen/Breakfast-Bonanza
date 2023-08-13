@@ -15,7 +15,13 @@ const generateValues = () => {
     all[`plateContent${i + 1}`] = [];
     return all;
   }, {});
-  return { ...p, ...v, plate: settings.plate, customer: settings.customers };
+  return {
+    ...p,
+    ...v,
+    plate: settings.plate,
+    customer: settings.customers,
+    score: 0,
+  };
 };
 
 const values = generateValues();
