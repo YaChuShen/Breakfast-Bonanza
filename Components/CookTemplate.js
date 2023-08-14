@@ -5,6 +5,9 @@ import stoveList from "../contents/cookedList";
 import autoPlateSystem from "../helpers/autoPlateSystem";
 import Progress from "./Progress";
 import { MUTURITYTIME, OVERTIME } from "../contents/rulse";
+import onDragEnter from "../helpers/cook/onDragEnter";
+import onDrop from "../helpers/cook/onDrop";
+import passToPlate from "../helpers/cook/passToPlate";
 
 const statusList = {
   cooking: "init",
@@ -37,26 +40,26 @@ const CookTemplate = ({ tool, w = "14em", ...props }) => {
     }
   }, [status]);
 
-  const onDragEnter = () => {
-    //確認是不是正確的食物進來 ex:蛋或是熱狗，並且記錄是哪個食物group，並且render正確的圖片，方便drop時做食物正確性的判斷
-    if (!status) {
-      setCookedGroup(stoveList.find((e) => e.init.value === data.targetItem));
-    }
-  };
+  //確認是不是正確的食物進來 ex:蛋或是熱狗，並且記錄是哪個食物group，並且render正確的圖片，方便drop時做食物正確性的判斷
+  // const onDragEnter = () => {
+  //   if (!status) {
+  //     setCookedGroup(stoveList.find((e) => e.init.value === data.targetItem));
+  //   }
+  // };
 
-  const onDrop = () => {
-    //是不是食物原物料進來
-    if (data.targetItem === cookedGroup?.init.value) {
-      setStatus("cooking");
-    }
-  };
+  //是不是食物原物料進來
+  // const onDrop = () => {
+  //   if (data.targetItem === cookedGroup?.init.value && !status) {
+  //     setStatus("cooking");
+  //   }
+  // };
 
-  const passToPlate = () => {
-    if (isMaturity) {
-      autoPlateSystem(data, cookedGroup?.done.value, isMaturity, setValue);
-      setStatus(null);
-    }
-  };
+  // const passToPlate = () => {
+  //   if (isMaturity) {
+  //     autoPlateSystem(data, cookedGroup?.done.value, isMaturity, setValue);
+  //     setStatus(null);
+  //   }
+  // };
 
   const foodOnDragStart = () => {
     if (isMaturity || isOver) {
@@ -76,8 +79,10 @@ const CookTemplate = ({ tool, w = "14em", ...props }) => {
   return (
     <Box
       {...props}
-      onDragEnter={onDragEnter}
-      onDrop={onDrop}
+      onDragEnter={() =>
+        onDragEnter(data, status, isOver, stoveList, setCookedGroup)
+      }
+      onDrop={() => onDrop(data, cookedGroup, status, setStatus)}
       onDragOver={(e) => {
         e.preventDefault();
         e.stopPropagation();
@@ -106,7 +111,9 @@ const CookTemplate = ({ tool, w = "14em", ...props }) => {
             userSelect='none'
             pointerEvents={isCooking && "none"}
             draggable='true'
-            onClick={passToPlate}
+            onClick={() =>
+              passToPlate(data, cookedGroup, isMaturity, setValue, setStatus)
+            }
             onDragStart={foodOnDragStart}
             onDragEnd={foodOnDragEnd}
             cursor='grab'

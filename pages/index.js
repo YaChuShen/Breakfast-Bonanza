@@ -31,6 +31,7 @@ const CustomerTemplate = dynamic(
 function HomePage() {
   const methods = useForm({ defaultValues: values });
   const data = methods.watch();
+  console.log(data);
 
   const toasterSection = (
     <HStack spacing={0}>
@@ -56,11 +57,11 @@ function HomePage() {
       <FormProvider {...methods}>
         <Box bg='#F2DBC2' w='100%' h='100vh' overflow='hidden'>
           <ScoreSection data={data} />
-          <Center w='100%' pt='3em'>
+          <Center w='100%' pt='3em' px='5em'>
             <Image src='./window.svg' />
           </Center>
           <HStack
-            mt={{ base: "-20.5em", xl: "-21em" }}
+            mt={{ base: "-20.5em", xl: "-23em" }}
             zIndex={10}
             spacing={20}
             alignItems='center'

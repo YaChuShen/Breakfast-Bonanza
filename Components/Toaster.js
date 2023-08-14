@@ -6,6 +6,9 @@ import autoPlateSystem from "../helpers/autoPlateSystem";
 import Progress from "./Progress";
 import FoodTemplate from "./FoodTemplate";
 import { MUTURITYTIME, OVERTIME } from "../contents/rulse";
+import onDragEnter from "../helpers/cook/onDragEnter";
+import onDrop from "../helpers/cook/onDrop";
+import passToPlate from "../helpers/cook/passToPlate";
 
 const statusList = {
   cooking: "toasterIn0",
@@ -27,9 +30,6 @@ const Toaster = ({ tool, w = "14em", ...props }) => {
   const isOverDone = status === "overDone";
   const [move, setMove] = useState();
   const [haveOverCook, setHaveOverCook] = useState();
-  //如果是吐司原料並且不是正在烤與已經烤好的狀態，才可以放新的吐司進去
-  const canPutIn =
-    data.targetItem === cookedGroup?.init.value && !isMaturity && !isDone;
 
   useEffect(() => {
     if (isCooking) {
@@ -49,25 +49,13 @@ const Toaster = ({ tool, w = "14em", ...props }) => {
     }
   }, [status]);
 
-  const onDragEnter = () => {
-    if (!status && !haveOverCook) {
-      setCookedGroup(toasterList.find((e) => e.init.value === data.targetItem));
-    }
-  };
-
-  const onDrop = () => {
-    if (canPutIn && !haveOverCook) {
-      setStatus("cooking");
-    }
-  };
-
-  const passToPlate = () => {
-    autoPlateSystem(data, cookedGroup?.done.value, isDone, setValue);
-    if (isDone) {
-      setStatus(null);
-      setMove(false);
-    }
-  };
+  // const passToPlate = () => {
+  //   autoPlateSystem(data, cookedGroup?.done.value, isDone, setValue);
+  //   if (isDone) {
+  //     setStatus(null);
+  //     setMove(false);
+  //   }
+  // };
 
   const turnOn = () => {
     if (isMaturity) {
@@ -117,8 +105,10 @@ const Toaster = ({ tool, w = "14em", ...props }) => {
   );
   return (
     <Box
-      onDragEnter={onDragEnter}
-      onDrop={onDrop}
+      onDragEnter={() =>
+        onDragEnter(data, status, haveOverCook, toasterList, setCookedGroup)
+      }
+      onDrop={() => onDrop(data, cookedGroup, status, setStatus)}
       onDragOver={(e) => {
         e.preventDefault();
         e.stopPropagation();
@@ -139,7 +129,16 @@ const Toaster = ({ tool, w = "14em", ...props }) => {
           <Box
             h='12em'
             pos='relative'
-            onClick={passToPlate}
+            onClick={() =>
+              passToPlate(
+                data,
+                cookedGroup,
+                isDone,
+                setValue,
+                setStatus,
+                setMove
+              )
+            }
             onMouseDown={(e) => {
               if (isOverDone) {
                 setMove(true);

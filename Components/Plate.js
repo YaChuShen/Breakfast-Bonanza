@@ -13,6 +13,14 @@ const foodIndex = {
   hotDog: 1,
 };
 
+const list1 = {
+  sunnyEgg: { bottom: 5, index: 2, left: 6 },
+  hotDog: { bottom: 5, index: 2, left: 6 },
+  toast: { bottom: 0, index: 1, left: 2 },
+  blueberry: { bottom: 0, index: 1, left: 3 },
+  butter: { bottom: 0, index: 1, left: 3 },
+};
+
 const ShadowTelplate = ({ bottom, left, w, rotate, blur }) => {
   return (
     <Box
@@ -42,23 +50,28 @@ const Plate = ({ data, setValue, index }) => {
   const toastFirst = food?.[0] === "toast";
   const jam = food?.[1] === "blueberry" || food?.[1] === "butter";
 
-  const foodDisplayRules = (category) => {
+  const displayRules = (category) => {
     const isToast = category === "toast";
     const okFood = category === "sunnyEgg" || category === "hotDog";
 
     if (toastFirst) {
-      if (okFood) return { left: 6, index: 2 };
-      if (isToast) return { left: 2, index: 1 };
-      if (jam) return { left: 3, index: 1 };
+      return list1[category];
+      // if (okFood) return { left: 6, index: 2, bottom: list[category].bottom };
+      // if (isToast) return { left: 2, index: 1, bottom: 0 };
+      // if (jam) return { left: 3, index: 1, bottom: 0 };
     } else {
       if (isToast) return null;
       if (okFood) {
-        return { left: foodPosition[category], index: foodIndex[category] };
+        return {
+          left: foodPosition[category],
+          index: foodIndex[category],
+          bottom: 3,
+        };
       }
     }
     return null;
   };
-  const showUp = isValide && food.length > 0 && foodDisplayRules(food[0]);
+  const showUp = isValide && food.length > 0 && displayRules(food[0]);
 
   return (
     <Center
@@ -84,25 +97,23 @@ const Plate = ({ data, setValue, index }) => {
       <Image src='plate.svg' w='8em' />
       {showUp && (
         <>
-          {/* {!jam && ( */}
           <FoodTemplate
             value={food[0]}
             src={food[0]}
             pos='absolute'
-            bottom={toastFirst ? 0 : 3}
-            left={foodDisplayRules(food[0]).left}
-            zIndex={foodDisplayRules(food[0]).index}
+            bottom={displayRules(food[0]).bottom}
+            left={displayRules(food[0]).left}
+            zIndex={displayRules(food[0]).index}
           />
-          {/* )} */}
-
-          {food.length > 1 && foodDisplayRules(food[1]) && (
+          {/* /** displayRules(food[1]) => 吐司不能放第二層*/}
+          {food.length > 1 && displayRules(food[1]) && (
             <FoodTemplate
               value={food[1]}
               src={food[1]}
               pos='absolute'
-              bottom={toastFirst ? (jam ? 0 : 5) : 3}
-              left={foodDisplayRules(food[1]).left}
-              zIndex={foodDisplayRules(food[1]).index}
+              bottom={displayRules(food[1]).bottom}
+              left={displayRules(food[1]).left}
+              zIndex={displayRules(food[1]).index}
               w={jam ? "10em" : "5em"}
             />
           )}
