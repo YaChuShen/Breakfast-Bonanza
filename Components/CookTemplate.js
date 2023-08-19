@@ -8,6 +8,7 @@ import { MUTURITYTIME, OVERTIME } from "../contents/rulse";
 import onDragEnter from "../helpers/cook/onDragEnter";
 import onDrop from "../helpers/cook/onDrop";
 import passToPlate from "../helpers/cook/passToPlate";
+import changeStatus from "../helpers/cook/changeStatus";
 
 const statusList = {
   cooking: "init",
@@ -26,40 +27,8 @@ const CookTemplate = ({ tool, w = "14em", ...props }) => {
   const key = statusList[status];
 
   useEffect(() => {
-    if (isCooking) {
-      const s = setTimeout(() => {
-        setStatus("maturity");
-      }, [MUTURITYTIME]);
-      return () => clearTimeout(s);
-    }
-    if (isMaturity) {
-      const s = setTimeout(() => {
-        setStatus("over");
-      }, [OVERTIME]);
-      return () => clearTimeout(s);
-    }
+    changeStatus(setStatus, status);
   }, [status]);
-
-  //確認是不是正確的食物進來 ex:蛋或是熱狗，並且記錄是哪個食物group，並且render正確的圖片，方便drop時做食物正確性的判斷
-  // const onDragEnter = () => {
-  //   if (!status) {
-  //     setCookedGroup(stoveList.find((e) => e.init.value === data.targetItem));
-  //   }
-  // };
-
-  //是不是食物原物料進來
-  // const onDrop = () => {
-  //   if (data.targetItem === cookedGroup?.init.value && !status) {
-  //     setStatus("cooking");
-  //   }
-  // };
-
-  // const passToPlate = () => {
-  //   if (isMaturity) {
-  //     autoPlateSystem(data, cookedGroup?.done.value, isMaturity, setValue);
-  //     setStatus(null);
-  //   }
-  // };
 
   const foodOnDragStart = () => {
     if (isMaturity || isOver) {
