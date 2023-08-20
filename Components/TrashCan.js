@@ -44,9 +44,14 @@ const TrashCan = ({ ...props }) => {
       {...props}
       onDrop={onDrop}>
       {open ? (
-        <Image src='/trashCan_open.svg' w='7em' />
+        <Image src='/trashCan_open.svg' w='7em' pointerEvents='none' />
       ) : (
-        <Image src='/trashCan.svg' w='7em' cursor={"pointer"} />
+        <Image
+          src='/trashCan.svg'
+          w='7em'
+          cursor={"pointer"}
+          pointerEvents='none'
+        />
       )}
     </Box>
   );

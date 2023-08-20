@@ -6,6 +6,7 @@ import {
   Image,
   Text,
   VStack,
+  Flex,
 } from "@chakra-ui/react";
 import { FormProvider, useForm } from "react-hook-form";
 import values from "../helpers/customerForm";
@@ -55,26 +56,26 @@ function HomePage() {
   return (
     <ChakraProvider>
       <FormProvider {...methods}>
-        <Box bg='#F2DBC2' w='100%' h='100vh' overflow='hidden'>
-          <ScoreSection data={data} />
-          <Center w='100%' pt='3em' px='5em'>
-            <Image src='./window.svg' />
+        <Box bg='#F2DBC2' overflow='hidden'>
+          {/* <ScoreSection data={data} />
+          <Center pt='3em' pos='relative'>
+            <Image src='./window.svg' w='70em' minW='70em' />
+            <HStack
+              pos='absolute'
+              zIndex={10}
+              spacing={20}
+              alignItems='center'
+              justifyContent='center'
+              py='20'>
+              {range(data.customer).map((e, i) => (
+                <CustomerTemplate
+                  id={`customer${i + 1}`}
+                  src={`customer${i + 1}`}
+                  key={i}
+                />
+              ))}
+            </HStack>
           </Center>
-          <HStack
-            mt={{ base: "-20.5em", xl: "-23em" }}
-            zIndex={10}
-            spacing={20}
-            alignItems='center'
-            justifyContent='center'
-            py='20'>
-            {range(data.customer).map((e, i) => (
-              <CustomerTemplate
-                id={`customer${i + 1}`}
-                src={`customer${i + 1}`}
-                key={i}
-              />
-            ))}
-          </HStack>
           <Box pos='relative' userSelect='none'>
             <Table />
             <Center>
@@ -89,7 +90,7 @@ function HomePage() {
                 <TrashCan pos='absolute' left='-7em' />
               </HStack>
             </Center>
-          </Box>
+          </Box> */}
         </Box>
       </FormProvider>
     </ChakraProvider>

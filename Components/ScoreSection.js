@@ -4,6 +4,7 @@ import React from "react";
 const ScoreSection = ({ data }) => {
   return (
     <Box
+      zIndex={1}
       boxShadow='md'
       bg='gray.50'
       px='10'

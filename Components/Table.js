@@ -3,7 +3,7 @@ import React from "react";
 
 const Table = () => {
   return (
-    <Center>
+    <Center userSelect='none' pointerEvents='none'>
       <Image
         src='/table.svg'
         w='100em'

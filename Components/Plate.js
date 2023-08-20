@@ -56,18 +56,14 @@ const Plate = ({ data, setValue, index }) => {
 
     if (toastFirst) {
       return list1[category];
-      // if (okFood) return { left: 6, index: 2, bottom: list[category].bottom };
-      // if (isToast) return { left: 2, index: 1, bottom: 0 };
-      // if (jam) return { left: 3, index: 1, bottom: 0 };
     } else {
       if (isToast) return null;
-      if (okFood) {
+      if (okFood)
         return {
           left: foodPosition[category],
           index: foodIndex[category],
           bottom: 3,
         };
-      }
     }
     return null;
   };

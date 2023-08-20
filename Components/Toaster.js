@@ -9,6 +9,7 @@ import { MUTURITYTIME, OVERTIME } from "../contents/rulse";
 import onDragEnter from "../helpers/cook/onDragEnter";
 import onDrop from "../helpers/cook/onDrop";
 import passToPlate from "../helpers/cook/passToPlate";
+import changeStatus from "../helpers/cook/changeStatus";
 
 const statusList = {
   cooking: "toasterIn0",
@@ -23,39 +24,18 @@ const Toaster = ({ tool, w = "14em", ...props }) => {
   const data = watch();
   const [cookedGroup, setCookedGroup] = useState();
   const [status, setStatus] = useState();
+  const [move, setMove] = useState();
+  const [haveOverCook, setHaveOverCook] = useState();
+
   const isCooking = status === "cooking";
   const isMaturity = status === "maturity";
   const isDone = status === "done";
   const isOver = status === "over";
   const isOverDone = status === "overDone";
-  const [move, setMove] = useState();
-  const [haveOverCook, setHaveOverCook] = useState();
 
   useEffect(() => {
-    if (isCooking) {
-      const s = setTimeout(() => {
-        setStatus("maturity");
-      }, [MUTURITYTIME]);
-      return () => clearTimeout(s);
-    }
-    if (isMaturity) {
-      const s = setTimeout(() => {
-        setStatus("over");
-      }, [OVERTIME]);
-      return () => clearTimeout(s);
-    }
-    if (isOver) {
-      setHaveOverCook(true);
-    }
+    changeStatus(setStatus, status, setHaveOverCook);
   }, [status]);
-
-  // const passToPlate = () => {
-  //   autoPlateSystem(data, cookedGroup?.done.value, isDone, setValue);
-  //   if (isDone) {
-  //     setStatus(null);
-  //     setMove(false);
-  //   }
-  // };
 
   const turnOn = () => {
     if (isMaturity) {
