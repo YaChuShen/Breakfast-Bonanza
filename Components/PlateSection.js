@@ -5,6 +5,7 @@ import { range } from "lodash";
 import { plate } from "../helpers/rwd";
 
 const PlateSection = ({ data, methods }) => {
+  console.log();
   return (
     <HStack
       spacing={10}
