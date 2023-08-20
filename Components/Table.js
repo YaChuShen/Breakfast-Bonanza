@@ -1,5 +1,6 @@
 import { Center, Image } from "@chakra-ui/react";
 import React from "react";
+import { table } from "../helpers/rwd";
 
 const Table = () => {
   return (
@@ -8,7 +9,7 @@ const Table = () => {
         src='/table.svg'
         w='100em'
         minW='100em'
-        bottom={{ md: "1em", xl: "-1em" }}
+        bottom={table}
         pos='relative'
       />
     </Center>

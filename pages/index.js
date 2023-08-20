@@ -21,6 +21,7 @@ import Table from "../Components/Table";
 import FoodPlateSection from "../Components/FoodPlateSection";
 import PlateSection from "../Components/PlateSection";
 import ScoreSection from "../Components/ScoreSection";
+import { tool } from "../helpers/rwd";
 
 const CustomerTemplate = dynamic(
   () => import("../Components/CustomerTemplate"),
@@ -56,41 +57,36 @@ function HomePage() {
   return (
     <ChakraProvider>
       <FormProvider {...methods}>
-        <Box bg='#F2DBC2' overflow='hidden'>
-          {/* <ScoreSection data={data} />
-          <Center pt='3em' pos='relative'>
-            <Image src='./window.svg' w='70em' minW='70em' />
-            <HStack
-              pos='absolute'
-              zIndex={10}
-              spacing={20}
-              alignItems='center'
-              justifyContent='center'
-              py='20'>
-              {range(data.customer).map((e, i) => (
-                <CustomerTemplate
-                  id={`customer${i + 1}`}
-                  src={`customer${i + 1}`}
-                  key={i}
-                />
-              ))}
+        <ScoreSection data={data} />
+        <Center pt='3em' pos='relative'>
+          <Image src='./window.svg' w='70em' minW='70em' />
+          <HStack
+            pos='absolute'
+            zIndex={10}
+            spacing={20}
+            alignItems='center'
+            justifyContent='center'
+            py='20'>
+            {range(data.customer).map((e, i) => (
+              <CustomerTemplate
+                id={`customer${i + 1}`}
+                src={`customer${i + 1}`}
+                key={i}
+              />
+            ))}
+          </HStack>
+        </Center>
+        <Box pos='relative' userSelect='none'>
+          <Table />
+          <Center>
+            <PlateSection data={data} methods={methods} />
+            <HStack pos='absolute' bottom={tool} spacing={10}>
+              {toasterSection}
+              {cookSection}
+              {coffee}
+              <TrashCan pos='absolute' left='-7em' />
             </HStack>
           </Center>
-          <Box pos='relative' userSelect='none'>
-            <Table />
-            <Center>
-              <PlateSection data={data} methods={methods} />
-              <HStack
-                pos='absolute'
-                bottom={{ base: "9em", xl: "7em" }}
-                spacing={10}>
-                {toasterSection}
-                {cookSection}
-                {coffee}
-                <TrashCan pos='absolute' left='-7em' />
-              </HStack>
-            </Center>
-          </Box> */}
         </Box>
       </FormProvider>
     </ChakraProvider>
