@@ -4,14 +4,11 @@ import Plate from "./Plate";
 import { range } from "lodash";
 import { plate } from "../helpers/rwd";
 
-console.log(plate);
-
 const PlateSection = ({ data, methods }) => {
   return (
     <HStack
       spacing={10}
       w='100%'
-      s
       justifyContent='center'
       pos='absolute'
       bottom={plate}>
