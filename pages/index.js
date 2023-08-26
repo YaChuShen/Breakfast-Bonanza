@@ -6,6 +6,7 @@ import {
   Image,
   Text,
   VStack,
+  Button,
   Flex,
 } from "@chakra-ui/react";
 import { FormProvider, useForm } from "react-hook-form";
@@ -22,6 +23,7 @@ import FoodPlateSection from "../Components/FoodPlateSection";
 import PlateSection from "../Components/PlateSection";
 import ScoreSection from "../Components/ScoreSection";
 import { tool } from "../helpers/rwd";
+import Login from "Components/Login";
 
 const CustomerTemplate = dynamic(
   () => import("../Components/CustomerTemplate"),
@@ -33,11 +35,11 @@ const CustomerTemplate = dynamic(
 function HomePage() {
   const methods = useForm({ defaultValues: values });
   const data = methods.watch();
-  console.log(data);
 
   const toasterSection = (
     <HStack spacing={0}>
       <Toaster w='10em' />
+
       <VStack>
         <Jam />
         <FoodTemplate value={"toast0"} src={"toast0"} w='6em' />
@@ -53,11 +55,11 @@ function HomePage() {
   );
 
   const coffee = <FoodTemplate value={"coffee"} src={"coffee"} />;
-
   return (
     <ChakraProvider>
       <FormProvider {...methods}>
         <ScoreSection data={data} />
+        <Login />
         <Center pt='3em' pos='relative'>
           <Image src='./window.svg' w='70em' minW='70em' />
           <HStack
