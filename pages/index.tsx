@@ -23,7 +23,7 @@ import FoodPlateSection from "../Components/FoodPlateSection";
 import PlateSection from "../Components/PlateSection";
 import ScoreSection from "../Components/ScoreSection";
 import { tool } from "../helpers/rwd";
-import Login from "Components/Login";
+import Login from "../Components/Login";
 import { useSession, signIn, signOut } from "next-auth/react";
 
 const CustomerTemplate = dynamic(
@@ -37,7 +37,8 @@ function HomePage() {
   const methods = useForm({ defaultValues: values });
   const data = methods.watch();
   const { data: session } = useSession();
-  console.log(session);
+
+  console.log(data);
 
   const toasterSection = (
     <HStack spacing={0}>
@@ -61,8 +62,10 @@ function HomePage() {
   return (
     <ChakraProvider>
       <FormProvider {...methods}>
+        <Box w='100%' h='3em' pos='fixed' top={0} zIndex={1}>
+          <Login session={session} />
+        </Box>
         <ScoreSection data={data} />
-        <Login session={session} />
         <Center pt='3em' pos='relative'>
           <Image src='./window.svg' w='70em' minW='70em' />
           <HStack

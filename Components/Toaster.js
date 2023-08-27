@@ -83,12 +83,13 @@ const Toaster = ({ tool, w = "14em", ...props }) => {
       />
     </Box>
   );
+
   return (
     <Box
       onDragEnter={() =>
         onDragEnter(data, status, haveOverCook, toasterList, setCookedGroup)
       }
-      onDrop={() => onDrop(data, cookedGroup, status, setStatus)}
+      onDrop={() => !move && onDrop(data, cookedGroup, status, setStatus)}
       onDragOver={(e) => {
         e.preventDefault();
         e.stopPropagation();

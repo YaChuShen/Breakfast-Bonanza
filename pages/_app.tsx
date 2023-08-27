@@ -1,8 +1,9 @@
 import index from "./index";
 import { Global } from "@emotion/react";
 import { SessionProvider } from "next-auth/react";
+import type { AppProps } from "next/app";
 
-function MyApp({ Component, router, pageProps: { session, ...pageProps } }) {
+function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   return (
     <SessionProvider session={session}>
       <Component />
