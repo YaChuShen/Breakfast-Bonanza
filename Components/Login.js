@@ -1,24 +1,19 @@
 import React from "react";
-import {
-  Box,
-  Center,
-  ChakraProvider,
-  HStack,
-  Image,
-  Text,
-  VStack,
-  Button,
-  Flex,
-} from "@chakra-ui/react";
+import { Box, Button } from "@chakra-ui/react";
 import { signIn, signOut } from "next-auth/react";
 
 const Login = ({ session }) => {
   return (
-    <Box p='5'>
-      {!session && <Button onClick={signIn}>Log In</Button>}
+    <Box w='100%'>
+      {!session && (
+        <Button onClick={signIn} w='100%'>
+          Log In
+        </Button>
+      )}
       {session && (
         <Button
-          onClick={() => signOut({ callbackUrl: "http://localhost:3000" })}>
+          onClick={() => signOut({ callbackUrl: "http://localhost:3000" })}
+          w='100%'>
           Sign out
         </Button>
       )}
