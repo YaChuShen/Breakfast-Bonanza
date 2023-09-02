@@ -12,7 +12,7 @@ import {
   Flex,
 } from "@chakra-ui/react";
 
-const register = () => {
+const register = ({ session }) => {
   return (
     <Box w='100%' h='3em' pos='fixed' top={0} zIndex={1}>
       <Login session={session} />
