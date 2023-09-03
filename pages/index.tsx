@@ -25,12 +25,17 @@ import ScoreSection from "../Components/ScoreSection";
 import { tool } from "../helpers/rwd";
 import Login from "../Components/Login";
 import { useSession, signIn, signOut } from "next-auth/react";
+import React from "react";
 
-const CustomerTemplate = dynamic(
-  () => import("../Components/CustomerTemplate"),
-  {
-    ssr: false,
-  }
+// const CustomerTemplate = dynamic(
+//   () => import("../Components/CustomerTemplate"),
+//   {
+//     ssr: false,
+//   }
+// );
+
+const CustomerTemplate = dynamic(() =>
+  import("../Components/CustomerTemplate").then((module) => module.default)
 );
 
 function HomePage() {
@@ -42,11 +47,11 @@ function HomePage() {
 
   const toasterSection = (
     <HStack spacing={0}>
-      <Toaster w='10em' />
+      <Toaster w='10em' tool={undefined} />
 
       <VStack>
         <Jam />
-        <FoodTemplate value={"toast0"} src={"toast0"} w='6em' />
+        <FoodTemplate value={"toast0"} src={"toast0"} w='6em' setCrackEggs={undefined} />
       </VStack>
     </HStack>
   );
@@ -58,7 +63,7 @@ function HomePage() {
     </HStack>
   );
 
-  const coffee = <FoodTemplate value={"coffee"} src={"coffee"} />;
+  const coffee = <FoodTemplate value={"coffee"} src={"coffee"} setCrackEggs={undefined} />;
   return (
     <ChakraProvider>
       <FormProvider {...methods}>
