@@ -1,7 +1,12 @@
 import { Box, HStack, Image } from "@chakra-ui/react";
 import React from "react";
 import { useFormContext } from "react-hook-form";
-import autoJamSystem from "/helpers/autoJamSystem";
+import autoJamSystem from "../helpers/autoPlateSystem";
+
+type JamObj = {
+  done: string;
+  init: string;
+};
 
 const jamArr = [
   { init: "blueberry-can", done: "blueberry" },
@@ -14,7 +19,7 @@ const Jam = () => {
 
   return (
     <HStack userSelect='none'>
-      {jamArr.map((e, i) => (
+      {jamArr.map((e: JamObj, i) => (
         <Box
           key={i}
           px='0'
