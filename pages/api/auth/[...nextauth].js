@@ -5,6 +5,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { db } from "../../../firebase.config";
 import * as firestoreFunctions from "firebase/firestore";
 import admin from "../../../functions/admin";
+import bcrypt from "bcrypt";
 
 const authHandler = NextAuth({
   session: {
@@ -14,10 +15,10 @@ const authHandler = NextAuth({
     CredentialsProvider({
       name: "Credentials",
       credentials: {
-        username: {
-          label: "Username",
+        email: {
+          label: "Email",
           type: "text",
-          placeholder: "your cool username",
+          placeholder: "your cool email",
         },
         password: { label: "Password", type: "password" },
       },
@@ -28,34 +29,19 @@ const authHandler = NextAuth({
 
         const userRef = await db
           .collection("users")
-          .where("email", "==", credentials?.username)
-          .where("password", "==", credentials?.password)
+          .where("email", "==", credentials?.email)
           .get();
 
         if (userRef.size) {
-          console.log(userRef.docs[0].data());
-          return { name: "annnn" };
+          const checkPassword = await bcrypt.compare(
+            credentials?.password,
+            userRef.docs[0].data()?.password
+          );
+
+          if (checkPassword) {
+            return { name: "annnn" };
+          }
         }
-        // return null;
-
-        // You need to provide your own logic here that takes the credentials
-        // submitted and returns either a object representing a user or value
-        // that is false/null if the credentials are invalid.
-        // e.g. return { id: 1, name: 'J Smith', email: 'jsmith@example.com' }
-        // You can also use the `req` object to obtain additional parameters
-        // (i.e., the request IP address)
-        // const res = await fetch("/your/endpoint", {
-        //   method: "POST",
-        //   body: JSON.stringify(credentials),
-        //   headers: { "Content-Type": "application/json" },
-        // });
-        // const user = await res.json();
-
-        // If no error and we have user data, return it
-        // if (res.ok && user) {
-        //   return user;
-        // }
-        // Return null if user data could not be retrieved
       },
     }),
     GoogleProvider({
