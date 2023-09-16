@@ -16,6 +16,7 @@ import {
 } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { string } from "prop-types";
 
 const errorMessage = {
   email: "請提供正確的信箱",
@@ -26,6 +27,17 @@ type Inputs = {
   email: string;
   password: string;
   name: string;
+};
+
+const emailMessage = {
+  pattern: "請檢查信箱格式",
+  required: "請填寫信箱",
+};
+
+const passwordMessage = {
+  pattern: "密碼請勿設定特殊符號，請設定英文或數字",
+  required: "請設定密碼",
+  minLength: "密碼至少要6碼",
 };
 
 const register = () => {
@@ -50,6 +62,9 @@ const register = () => {
 
     const userInfo = await res.json();
   };
+  console.log(errors);
+
+  const emailType = errors?.email?.type;
 
   return (
     <Container maxW='2xl' pt='10em'>
@@ -75,7 +90,7 @@ const register = () => {
               {...register("password", {
                 required: true,
                 minLength: 6,
-                pattern: /^[a-z0-9\-_\.]+$/,
+                pattern: /^[a-z0-9\.]+$/,
               })}
               bg='white'
               placeholder='password'></Input>
@@ -83,7 +98,18 @@ const register = () => {
               SUBMIT
             </Button>
           </VStack>
-          {errors.password && <span>This field is required</span>}
+          <VStack py='2' alignItems='start'>
+            {errors.password && (
+              <Text fontSize='14px' color='red.600'>
+                {passwordMessage[errors.password.type ?? ""]}
+              </Text>
+            )}
+            {errors.email && (
+              <Text fontSize='14px' color='red.600'>
+                {emailMessage[errors.email.type ?? ""]}
+              </Text>
+            )}
+          </VStack>
         </form>
         <VStack>
           <Text> or sign in to your account</Text>

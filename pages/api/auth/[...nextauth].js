@@ -5,6 +5,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { db } from "../../../firebase.config";
 import * as firestoreFunctions from "firebase/firestore";
 import admin from "../../../functions/admin";
+import bcrypt from "bcrypt";
 
 const authHandler = NextAuth({
   session: {
@@ -17,10 +18,10 @@ const authHandler = NextAuth({
     CredentialsProvider({
       name: "Credentials",
       credentials: {
-        username: {
-          label: "Username",
+        email: {
+          label: "Email",
           type: "text",
-          placeholder: "your cool username",
+          placeholder: "your cool email",
         },
         password: { label: "Password", type: "password" },
       },
@@ -31,8 +32,7 @@ const authHandler = NextAuth({
 
         const userRef = await db
           .collection("users")
-          .where("email", "==", credentials?.username)
-          .where("password", "==", credentials?.password)
+          .where("email", "==", credentials?.email)
           .get();
 
         const user = userRef.docs[0].data();

@@ -1,4 +1,5 @@
-import admin from "../../../../functions/firebase/admin";
+import admin from "functions/admin";
+import bcrypt from "bcrypt";
 
 const register = async (res) => {
   const { name, email, password } = res?.body?.data;
@@ -8,7 +9,7 @@ const register = async (res) => {
     .add({
       name,
       email,
-      password,
+      password: bcrypt.hashSync(password, 10),
     })
     .then(() => {
       console.log("Document successfully written!");
