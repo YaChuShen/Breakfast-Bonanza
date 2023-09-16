@@ -17,6 +17,11 @@ import {
 import { useSession } from "next-auth/react";
 import { useForm, SubmitHandler } from "react-hook-form";
 
+const errorMessage = {
+  email: "請提供正確的信箱",
+  password: "請提供正確的信箱",
+};
+
 type Inputs = {
   email: string;
   password: string;
@@ -45,8 +50,6 @@ const register = () => {
 
     const userInfo = await res.json();
   };
-
-  console.log(errors);
 
   return (
     <Container maxW='2xl' pt='10em'>

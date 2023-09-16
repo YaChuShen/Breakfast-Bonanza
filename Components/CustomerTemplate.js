@@ -34,6 +34,8 @@ const CustomerTemplate = ({ id, src }) => {
   const isCoffee = wishFood === "coffee";
   const [overTime, setOverTime] = useState();
 
+  console.log(data[id].order);
+
   useEffect(() => {
     const controlTime = (s, time) => {
       if (status === s) {

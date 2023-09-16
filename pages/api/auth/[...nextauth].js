@@ -8,8 +8,11 @@ import admin from "../../../functions/admin";
 
 const authHandler = NextAuth({
   session: {
+    // This is the default. The session is saved in a cookie and never persisted anywhere.
     strategy: "jwt",
   },
+  // Enable debug messages in the console if you are having problems
+  debug: true,
   providers: [
     CredentialsProvider({
       name: "Credentials",
@@ -32,30 +35,11 @@ const authHandler = NextAuth({
           .where("password", "==", credentials?.password)
           .get();
 
-        if (userRef.size) {
-          console.log(userRef.docs[0].data());
-          return { name: "annnn" };
+        const user = userRef.docs[0].data();
+
+        if (user) {
+          return { ...user, token: credentials?.csrfToken };
         }
-        // return null;
-
-        // You need to provide your own logic here that takes the credentials
-        // submitted and returns either a object representing a user or value
-        // that is false/null if the credentials are invalid.
-        // e.g. return { id: 1, name: 'J Smith', email: 'jsmith@example.com' }
-        // You can also use the `req` object to obtain additional parameters
-        // (i.e., the request IP address)
-        // const res = await fetch("/your/endpoint", {
-        //   method: "POST",
-        //   body: JSON.stringify(credentials),
-        //   headers: { "Content-Type": "application/json" },
-        // });
-        // const user = await res.json();
-
-        // If no error and we have user data, return it
-        // if (res.ok && user) {
-        //   return user;
-        // }
-        // Return null if user data could not be retrieved
       },
     }),
     GoogleProvider({
@@ -71,43 +55,16 @@ const authHandler = NextAuth({
     }),
   ],
   adapter: FirestoreAdapter({ db: db, ...firestoreFunctions }),
-  // callbacks: {
-  //   async signIn({ user, account, profile, email, credentials }) {
-  //     console.log("fire signin Callback");
-  //     return true;
-  //   },
-  // },
   secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
     jwt: async ({ token, user }) => {
-      // Persist the BE access_token to the token right after signin
-      if (user) {
-        // token.roles = user.roles;
-        // token.usercode = user.usercode;
-        token.email = user.email;
-        token.name = user.name;
-
-        if (user.token) {
-          token.accessToken = user.token;
-        }
-      }
-
-      return token;
+      return { ...token, ...user };
     },
-    session: ({ session, token, user }) => {
-      // add cookies jwt token from FE (callback jwt) to client side
-      if (token) {
-        // session.user.roles = token.roles;
-        session.user.email = token.email;
-        session.user.name = token.name;
-        // session.user.usercode = token.usercode;
-        session.user.accessToken = token.accessToken;
-      }
-
+    session: async ({ session, token }) => {
+      session.user = token;
       return session;
     },
   },
-  // ...
 });
 
 export default async function handler(...params) {

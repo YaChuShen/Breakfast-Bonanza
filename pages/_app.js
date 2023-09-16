@@ -2,11 +2,12 @@ import { Global } from "@emotion/react";
 import { SessionProvider } from "next-auth/react";
 import React from "react";
 import { ChakraProvider } from "@chakra-ui/react";
+import theme from "contents/theme";
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }) {
   return (
     <SessionProvider session={session}>
-      <ChakraProvider>
+      <ChakraProvider theme={theme}>
         <Component />
         <Global
           styles={{

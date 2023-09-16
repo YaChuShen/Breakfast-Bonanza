@@ -25,7 +25,12 @@ import ScoreSection from "../Components/ScoreSection";
 import { tool } from "../helpers/rwd";
 import Login from "../Components/Login";
 import { useSession, signIn, signOut } from "next-auth/react";
-import React from "react";
+import React, { useState } from "react";
+import Media from "Components/Media";
+import Gress1 from "Components/Gress1";
+import CustomerTemplate from "../Components/CustomerTemplate";
+import StartBoard from "Components/StartBoard";
+import { AnimatePresence } from "framer-motion";
 
 // const CustomerTemplate = dynamic(
 //   () => import("../Components/CustomerTemplate"),
@@ -34,14 +39,24 @@ import React from "react";
 //   }
 // );
 
-const CustomerTemplate = dynamic(() =>
-  import("../Components/CustomerTemplate").then((module) => module.default)
-);
+type Media = {
+  greaterThanOrEqual: string;
+};
+
+type StartBoard = {
+  session: object;
+  setStart: any;
+};
+
+// const CustomerTemplate = dynamic(() =>
+//   import("../Components/CustomerTemplate").then((module) => module.default)
+// );
 
 function HomePage() {
   const methods = useForm({ defaultValues: values });
   const data = methods.watch();
   const { data: session } = useSession();
+  const [start, setStart] = useState(false);
 
   console.log(data);
 
@@ -51,7 +66,12 @@ function HomePage() {
 
       <VStack>
         <Jam />
-        <FoodTemplate value={"toast0"} src={"toast0"} w='6em' setCrackEggs={undefined} />
+        <FoodTemplate
+          value={"toast0"}
+          src={"toast0"}
+          w='6em'
+          setCrackEggs={undefined}
+        />
       </VStack>
     </HStack>
   );
@@ -63,13 +83,20 @@ function HomePage() {
     </HStack>
   );
 
-  const coffee = <FoodTemplate value={"coffee"} src={"coffee"} setCrackEggs={undefined} />;
+  const coffee = (
+    <FoodTemplate value={"coffee"} src={"coffee"} setCrackEggs={undefined} />
+  );
   return (
-    <ChakraProvider>
+    <Media
+      greaterThanOrEqual='md'
+      at={undefined}
+      greaterThan={undefined}
+      lessThan={undefined}
+      between={undefined}>
+      {/* <AnimatePresence>
+        {!start && <StartBoard setStart={setStart} session={session} />}
+      </AnimatePresence> */}
       <FormProvider {...methods}>
-        <Box w='100%' h='3em' pos='fixed' top={0} zIndex={1}>
-          <Login session={session} />
-        </Box>
         <ScoreSection data={data} />
         <Center pt='3em' pos='relative'>
           <Image src='./window.svg' w='70em' minW='70em' />
@@ -84,25 +111,33 @@ function HomePage() {
               <CustomerTemplate
                 id={`customer${i + 1}`}
                 src={`customer${i + 1}`}
-                key={i}
+                key={e}
               />
             ))}
           </HStack>
         </Center>
         <Box pos='relative' userSelect='none'>
+          <Gress1 />
           <Table />
           <Center>
             <PlateSection data={data} methods={methods} />
             <HStack pos='absolute' bottom={tool} spacing={10}>
+              <Image
+                src='/gress1.svg'
+                pos='absolute'
+                w='5em'
+                right='-10em'
+                top='-8em'
+              />
               {toasterSection}
               {cookSection}
               {coffee}
-              <TrashCan pos='absolute' left='-7em' />
+              <TrashCan />
             </HStack>
           </Center>
         </Box>
       </FormProvider>
-    </ChakraProvider>
+    </Media>
   );
 }
 
