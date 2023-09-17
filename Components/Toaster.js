@@ -5,11 +5,10 @@ import { toasterList } from "../contents/cookedList";
 import autoPlateSystem from "../helpers/autoPlateSystem";
 import Progress from "./Progress";
 import FoodTemplate from "./FoodTemplate";
-import { MUTURITYTIME, OVERTIME } from "../contents/rulse";
 import onDragEnter from "../helpers/cook/onDragEnter";
 import onDrop from "../helpers/cook/onDrop";
 import passToPlate from "../helpers/cook/passToPlate";
-import changeStatus from "../helpers/cook/changeStatus";
+import { MUTURITYTIME, OVERTIME } from "contents/rulse";
 
 const statusList = {
   cooking: "toasterIn0",
@@ -34,7 +33,21 @@ const Toaster = ({ tool, w = "14em", ...props }) => {
   const isOverDone = status === "overDone";
 
   useEffect(() => {
-    changeStatus(setStatus, status, setHaveOverCook);
+    if (isCooking) {
+      const s = setTimeout(() => {
+        setStatus("maturity");
+      }, [MUTURITYTIME]);
+      return () => clearTimeout(s);
+    }
+    if (isMaturity) {
+      const s = setTimeout(() => {
+        setStatus("over");
+      }, [OVERTIME]);
+      return () => clearTimeout(s);
+    }
+    if (isOver) {
+      setHaveOverCook(true);
+    }
   }, [status]);
 
   const turnOn = () => {

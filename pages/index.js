@@ -13,10 +13,10 @@ import { FormProvider, useForm } from "react-hook-form";
 import values from "../helpers/customerForm";
 import FoodTemplate from "../Components/FoodTemplate";
 import dynamic from "next/dynamic";
-import CookTemplate from "../Components/CookTemplate";
-import Toaster from "../Components/Toaster";
+import CookTemplate from "Components/CookTemplate";
+import Toaster from "Components/Toaster";
 import { range } from "lodash";
-import Jam from "../Components/Jam";
+import Jam from "Components/Jam";
 import TrashCan from "../Components/TrashCan";
 import Table from "../Components/Table";
 import FoodPlateSection from "../Components/FoodPlateSection";
@@ -28,25 +28,25 @@ import { useSession, signIn, signOut } from "next-auth/react";
 import React, { useState } from "react";
 import Media from "Components/Media";
 import Gress1 from "Components/Gress1";
-import CustomerTemplate from "../Components/CustomerTemplate";
+// import CustomerTemplate from "../Components/CustomerTemplate";
 import StartBoard from "Components/StartBoard";
 import { AnimatePresence } from "framer-motion";
 
-// const CustomerTemplate = dynamic(
-//   () => import("../Components/CustomerTemplate"),
-//   {
-//     ssr: false,
-//   }
-// );
+const CustomerTemplate = dynamic(
+  () => import("../Components/CustomerTemplate"),
+  {
+    ssr: false,
+  }
+);
 
-type Media = {
-  greaterThanOrEqual: string;
-};
+// type Media = {
+//   greaterThanOrEqual: string;
+// };
 
-type StartBoard = {
-  session: object;
-  setStart: any;
-};
+// type StartBoard = {
+//   session: object;
+//   setStart: any;
+// };
 
 // const CustomerTemplate = dynamic(() =>
 //   import("../Components/CustomerTemplate").then((module) => module.default)
@@ -58,12 +58,9 @@ function HomePage() {
   const { data: session } = useSession();
   const [start, setStart] = useState(false);
 
-  console.log(data);
-
   const toasterSection = (
     <HStack spacing={0}>
       <Toaster w='10em' tool={undefined} />
-
       <VStack>
         <Jam />
         <FoodTemplate
@@ -93,9 +90,9 @@ function HomePage() {
       greaterThan={undefined}
       lessThan={undefined}
       between={undefined}>
-      {/* <AnimatePresence>
+      <AnimatePresence>
         {!start && <StartBoard setStart={setStart} session={session} />}
-      </AnimatePresence> */}
+      </AnimatePresence>
       <FormProvider {...methods}>
         <ScoreSection data={data} />
         <Center pt='3em' pos='relative'>

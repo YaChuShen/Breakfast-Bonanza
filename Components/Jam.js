@@ -1,7 +1,7 @@
 import { Box, HStack, Image } from "@chakra-ui/react";
 import React from "react";
 import { useFormContext } from "react-hook-form";
-import autoJamSystem from "../helpers/autoPlateSystem";
+import autoJamSystem from "../helpers/autoJamSystem";
 
 // type JamObj = {
 //   done: string,

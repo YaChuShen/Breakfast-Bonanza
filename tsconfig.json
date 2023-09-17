@@ -30,7 +30,7 @@
     ".next/types/**/*.ts",
     "**/*.ts",
     "**/*.tsx"
-, "Components/Jam.js", "helpers/autoJamSystem.js"  ],
+, "Components/Jam.js", "helpers/autoJamSystem.js", "pages/index.js"  ],
   "exclude": [
     "node_modules"
   ]
