@@ -1,21 +1,26 @@
-import index from "./index";
 import { Global } from "@emotion/react";
+import { SessionProvider } from "next-auth/react";
+import React from "react";
+import { ChakraProvider } from "@chakra-ui/react";
+import theme from "contents/theme";
 
-function MyApp({ Component, router }) {
+function MyApp({ Component, pageProps: { session, ...pageProps } }) {
   return (
-    <>
-      <Component />
-      <Global
-        styles={{
-          body: {
-            background: "#F2DBC2",
-            overflow: "hidden",
-            margin: 0,
-            padding: 0,
-          },
-        }}
-      />
-    </>
+    <SessionProvider session={session}>
+      <ChakraProvider theme={theme}>
+        <Component />
+        <Global
+          styles={{
+            body: {
+              background: "#F2DBC2",
+              overflow: "hidden",
+              margin: 0,
+              padding: 0,
+            },
+          }}
+        />
+      </ChakraProvider>
+    </SessionProvider>
   );
 }
 

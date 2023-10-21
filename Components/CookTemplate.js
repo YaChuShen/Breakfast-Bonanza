@@ -8,7 +8,6 @@ import { MUTURITYTIME, OVERTIME } from "../contents/rulse";
 import onDragEnter from "../helpers/cook/onDragEnter";
 import onDrop from "../helpers/cook/onDrop";
 import passToPlate from "../helpers/cook/passToPlate";
-import changeStatus from "../helpers/cook/changeStatus";
 
 const statusList = {
   cooking: "init",
@@ -27,7 +26,18 @@ const CookTemplate = ({ tool, w = "14em", ...props }) => {
   const key = statusList[status];
 
   useEffect(() => {
-    changeStatus(setStatus, status);
+    if (isCooking) {
+      const s = setTimeout(() => {
+        setStatus("maturity");
+      }, [MUTURITYTIME]);
+      return () => clearTimeout(s);
+    }
+    if (isMaturity) {
+      const s = setTimeout(() => {
+        setStatus("over");
+      }, [OVERTIME]);
+      return () => clearTimeout(s);
+    }
   }, [status]);
 
   const foodOnDragStart = () => {

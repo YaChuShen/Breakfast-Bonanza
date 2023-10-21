@@ -1,0 +1,24 @@
+{
+  "extends": ["next/core-web-vitals"],
+  "rules": {
+    "no-undef": "error",
+    "react/display-name": "off",
+  },
+  "globals": {
+    "Promise": true
+  },
+  "env": {
+    "jest/globals": true
+  },
+  "overrides": [
+    {
+      "files": [
+        "**/*.test.js",
+        "**/*.test.jsx"
+      ],
+      "globals": {
+        "page": true
+      }
+    }
+  ]
+}
