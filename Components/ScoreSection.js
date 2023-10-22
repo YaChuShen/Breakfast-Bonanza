@@ -1,21 +1,28 @@
-import { Box, Text } from "@chakra-ui/react";
-import React from "react";
+import { Box, Divider, Text, VStack } from "@chakra-ui/react";
+import React, { useEffect } from "react";
+import Timer from "Components/Timer";
 
-const ScoreSection = ({ data }) => {
+const ScoreSection = ({ data, seconds, minutes }) => {
   return (
     <Box
       zIndex={1}
       boxShadow='md'
       bg='gray.50'
-      px='10'
       py='2'
       pos='fixed'
       right={10}
       top={10}
+      w='100%'
+      maxW='8em'
+      px='2'
       borderRadius='13px'>
-      <Text fontSize='24px' fontWeight={700} color='gray.600'>
-        {data.score}
-      </Text>
+      <VStack>
+        <Timer seconds={seconds} minutes={minutes} />
+        <Divider borderWidth='1px' />
+        <Text fontSize='24px' fontWeight={700} color='gray.600'>
+          {data.score}
+        </Text>
+      </VStack>
     </Box>
   );
 };

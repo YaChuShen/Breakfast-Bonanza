@@ -6,7 +6,6 @@ import {
   Image,
   Text,
   VStack,
-  Button,
   Flex,
 } from "@chakra-ui/react";
 import { FormProvider, useForm } from "react-hook-form";
@@ -23,14 +22,15 @@ import FoodPlateSection from "../Components/FoodPlateSection";
 import PlateSection from "../Components/PlateSection";
 import ScoreSection from "../Components/ScoreSection";
 import { tool } from "../helpers/rwd";
-import Login from "../Components/Login";
 import { useSession, signIn, signOut } from "next-auth/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Media from "Components/Media";
 import Gress1 from "Components/Gress1";
 // import CustomerTemplate from "../Components/CustomerTemplate";
 import StartBoard from "Components/StartBoard";
+import EndBoard from "Components/EndBoard";
 import { AnimatePresence } from "framer-motion";
+import useExpiryTimer from "hooks/useExpiryTimer";
 
 const CustomerTemplate = dynamic(
   () => import("../Components/CustomerTemplate"),
@@ -57,6 +57,7 @@ function HomePage() {
   const data = methods.watch();
   const { data: session } = useSession();
   const [start, setStart] = useState(false);
+  const { seconds, minutes, isRunning, timerStart } = useExpiryTimer();
 
   const toasterSection = (
     <HStack spacing={0}>
@@ -83,6 +84,7 @@ function HomePage() {
   const coffee = (
     <FoodTemplate value={"coffee"} src={"coffee"} setCrackEggs={undefined} />
   );
+
   return (
     <Media
       greaterThanOrEqual='md'
@@ -91,10 +93,24 @@ function HomePage() {
       lessThan={undefined}
       between={undefined}>
       <AnimatePresence>
-        {!start && <StartBoard setStart={setStart} session={session} />}
+        {!start && (
+          <StartBoard
+            setStart={setStart}
+            session={session}
+            timerStart={timerStart}
+            isRunning={isRunning}
+          />
+        )}
+        {start && !isRunning && (
+          <EndBoard
+            score={data?.score}
+            isRunning={isRunning}
+            session={session}
+          />
+        )}
       </AnimatePresence>
       <FormProvider {...methods}>
-        <ScoreSection data={data} />
+        <ScoreSection data={data} minutes={minutes} seconds={seconds} />
         <Center pt='3em' pos='relative'>
           <Image src='./window.svg' w='70em' minW='70em' />
           <HStack

@@ -10,15 +10,17 @@ const register = async (res) => {
       name,
       email,
       password: bcrypt.hashSync(password, 10),
+      createdAt: admin.firestore.FieldValue.serverTimestamp(),
     })
-    .then(() => {
+    .then(async (res) => {
+      await fetch("/api/auth/signin/:CredentialsProvider");
       console.log("Document successfully written!");
     })
     .catch((error) => {
       console.error("Error writing document: ", error);
     });
 
-  res.ok;
+  res.send("ok");
 };
 
 export default register;

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Login from "../Components/Login";
 import {
   Box,
@@ -17,6 +17,7 @@ import {
 import { useSession } from "next-auth/react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { string } from "prop-types";
+import { useRouter } from "next/router";
 
 const errorMessage = {
   email: "請提供正確的信箱",
@@ -40,9 +41,10 @@ const passwordMessage = {
   minLength: "密碼至少要6碼",
 };
 
-const register = () => {
+const Index = () => {
   // const { data: session } = useSession();
-
+  const router = useRouter();
+  const [loading, setLoading] = useState<boolean>(false);
   const {
     register,
     handleSubmit,
@@ -51,7 +53,7 @@ const register = () => {
   } = useForm<Inputs>();
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    console.log(data);
+    setLoading(true);
     const res = await fetch("/api/auth/register", {
       method: "POST",
       headers: {
@@ -60,11 +62,12 @@ const register = () => {
       body: JSON.stringify({ data }),
     });
 
-    const userInfo = await res.json();
+    // const userInfo = await res.json();
+    setLoading(false);
+    router.push("/");
   };
-  console.log(errors);
 
-  const emailType = errors?.email?.type;
+  // const emailType = errors?.email?.type;
 
   return (
     <Container maxW='2xl' pt='10em'>
@@ -120,4 +123,4 @@ const register = () => {
   );
 };
 
-export default register;
+export default Index;
