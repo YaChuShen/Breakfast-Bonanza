@@ -35,7 +35,7 @@ const EndBoard = ({ score, isRunning, session }, ...props) => {
     <MotionComponent
       w='80%'
       // h='80vh'
-      py='7em'
+      py={{ md: "5em", xl: "7em" }}
       bg='rgba(255, 255, 255, 0.9)'
       pos='fixed'
       top='10%'
