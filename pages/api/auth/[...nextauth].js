@@ -11,6 +11,9 @@ const authHandler = NextAuth({
     // This is the default. The session is saved in a cookie and never persisted anywhere.
     strategy: "jwt",
   },
+  pages: {
+    signIn: "/auth/signin",
+  },
   // Enable debug messages in the console if you are having problems
   debug: true,
   providers: [

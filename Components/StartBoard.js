@@ -83,7 +83,7 @@ const StartBoard = ({ setStart, session, timerStart }, ...props) => {
                   as="span"
                   textDecoration="underline"
                   color="red.500"
-                  onClick={signIn}
+                  onClick={() => router.push("/auth/signin")}
                 >
                   LogIn
                 </Text>
