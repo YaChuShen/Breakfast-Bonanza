@@ -8,7 +8,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
   return (
     <SessionProvider session={session}>
       <ChakraProvider theme={theme}>
-        <Component />
+        <Component {...pageProps} />
         <Global
           styles={{
             body: {

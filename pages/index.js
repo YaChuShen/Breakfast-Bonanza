@@ -52,7 +52,7 @@ const CustomerTemplate = dynamic(
 //   import("../Components/CustomerTemplate").then((module) => module.default)
 // );
 
-function HomePage() {
+function HomePage({ repo }) {
   const methods = useForm({ defaultValues: values });
   const data = methods.watch();
   const { data: session } = useSession();
@@ -155,3 +155,9 @@ function HomePage() {
 }
 
 export default HomePage;
+
+export async function getServerSideProps() {
+  const res = await fetch("https://api.github.com/repos/vercel/next.js");
+  const repo = await res.json();
+  return { props: { repo } };
+}
