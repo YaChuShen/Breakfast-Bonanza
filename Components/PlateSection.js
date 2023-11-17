@@ -5,14 +5,14 @@ import { range } from "lodash";
 import { plate } from "../helpers/rwd";
 
 const PlateSection = ({ data, methods }) => {
-  console.log();
   return (
     <HStack
       spacing={10}
-      w='100%'
-      justifyContent='center'
-      pos='absolute'
-      bottom={plate}>
+      w="100%"
+      justifyContent="center"
+      pos="absolute"
+      bottom={plate}
+    >
       {range(data?.plate).map((e, i) => (
         <Plate data={data} setValue={methods.setValue} index={e} key={i} />
       ))}

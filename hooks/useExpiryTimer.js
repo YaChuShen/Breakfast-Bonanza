@@ -12,9 +12,16 @@ const useExpiryTimer = () => {
   } = useTimer({
     expiryTimestamp: time,
     onExpire: () => console.warn("onExpire called"),
-    autoStart: true,
+    autoStart: false,
   });
-  return { seconds, minutes, isRunning, timerStart, restart };
+
+  return {
+    seconds,
+    minutes,
+    isRunning,
+    timerStart,
+    restart,
+  };
 };
 
 export default useExpiryTimer;

@@ -9,7 +9,7 @@ import {
   Flex,
 } from "@chakra-ui/react";
 import { FormProvider, useForm } from "react-hook-form";
-import values from "../helpers/customerForm";
+import values from "helpers/customerForm";
 import FoodTemplate from "../Components/FoodTemplate";
 import dynamic from "next/dynamic";
 import CookTemplate from "Components/CookTemplate";
@@ -31,6 +31,7 @@ import StartBoard from "Components/StartBoard";
 import EndBoard from "Components/EndBoard";
 import { AnimatePresence } from "framer-motion";
 import useExpiryTimer from "hooks/useExpiryTimer";
+import LittleTree from "Components/LittleTree";
 
 const CustomerTemplate = dynamic(
   () => import("../Components/CustomerTemplate"),
@@ -85,6 +86,13 @@ function HomePage() {
     <FoodTemplate value={"coffee"} src={"coffee"} setCrackEggs={undefined} />
   );
 
+  const onSubmit = () => {
+    const time = new Date();
+    time.setSeconds(time.getSeconds() + 10);
+    restart(time);
+    methods?.reset();
+  };
+
   return (
     <Media
       greaterThanOrEqual="md"
@@ -93,72 +101,68 @@ function HomePage() {
       lessThan={undefined}
       between={undefined}
     >
-      <AnimatePresence>
-        {!start && (
-          <StartBoard
-            setStart={setStart}
-            session={session}
-            timerStart={timerStart}
-            isRunning={isRunning}
-          />
-        )}
-        {start && !isRunning && (
-          <EndBoard
-            score={data?.score}
-            isRunning={isRunning}
-            session={session}
-            setStart={setStart}
-            restart={restart}
-          />
-        )}
-      </AnimatePresence>
       <FormProvider {...methods}>
-        <ScoreSection data={data} minutes={minutes} seconds={seconds} />
-        {useMemo(() => {
-          return (
-            <>
-              <Center pt="3em" pos="relative">
-                <Image src="./window.svg" w="70em" minW="70em" />
-                <HStack
-                  pos="absolute"
-                  zIndex={10}
-                  spacing={20}
-                  alignItems="center"
-                  justifyContent="center"
-                  py="20"
-                >
-                  {range(data.customer).map((e, i) => (
-                    <CustomerTemplate
-                      id={`customer${i + 1}`}
-                      src={`customer${i + 1}`}
-                      key={e}
-                    />
-                  ))}
-                </HStack>
-              </Center>
-              <Box pos="relative" userSelect="none">
-                <Gress1 />
-                <Table />
-                <Center>
-                  <PlateSection data={data} methods={methods} />
-                  <HStack pos="absolute" bottom={tool} spacing={10}>
-                    <Image
-                      src="/gress1.svg"
-                      pos="absolute"
-                      w="5em"
-                      right="-10em"
-                      top="-8em"
-                    />
-                    {toasterSection}
-                    {cookSection}
-                    {coffee}
-                    <TrashCan />
+        <Box as="form" onSubmit={onSubmit}>
+          <AnimatePresence>
+            {!start && (
+              <StartBoard
+                setStart={setStart}
+                session={session}
+                timerStart={timerStart}
+                isRunning={isRunning}
+              />
+            )}
+            {start && !isRunning && (
+              <EndBoard
+                score={data?.score}
+                isRunning={isRunning}
+                session={session}
+                setStart={setStart}
+                restart={restart}
+              />
+            )}
+          </AnimatePresence>
+          <ScoreSection data={data} minutes={minutes} seconds={seconds} />
+          {useMemo(() => {
+            return (
+              <>
+                <Center pt="3em" pos="relative">
+                  <Image src="./window.svg" w="70em" minW="70em" alt="game" />
+                  <HStack
+                    pos="absolute"
+                    zIndex={10}
+                    spacing={20}
+                    alignItems="center"
+                    justifyContent="center"
+                    py="20"
+                  >
+                    {range(data.customer).map((e, i) => (
+                      <CustomerTemplate
+                        id={`customer${i + 1}`}
+                        src={`customer${i + 1}`}
+                        key={e}
+                      />
+                    ))}
                   </HStack>
                 </Center>
-              </Box>
-            </>
-          );
-        }, [data])}
+                <Box pos="relative" userSelect="none">
+                  <Gress1 />
+                  <Table />
+                  <Center>
+                    <PlateSection data={data} methods={methods} />
+                    <HStack pos="absolute" bottom={tool} spacing={10}>
+                      <LittleTree />
+                      {toasterSection}
+                      {cookSection}
+                      {coffee}
+                      <TrashCan />
+                    </HStack>
+                  </Center>
+                </Box>
+              </>
+            );
+          }, [data])}
+        </Box>
       </FormProvider>
     </Media>
   );

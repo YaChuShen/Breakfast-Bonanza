@@ -9,7 +9,7 @@ const pointsTable = async (req, res) => {
       .collection("users")
       .doc(profileId)
       .update({
-        score,
+        score: admin.firestore.FieldValue.arrayUnion(score),
         lastPlayTime: admin.firestore.FieldValue.serverTimestamp(),
       });
     return res.send("ok");

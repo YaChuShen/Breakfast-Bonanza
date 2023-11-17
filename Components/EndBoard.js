@@ -1,25 +1,12 @@
-import {
-  Box,
-  Button,
-  Center,
-  HStack,
-  Image,
-  Text,
-  VStack,
-} from "@chakra-ui/react";
+import { Box, Button, Image, Text, VStack } from "@chakra-ui/react";
 import { motion } from "framer-motion";
-import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
 
 const MotionComponent = motion(Box);
 
-const EndBoard = (
-  { score, isRunning, session, setStart, restart },
-  ...props
-) => {
-  const router = useRouter();
-
+const EndBoard = ({ score, isRunning, session }, ...props) => {
   useEffect(() => {
+    console.log("GETTING FETCH");
     const fetchData = async () => {
       const res = await fetch("/api/pointsTable", {
         method: "POST",
@@ -40,7 +27,6 @@ const EndBoard = (
   return (
     <MotionComponent
       w="80%"
-      // h='80vh'
       py={{ md: "5em", xl: "7em" }}
       bg="rgba(255, 255, 255, 0.9)"
       pos="fixed"
@@ -63,7 +49,11 @@ const EndBoard = (
       {!isRunning && (
         <VStack w="100%" spacing={10}>
           <VStack w="100%" color="red.500">
-            <Image src="/breakfast_bonanza_logo.svg" w="30%" />
+            <Image
+              src="/breakfast_bonanza_logo.svg"
+              w="30%"
+              alt="breakfast_bonanza_logo"
+            />
             <br />
             <br />
             <Text fontSize="50px" fontWeight={700}>
@@ -77,11 +67,7 @@ const EndBoard = (
             </Text>
           </VStack>
           <Button
-            onClick={() => {
-              // router.refresh();
-              setStart(false);
-              restart();
-            }}
+            type="submit"
             bg="red.500"
             color="white"
             fontSize="24px"
