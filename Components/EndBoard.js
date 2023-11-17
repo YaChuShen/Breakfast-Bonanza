@@ -13,7 +13,10 @@ import React, { useEffect } from "react";
 
 const MotionComponent = motion(Box);
 
-const EndBoard = ({ score, isRunning, session }, ...props) => {
+const EndBoard = (
+  { score, isRunning, session, setStart, restart },
+  ...props
+) => {
   const router = useRouter();
 
   useEffect(() => {
@@ -23,7 +26,10 @@ const EndBoard = ({ score, isRunning, session }, ...props) => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ score, profileId: session?.user?.profileId }),
+        body: JSON.stringify({
+          score: score ?? 0,
+          profileId: session?.user?.profileId,
+        }),
       }).then((res) => {
         console.log(res);
       });
@@ -33,13 +39,13 @@ const EndBoard = ({ score, isRunning, session }, ...props) => {
 
   return (
     <MotionComponent
-      w='80%'
+      w="80%"
       // h='80vh'
       py={{ md: "5em", xl: "7em" }}
-      bg='rgba(255, 255, 255, 0.9)'
-      pos='fixed'
-      top='10%'
-      left='10%'
+      bg="rgba(255, 255, 255, 0.9)"
+      pos="fixed"
+      top="10%"
+      left="10%"
       zIndex={20}
       initial={{ opacity: 0.2, x: 0, y: -600, scale: 0.8 }}
       animate={{ opacity: 1, x: 0, y: 0, scale: 1 }}
@@ -50,39 +56,43 @@ const EndBoard = ({ score, isRunning, session }, ...props) => {
         transition: { duration: 0.3, type: "spring" },
       }}
       transition={{ duration: 0.5, type: "spring", stiffness: 200 }}
-      borderRadius='80px'
-      border='10px solid #db542c'
-      {...props}>
+      borderRadius="80px"
+      border="10px solid #db542c"
+      {...props}
+    >
       {!isRunning && (
-        <VStack w='100%' spacing={10}>
-          <VStack w='100%' color='red.500'>
-            <Image src='/breakfast_bonanza_logo.svg' w='30%' />
+        <VStack w="100%" spacing={10}>
+          <VStack w="100%" color="red.500">
+            <Image src="/breakfast_bonanza_logo.svg" w="30%" />
             <br />
             <br />
-            <Text fontSize='50px' fontWeight={700}>
+            <Text fontSize="50px" fontWeight={700}>
               Game over
             </Text>
-            <Text fontSize='20px' fontWeight={700} color='gray.700'>
+            <Text fontSize="20px" fontWeight={700} color="gray.700">
               your total scroe is
-              <Text color='red.500' fontSize='40px' textAlign='center'>
+              <Text color="red.500" fontSize="40px" textAlign="center">
                 {score}
               </Text>
             </Text>
           </VStack>
           <Button
             onClick={() => {
-              router.refresh();
+              // router.refresh();
+              setStart(false);
+              restart();
             }}
-            bg='red.500'
-            color='white'
-            fontSize='24px'
-            py='5'
-            px='10'
-            size='xl'
-            borderRadius='20px'
-            letterSpacing='1px'
+            bg="red.500"
+            color="white"
+            fontSize="24px"
+            py="5"
+            px="10"
+            size="xl"
+            borderRadius="20px"
+            letterSpacing="1px"
             _hover={{ bg: "red.700", color: "white" }}
-            fontWeight={900}>
+            fontWeight={900}
+          >
             Re-START
           </Button>
         </VStack>

@@ -48,7 +48,7 @@ const StartBoard = ({ setStart, session, timerStart }, ...props) => {
         </VStack>
         {session && (
           <Text color="gray.700" fontWeight={700}>
-            Hi {session?.user?.name} Let's to start the game!
+            {`Hi ${session?.user?.name} Let's to start the game!`}
           </Text>
         )}
         <Button
@@ -83,7 +83,7 @@ const StartBoard = ({ setStart, session, timerStart }, ...props) => {
                   as="span"
                   textDecoration="underline"
                   color="red.500"
-                  onClick={() => router.push("/auth/signin")}
+                  onClick={signIn}
                 >
                   LogIn
                 </Text>

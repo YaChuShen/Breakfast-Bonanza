@@ -1,7 +1,9 @@
+import { Button, Text } from "@chakra-ui/react";
 import React from "react";
+import { signIn, signOut } from "next-auth/react";
 
-const Signin = () => {
-  return <div>signin</div>;
+const SigninPage = () => {
+  return <Button>測試</Button>;
 };
 
-export default Signin;
+export default SigninPage;

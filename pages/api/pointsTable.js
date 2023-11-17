@@ -1,14 +1,17 @@
 import admin from "functions/admin";
 
-const pointsTable = async (res) => {
-  console.log(res?.body);
-  const { profileId, score } = res?.body;
+const pointsTable = async (req, res) => {
+  const { profileId, score } = req?.body;
   const db = admin.firestore();
 
   try {
-    await db.collection("users").doc(profileId).update({ score });
-    // let scroe = userSnap.exists ? userSnap.data().score : "";
-
+    await db
+      .collection("users")
+      .doc(profileId)
+      .update({
+        score,
+        lastPlayTime: admin.firestore.FieldValue.serverTimestamp(),
+      });
     return res.send("ok");
   } catch (e) {
     console.error(e);

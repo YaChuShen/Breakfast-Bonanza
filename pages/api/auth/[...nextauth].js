@@ -12,7 +12,7 @@ const authHandler = NextAuth({
     strategy: "jwt",
   },
   pages: {
-    signIn: "/auth/signin",
+    // signIn: "/auth/signin",
   },
   // Enable debug messages in the console if you are having problems
   debug: true,

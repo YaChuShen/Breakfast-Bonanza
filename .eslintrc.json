@@ -1,24 +1,30 @@
 {
-  "extends": ["next/core-web-vitals"],
+  "extends": [
+    "next/core-web-vitals",
+    "plugin:ui-testing/puppeteer"
+  ],
   "rules": {
     "no-undef": "error",
     "react/display-name": "off",
+    "ui-testing/missing-assertion-in-test": "off",
+    "ui-testing/no-browser-commands-in-tests": [
+      "off",
+      "puppeteer"
+    ],
+    "ui-testing/no-wait-in-tests": [
+      "off",
+      "puppeteer"
+    ]
   },
   "globals": {
     "Promise": true
   },
+  "plugins": [
+    // "jest",
+    "ui-testing"
+  ],
   "env": {
-    "jest/globals": true
-  },
-  "overrides": [
-    {
-      "files": [
-        "**/*.test.js",
-        "**/*.test.jsx"
-      ],
-      "globals": {
-        "page": true
-      }
-    }
-  ]
+    "jest": true
+  }
+  
 }

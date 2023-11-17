@@ -10,6 +10,8 @@ const size = {
 
 const FoodTemplate = ({ value, src, w = "5em", setCrackEggs, ...props }) => {
   const { setValue } = useFormContext();
+  
+  
 
   return (
     <Center
