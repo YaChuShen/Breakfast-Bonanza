@@ -1,14 +1,3 @@
-<<<<<<< HEAD
-import { Button, Text } from "@chakra-ui/react";
-import React from "react";
-import { signIn, signOut } from "next-auth/react";
-
-const SigninPage = () => {
-  return <Button>測試</Button>;
-};
-
-export default SigninPage;
-=======
 import { Button, useRadio } from "@chakra-ui/react";
 import {
   getServerSession,
@@ -22,14 +11,14 @@ export default function SignIn({ providers, csrfToken }) {
   const router = useRouter();
   return (
     <>
-      <input name='csrfToken' type='hidden' defaultValue={csrfToken} />
+      <input name="csrfToken" type="hidden" defaultValue={csrfToken} />
       <label>
         Username
-        <input name='username' type='text' />
+        <input name="username" type="text" />
       </label>
       <label>
         Password
-        <input name='password' type='password' />
+        <input name="password" type="password" />
       </label>
       <Button
         onClick={() => {
@@ -39,7 +28,8 @@ export default function SignIn({ providers, csrfToken }) {
             redirect: false,
           });
           router.push("/");
-        }}>
+        }}
+      >
         Sign in
       </Button>
       {Object.values(providers).map((provider) => (
@@ -67,4 +57,3 @@ export async function getServerSideProps(context) {
     props: { providers: providers || [], csrfToken },
   };
 }
->>>>>>> fixed_ssr
