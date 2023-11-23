@@ -60,8 +60,6 @@ function HomePage({ repo }) {
   const [start, setStart] = useState(false);
   const { seconds, minutes, isRunning, timerStart, restart } = useExpiryTimer();
 
-  console.log(session);
-
   const toasterSection = (
     <HStack spacing={0}>
       <Toaster w="10em" tool={undefined} />
@@ -89,9 +87,6 @@ function HomePage({ repo }) {
   );
 
   const onSubmit = () => {
-    // const time = new Date();
-    // time.setSeconds(time.getSeconds() + 10);
-    // restart(time);
     methods?.reset();
   };
 

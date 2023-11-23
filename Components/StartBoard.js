@@ -69,7 +69,7 @@ const StartBoard = ({ setStart, session, timerStart }, ...props) => {
         >
           START
         </Button>
-        <VStack spacing={0} pt="10">
+        {/* <VStack spacing={0} pt="10">
           {session ? (
             <Text onClick={signOut} textDecoration="underline" cursor="pointer">
               logout
@@ -102,7 +102,7 @@ const StartBoard = ({ setStart, session, timerStart }, ...props) => {
               </HStack>
             </VStack>
           )}
-        </VStack>
+        </VStack> */}
       </VStack>
     </MotionComponent>
   );

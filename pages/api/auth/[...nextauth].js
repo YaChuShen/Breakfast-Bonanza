@@ -18,6 +18,7 @@ const authHandler = NextAuth({
   debug: true,
   providers: [
     CredentialsProvider({
+      id: "username-login",
       name: "Credentials",
       credentials: {
         email: {

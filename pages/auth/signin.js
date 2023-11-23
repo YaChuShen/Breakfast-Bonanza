@@ -6,32 +6,46 @@ import {
   getCsrfToken,
 } from "next-auth/react";
 import { useRouter } from "next/router";
+import { useState } from "react";
 
 export default function SignIn({ providers, csrfToken }) {
   const router = useRouter();
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // "username-login" matches the id for the credential
+    signIn("username-login", { username, password });
+  };
   return (
     <VStack pt="10em">
-      <Input name="csrfToken" type="hidden" defaultValue={csrfToken} />
-      <label>
-        Username
-        <Input name="username" type="text" />
-      </label>
-      <label>
-        Password
-        <Input name="password" type="password" />
-      </label>
-      <Button
-        onClick={() => {
-          signIn("credentials", {
-            email: "xog98982@omeie.com",
-            password: "abc123",
-            redirect: false,
-          });
-          router.push("/");
-        }}
-      >
-        Sign in
-      </Button>
+      <form onSubmit={handleSubmit}>
+        <div>
+          <label htmlFor="username">Username</label>
+          <input
+            id="username"
+            name="username"
+            type="text"
+            placeholder="Username"
+            onChange={(e) => setUsername(e.target.value)}
+            value={username}
+          />
+        </div>
+        <div>
+          <label htmlFor="password">Password</label>
+          <input
+            id="password"
+            name="password"
+            type="password"
+            placeholder="Password"
+            onChange={(e) => setPassword(e.target.value)}
+            value={password}
+          />
+        </div>
+        <button type="submit">Login</button>
+      </form>
+
       {Object.values(providers)
         .slice(1, 2)
         .map((provider) => (
