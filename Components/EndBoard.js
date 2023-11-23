@@ -6,7 +6,6 @@ const MotionComponent = motion(Box);
 
 const EndBoard = ({ score, isRunning, session }, ...props) => {
   useEffect(() => {
-    console.log("GETTING FETCH");
     const fetchData = async () => {
       const res = await fetch("/api/pointsTable", {
         method: "POST",

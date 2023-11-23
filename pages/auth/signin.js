@@ -1,4 +1,4 @@
-import { Button, useRadio } from "@chakra-ui/react";
+import { Button, Input, useRadio, VStack } from "@chakra-ui/react";
 import {
   getServerSession,
   getProviders,
@@ -10,15 +10,15 @@ import { useRouter } from "next/router";
 export default function SignIn({ providers, csrfToken }) {
   const router = useRouter();
   return (
-    <>
-      <input name="csrfToken" type="hidden" defaultValue={csrfToken} />
+    <VStack pt="10em">
+      <Input name="csrfToken" type="hidden" defaultValue={csrfToken} />
       <label>
         Username
-        <input name="username" type="text" />
+        <Input name="username" type="text" />
       </label>
       <label>
         Password
-        <input name="password" type="password" />
+        <Input name="password" type="password" />
       </label>
       <Button
         onClick={() => {
@@ -32,14 +32,16 @@ export default function SignIn({ providers, csrfToken }) {
       >
         Sign in
       </Button>
-      {Object.values(providers).map((provider) => (
-        <div key={provider.name}>
-          <button onClick={() => signIn(provider.id, { callbackUrl: "/" })}>
-            Sign in with {provider.name}
-          </button>
-        </div>
-      ))}
-    </>
+      {Object.values(providers)
+        .slice(1, 2)
+        .map((provider) => (
+          <div key={provider.name}>
+            <button onClick={() => signIn(provider.id, { callbackUrl: "/" })}>
+              Sign in with {provider.name}
+            </button>
+          </div>
+        ))}
+    </VStack>
   );
 }
 
