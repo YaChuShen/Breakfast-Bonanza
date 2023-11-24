@@ -70,8 +70,6 @@ const Plate = ({ data, setValue, index }) => {
   };
   const showUp = isValide && food.length > 0 && displayRules(food[0]);
 
-  console.log(targetItem);
-
   return (
     <Center
       pos="relative"

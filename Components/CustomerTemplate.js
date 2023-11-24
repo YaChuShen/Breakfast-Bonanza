@@ -57,6 +57,9 @@ const CustomerTemplate = ({ id, src, isRunning }) => {
     if (!overTime && isRunning) {
       const t = setTimeout(() => {
         setOverTime(true);
+        minusScore();
+        setGetScoreAni(true);
+        setValue(`${id}.status`, "errors");
       }, [CUSTOMEROVERTIME]);
       return () => clearTimeout(t);
     }
@@ -115,6 +118,7 @@ const CustomerTemplate = ({ id, src, isRunning }) => {
           if (status === "eating") return;
           setValue(`${id}.status`, "errors");
           minusScore();
+          setGetScoreAni(true);
         }
         setValue(key, []);
         setValue("targetPlate", null);
@@ -127,7 +131,7 @@ const CustomerTemplate = ({ id, src, isRunning }) => {
       pos="relative"
     >
       <Box pos="absolute" bottom="70%" left="-30%">
-        {status === "eating" && getScoreAni && (
+        {getScoreAni && (
           <MotionComponent
             initial={{ opacity: 0.2, x: 0, y: -100, scale: 0.8 }}
             animate={{ opacity: 1, x: 0, y: 0, scale: 1 }}
@@ -137,9 +141,16 @@ const CustomerTemplate = ({ id, src, isRunning }) => {
             }}
             transition={{ duration: 0.2, stiffness: 200 }}
           >
-            <Text fontSize="20px" fontWeight={900} color="green.500">
-              + {targetScore}
-            </Text>
+            {status === "eating" && (
+              <Text fontSize="20px" fontWeight={900} color="green.500">
+                + {targetScore}
+              </Text>
+            )}
+            {status === "errors" && (
+              <Text fontSize="20px" fontWeight={900} color="red.500">
+                - 30
+              </Text>
+            )}
           </MotionComponent>
         )}
       </Box>
