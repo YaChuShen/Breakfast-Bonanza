@@ -30,7 +30,7 @@ const CustomerImg = ({ src }) => {
   );
 };
 
-const CustomerTemplate = ({ id, src, isRunning }) => {
+const CustomerTemplate = ({ id, src, start }) => {
   const { setValue, watch } = useFormContext();
   const data = watch();
   const status = data[id].status;
@@ -39,8 +39,6 @@ const CustomerTemplate = ({ id, src, isRunning }) => {
   const [overTime, setOverTime] = useState();
   const [getScoreAni, setGetScoreAni] = useState();
   const targetScore = scoreList[data.targetItem];
-
-  console.log(overTime);
 
   useEffect(() => {
     const controlTime = (s, time) => {
@@ -56,7 +54,7 @@ const CustomerTemplate = ({ id, src, isRunning }) => {
   }, [status]);
 
   useEffect(() => {
-    if (!overTime && isRunning) {
+    if (!overTime && start) {
       const t = setTimeout(() => {
         setOverTime(true);
         minusScore();
@@ -74,6 +72,8 @@ const CustomerTemplate = ({ id, src, isRunning }) => {
   const minusScore = () => {
     setValue("score", (data.score -= 30));
   };
+
+  console.log(targetScore);
 
   const handleValidateFood = () => {
     if (data[id].order.includes("&")) {
@@ -100,7 +100,7 @@ const CustomerTemplate = ({ id, src, isRunning }) => {
     if (getScoreAni) {
       setTimeout(() => {
         setGetScoreAni(false);
-      }, [1500]);
+      }, [500]);
     }
   }, [getScoreAni]);
 
@@ -143,7 +143,7 @@ const CustomerTemplate = ({ id, src, isRunning }) => {
             transition={{ duration: 0.2, stiffness: 200 }}>
             {status === "eating" && (
               <Text fontSize='20px' fontWeight={900} color='green.500'>
-                + {targetScore}
+                {`+${targetScore}`}
               </Text>
             )}
             {status === "errors" && (

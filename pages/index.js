@@ -28,7 +28,7 @@ import Media from "Components/Media";
 import Gress1 from "Components/Gress1";
 // import CustomerTemplate from "../Components/CustomerTemplate";
 import StartBoard from "Components/StartBoard";
-import EndBoard from "Components/EndBoard";
+import TimerBoard from "Components/TimerBoard";
 import { AnimatePresence } from "framer-motion";
 import useExpiryTimer from "hooks/useExpiryTimer";
 import LittleTree from "Components/LittleTree";
@@ -58,7 +58,7 @@ function HomePage({ repo }) {
   const data = methods.watch();
   const { data: session } = useSession();
   const [start, setStart] = useState(false);
-  const { seconds, minutes, isRunning, timerStart, restart } = useExpiryTimer();
+  // const { seconds, minutes, isRunning, timerStart, restart } = useExpiryTimer();
   // const { handleSubmit, reset } = methods;
 
   const toasterSection = (
@@ -100,26 +100,13 @@ function HomePage({ repo }) {
       between={undefined}>
       <FormProvider {...methods}>
         <Box as='form'>
-          <AnimatePresence>
-            {!start && (
-              <StartBoard
-                setStart={setStart}
-                session={session}
-                timerStart={timerStart}
-                isRunning={isRunning}
-              />
-            )}
-            {start && !isRunning && (
-              <EndBoard
-                score={data?.score}
-                isRunning={isRunning}
-                session={session}
-                setStart={setStart}
-                restart={restart}
-              />
-            )}
-          </AnimatePresence>
-          <ScoreSection data={data} minutes={minutes} seconds={seconds} />
+          <TimerBoard
+            setStart={setStart}
+            start={start}
+            session={session}
+            data={data}
+          />
+
           {useMemo(() => {
             return (
               <>
@@ -137,7 +124,7 @@ function HomePage({ repo }) {
                         id={`customer${i + 1}`}
                         src={`customer${i + 1}`}
                         key={e}
-                        isRunning={isRunning}
+                        start={start}
                       />
                     ))}
                   </HStack>
