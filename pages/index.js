@@ -58,17 +58,17 @@ function HomePage({ repo }) {
   const data = methods.watch();
   const { data: session } = useSession();
   const [start, setStart] = useState(false);
-  const { seconds, minutes, isRunning, timerStart, restart } = useExpiryTimer();
+  // const { seconds, minutes, isRunning, timerStart, restart } = useExpiryTimer();
 
   const toasterSection = (
     <HStack spacing={0}>
-      <Toaster w="10em" tool={undefined} />
+      <Toaster w='10em' tool={undefined} />
       <VStack>
         <Jam />
         <FoodTemplate
           value={"toast0"}
           src={"toast0"}
-          w="6em"
+          w='6em'
           setCrackEggs={undefined}
         />
       </VStack>
@@ -77,7 +77,7 @@ function HomePage({ repo }) {
 
   const cookSection = (
     <HStack spacing={0}>
-      <CookTemplate tool={"pan"} w="13em" zIndex={1} />
+      <CookTemplate tool={"pan"} w='13em' zIndex={1} />
       <FoodPlateSection />
     </HStack>
   );
@@ -92,63 +92,61 @@ function HomePage({ repo }) {
 
   return (
     <Media
-      greaterThanOrEqual="md"
+      greaterThanOrEqual='md'
       at={undefined}
       greaterThan={undefined}
       lessThan={undefined}
-      between={undefined}
-    >
+      between={undefined}>
       <FormProvider {...methods}>
-        <Box as="form" onSubmit={onSubmit}>
+        <Box as='form' onSubmit={onSubmit}>
           <AnimatePresence>
             {!start && (
               <StartBoard
                 setStart={setStart}
                 session={session}
-                timerStart={timerStart}
-                isRunning={isRunning}
+                // timerStart={timerStart}
+                // isRunning={isRunning}
               />
             )}
-            {start && !isRunning && (
+            {/* {start && !isRunning && (
               <EndBoard
                 score={data?.score}
                 isRunning={isRunning}
                 session={session}
-                setStart={setStart}
-                restart={restart}
+                // setStart={setStart}
+                // restart={restart}
               />
-            )}
+            )} */}
           </AnimatePresence>
-          <ScoreSection data={data} minutes={minutes} seconds={seconds} />
+          {/* <ScoreSection data={data} minutes={minutes} seconds={seconds} /> */}
           {useMemo(() => {
             return (
               <>
-                <Center pt="3em" pos="relative">
-                  <Image src="./window.svg" w="70em" minW="70em" alt="game" />
+                <Center pt='3em' pos='relative'>
+                  <Image src='./window.svg' w='70em' minW='70em' alt='game' />
                   <HStack
-                    pos="absolute"
+                    pos='absolute'
                     zIndex={10}
                     spacing={20}
-                    alignItems="center"
-                    justifyContent="center"
-                    py="20"
-                  >
+                    alignItems='center'
+                    justifyContent='center'
+                    py='20'>
                     {range(data.customer).map((e, i) => (
                       <CustomerTemplate
                         id={`customer${i + 1}`}
                         src={`customer${i + 1}`}
                         key={e}
-                        isRunning={isRunning}
+                        // isRunning={isRunning}
                       />
                     ))}
                   </HStack>
                 </Center>
-                <Box pos="relative" userSelect="none">
+                <Box pos='relative' userSelect='none'>
                   <Gress1 />
                   <Table />
                   <Center>
                     <PlateSection data={data} methods={methods} />
-                    <HStack pos="absolute" bottom={tool} spacing={10}>
+                    <HStack pos='absolute' bottom={tool} spacing={10}>
                       <LittleTree />
                       {toasterSection}
                       {cookSection}

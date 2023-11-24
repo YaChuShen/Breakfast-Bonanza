@@ -1,28 +1,17 @@
 {
   "extends": [
-    "next/core-web-vitals",
-    "plugin:ui-testing/puppeteer"
+    "next/core-web-vitals"
   ],
   "rules": {
     "no-undef": "error",
-    "react/display-name": "off",
-    "ui-testing/missing-assertion-in-test": "off",
-    "ui-testing/no-browser-commands-in-tests": [
-      "off",
-      "puppeteer"
-    ],
-    "ui-testing/no-wait-in-tests": [
-      "off",
-      "puppeteer"
-    ]
+    "react/display-name": "off"
   },
   "globals": {
     "Promise": true
   },
-  "plugins": [
-    // "jest",
-    "ui-testing"
-  ],
+  // "plugins": [
+  //   ""
+  // ],
   "env": {
     "jest": true
   }
