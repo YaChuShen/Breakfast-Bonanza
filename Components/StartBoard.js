@@ -53,7 +53,7 @@ const StartBoard = ({ setStart, session, timerStart }, ...props) => {
         <Button
           onClick={() => {
             setStart(true);
-            // timerStart();
+            timerStart();
           }}
           bg='red.500'
           color='white'

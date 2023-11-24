@@ -56,8 +56,7 @@ const CustomerTemplate = ({ id, src, isRunning }) => {
   }, [status]);
 
   useEffect(() => {
-    // !overTime && isRunning;
-    if (!overTime) {
+    if (!overTime && isRunning) {
       const t = setTimeout(() => {
         setOverTime(true);
         minusScore();

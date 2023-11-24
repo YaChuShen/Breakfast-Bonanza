@@ -58,7 +58,8 @@ function HomePage({ repo }) {
   const data = methods.watch();
   const { data: session } = useSession();
   const [start, setStart] = useState(false);
-  // const { seconds, minutes, isRunning, timerStart, restart } = useExpiryTimer();
+  const { seconds, minutes, isRunning, timerStart, restart } = useExpiryTimer();
+  // const { handleSubmit, reset } = methods;
 
   const toasterSection = (
     <HStack spacing={0}>
@@ -98,27 +99,27 @@ function HomePage({ repo }) {
       lessThan={undefined}
       between={undefined}>
       <FormProvider {...methods}>
-        <Box as='form' onSubmit={onSubmit}>
+        <Box as='form'>
           <AnimatePresence>
             {!start && (
               <StartBoard
                 setStart={setStart}
                 session={session}
-                // timerStart={timerStart}
-                // isRunning={isRunning}
+                timerStart={timerStart}
+                isRunning={isRunning}
               />
             )}
-            {/* {start && !isRunning && (
+            {start && !isRunning && (
               <EndBoard
                 score={data?.score}
                 isRunning={isRunning}
                 session={session}
-                // setStart={setStart}
-                // restart={restart}
+                setStart={setStart}
+                restart={restart}
               />
-            )} */}
+            )}
           </AnimatePresence>
-          {/* <ScoreSection data={data} minutes={minutes} seconds={seconds} /> */}
+          <ScoreSection data={data} minutes={minutes} seconds={seconds} />
           {useMemo(() => {
             return (
               <>
@@ -136,7 +137,7 @@ function HomePage({ repo }) {
                         id={`customer${i + 1}`}
                         src={`customer${i + 1}`}
                         key={e}
-                        // isRunning={isRunning}
+                        isRunning={isRunning}
                       />
                     ))}
                   </HStack>
