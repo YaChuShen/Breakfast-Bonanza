@@ -138,6 +138,7 @@ function HomePage({ repo }) {
                         id={`customer${i + 1}`}
                         src={`customer${i + 1}`}
                         key={e}
+                        isRunning={isRunning}
                       />
                     ))}
                   </HStack>
@@ -158,7 +159,7 @@ function HomePage({ repo }) {
                 </Box>
               </>
             );
-          }, [data])}
+          }, [])}
         </Box>
       </FormProvider>
     </Media>

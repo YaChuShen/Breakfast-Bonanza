@@ -30,13 +30,15 @@ const CustomerImg = ({ src }) => {
   );
 };
 
-const CustomerTemplate = ({ id, src }) => {
+const CustomerTemplate = ({ id, src, isRunning }) => {
   const { setValue, watch } = useFormContext();
   const data = watch();
   const status = data[id].status;
   const wishFood = data[id].order ?? "";
   const isCoffee = wishFood === "coffee";
   const [overTime, setOverTime] = useState();
+  const [getScoreAni, setGetScoreAni] = useState();
+  const targetScore = scoreList[data.targetItem];
 
   useEffect(() => {
     const controlTime = (s, time) => {
@@ -52,7 +54,7 @@ const CustomerTemplate = ({ id, src }) => {
   }, [status]);
 
   useEffect(() => {
-    if (!overTime) {
+    if (!overTime && isRunning) {
       const t = setTimeout(() => {
         setOverTime(true);
       }, [CUSTOMEROVERTIME]);
@@ -61,7 +63,7 @@ const CustomerTemplate = ({ id, src }) => {
   }, [overTime]);
 
   const getScore = () => {
-    setValue("score", (data.score += scoreList[data.targetItem]));
+    setValue("score", (data.score += targetScore));
   };
 
   const minusScore = () => {
@@ -89,6 +91,14 @@ const CustomerTemplate = ({ id, src }) => {
     return () => clearTimeout(t);
   };
 
+  useEffect(() => {
+    if (getScoreAni) {
+      setTimeout(() => {
+        setGetScoreAni(false);
+      }, [1500]);
+    }
+  }, [getScoreAni]);
+
   return (
     <Box
       userSelect="none"
@@ -100,6 +110,7 @@ const CustomerTemplate = ({ id, src }) => {
           controlNextOrder();
           getScore();
           setOverTime(false);
+          setGetScoreAni(true);
         } else {
           if (status === "eating") return;
           setValue(`${id}.status`, "errors");
@@ -115,19 +126,23 @@ const CustomerTemplate = ({ id, src }) => {
       }}
       pos="relative"
     >
-      {/* <Box pos="absolute" bottom="50%" left="-25%">
-        <MotionComponent
-          initial={{ opacity: 0.2, x: 0, y: -50, scale: 0.8 }}
-          animate={{ opacity: 1, x: 0, y: 0, scale: 1 }}
-          exit={{
-            opacity: 0,
-            transition: { duration: 0.3 },
-          }}
-          transition={{ duration: 0.2, stiffness: 200 }}
-        >
-          <Text>+1</Text>
-        </MotionComponent>
-      </Box> */}
+      <Box pos="absolute" bottom="70%" left="-30%">
+        {status === "eating" && getScoreAni && (
+          <MotionComponent
+            initial={{ opacity: 0.2, x: 0, y: -100, scale: 0.8 }}
+            animate={{ opacity: 1, x: 0, y: 0, scale: 1 }}
+            exit={{
+              opacity: 0,
+              transition: { duration: 0.3 },
+            }}
+            transition={{ duration: 0.2, stiffness: 200 }}
+          >
+            <Text fontSize="20px" fontWeight={900} color="green.500">
+              + {targetScore}
+            </Text>
+          </MotionComponent>
+        )}
+      </Box>
       <Center
         visibility={status !== "eating" ? "visible" : "hidden"}
         w={isCoffee ? "3em" : "7em"}
