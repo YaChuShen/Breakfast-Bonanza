@@ -159,7 +159,7 @@ function HomePage({ repo }) {
                 </Box>
               </>
             );
-          }, [])}
+          }, [data])}
         </Box>
       </FormProvider>
     </Media>
