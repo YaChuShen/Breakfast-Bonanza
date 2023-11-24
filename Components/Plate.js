@@ -75,6 +75,7 @@ const Plate = ({ data, setValue, index }) => {
       pos="relative"
       draggable="true"
       onDrop={(e) => {
+        //檢查可不可以丟進盤子裡，
         if (
           !targetPlate &&
           !targetItem?.includes("2") &&
