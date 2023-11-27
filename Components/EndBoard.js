@@ -6,21 +6,21 @@ const MotionComponent = motion(Box);
 
 const EndBoard = ({ score, isRunning, session }, ...props) => {
   useEffect(() => {
-    const fetchData = async () => {
-      const res = await fetch("/api/pointsTable", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          score: score ?? 0,
-          profileId: session?.user?.profileId,
-        }),
-      }).then((res) => {
-        console.log(res);
-      });
-    };
-    fetchData();
+    // const fetchData = async () => {
+    //   const res = await fetch("/api/pointsTable", {
+    //     method: "POST",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //     body: JSON.stringify({
+    //       score: score ?? 0,
+    //       profileId: session?.user?.profileId,
+    //     }),
+    //   }).then((res) => {
+    //     console.log(res);
+    //   });
+    // };
+    // fetchData();
   }, []);
 
   return (

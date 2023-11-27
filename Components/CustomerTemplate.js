@@ -35,8 +35,9 @@ const CustomerTemplate = ({ id, src, isRunning }) => {
   const data = watch();
   const status = data[id].status;
   const wishFood = data[id].order ?? "";
+  const overTime = data[id].overtime;
   const isCoffee = wishFood === "coffee";
-  const [overTime, setOverTime] = useState();
+  // const [overTime, setOverTime] = useState();
   const [getScoreAni, setGetScoreAni] = useState();
   const targetScore = scoreList[data.targetItem];
 
@@ -56,7 +57,8 @@ const CustomerTemplate = ({ id, src, isRunning }) => {
   useEffect(() => {
     if (!overTime && isRunning) {
       const t = setTimeout(() => {
-        setOverTime(true);
+        // setOverTime(true);
+        setValue(`${id}.overtime`, true);
         minusScore();
         setGetScoreAni(true);
         setValue(`${id}.status`, "errors");
@@ -112,7 +114,9 @@ const CustomerTemplate = ({ id, src, isRunning }) => {
           setValue(`${id}.status`, "eating");
           controlNextOrder();
           getScore();
-          setOverTime(false);
+          // setOverTime(false);
+          setValue(`${id}.overtime`, false);
+
           setGetScoreAni(true);
         } else {
           if (status === "eating") return;
@@ -143,7 +147,7 @@ const CustomerTemplate = ({ id, src, isRunning }) => {
           >
             {status === "eating" && (
               <Text fontSize="20px" fontWeight={900} color="green.500">
-                + {targetScore}
+                {`+ ${targetScore}`}
               </Text>
             )}
             {status === "errors" && (
