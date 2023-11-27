@@ -8,5 +8,5 @@ export const plateToDropFood = [
 ];
 export const MUTURITYTIME = 2000;
 export const OVERTIME = 5000;
-export const CUSTOMERNEXTORDER = 5000;
+export const CUSTOMERNEXTORDER = 25000;
 export const CUSTOMEROVERTIME = 10000;
