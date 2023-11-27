@@ -23,14 +23,14 @@ const CustomerImg = ({ src }) => {
     <Image
       top={1}
       left={2}
-      pos="absolute"
+      pos='absolute'
       src={`${src}.svg`}
       w={`${customerW}em`}
     />
   );
 };
 
-const CustomerTemplate = ({ id, src, isRunning }) => {
+const CustomerTemplate = ({ id, src, start }) => {
   const { setValue, watch } = useFormContext();
   const data = watch();
   const status = data[id].status;
@@ -43,7 +43,7 @@ const CustomerTemplate = ({ id, src, isRunning }) => {
 
   useEffect(() => {
     const controlTime = (s, time) => {
-      if (status === s) {
+      if (status === s && !overTime) {
         const t = setTimeout(() => {
           setValue(`${id}.status`, "waiting");
         }, [time]);
@@ -55,7 +55,7 @@ const CustomerTemplate = ({ id, src, isRunning }) => {
   }, [status]);
 
   useEffect(() => {
-    if (!overTime && isRunning) {
+    if (!overTime && start) {
       const t = setTimeout(() => {
         // setOverTime(true);
         setValue(`${id}.overtime`, true);
@@ -74,6 +74,8 @@ const CustomerTemplate = ({ id, src, isRunning }) => {
   const minusScore = () => {
     setValue("score", (data.score -= 30));
   };
+
+  console.log(targetScore);
 
   const handleValidateFood = () => {
     if (data[id].order.includes("&")) {
@@ -100,13 +102,13 @@ const CustomerTemplate = ({ id, src, isRunning }) => {
     if (getScoreAni) {
       setTimeout(() => {
         setGetScoreAni(false);
-      }, [1500]);
+      }, [500]);
     }
   }, [getScoreAni]);
 
   return (
     <Box
-      userSelect="none"
+      userSelect='none'
       onDrop={(e) => {
         e.preventDefault();
         const key = `plateContent${data?.targetPlate}`;
@@ -132,9 +134,8 @@ const CustomerTemplate = ({ id, src, isRunning }) => {
         e.preventDefault();
         e.stopPropagation();
       }}
-      pos="relative"
-    >
-      <Box pos="absolute" bottom="70%" left="-30%">
+      pos='relative'>
+      <Box pos='absolute' bottom='70%' left='-30%'>
         {getScoreAni && (
           <MotionComponent
             initial={{ opacity: 0.2, x: 0, y: -100, scale: 0.8 }}
@@ -143,15 +144,19 @@ const CustomerTemplate = ({ id, src, isRunning }) => {
               opacity: 0,
               transition: { duration: 0.3 },
             }}
-            transition={{ duration: 0.2, stiffness: 200 }}
-          >
+            transition={{ duration: 0.2, stiffness: 200 }}>
             {status === "eating" && (
+<<<<<<< HEAD
               <Text fontSize="20px" fontWeight={900} color="green.500">
                 {`+ ${targetScore}`}
+=======
+              <Text fontSize='20px' fontWeight={900} color='green.500'>
+                {`+${targetScore}`}
+>>>>>>> feature_register_login
               </Text>
             )}
             {status === "errors" && (
-              <Text fontSize="20px" fontWeight={900} color="red.500">
+              <Text fontSize='20px' fontWeight={900} color='red.500'>
                 - 30
               </Text>
             )}
@@ -161,16 +166,14 @@ const CustomerTemplate = ({ id, src, isRunning }) => {
       <Center
         visibility={status !== "eating" ? "visible" : "hidden"}
         w={isCoffee ? "3em" : "7em"}
-        h="4em"
-      >
-        <Image src={`/${wishFood}.svg`} w="100%" zIndex={2} />
+        h='4em'>
+        <Image src={`/${wishFood}.svg`} w='100%' zIndex={2} />
       </Center>
       <Circle
         bg={statusColor[status]}
         w={`${circleW}em`}
         h={`${circleW}em`}
-        pos="relative"
-      >
+        pos='relative'>
         {overTime ? (
           <CustomerImg src={`${src}-angry`} />
         ) : (
