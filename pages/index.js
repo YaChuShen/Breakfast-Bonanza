@@ -63,13 +63,13 @@ function HomePage({ repo }) {
 
   const toasterSection = (
     <HStack spacing={0}>
-      <Toaster w='10em' tool={undefined} />
+      <Toaster w="10em" tool={undefined} />
       <VStack>
         <Jam />
         <FoodTemplate
           value={"toast0"}
           src={"toast0"}
-          w='6em'
+          w="6em"
           setCrackEggs={undefined}
         />
       </VStack>
@@ -78,7 +78,7 @@ function HomePage({ repo }) {
 
   const cookSection = (
     <HStack spacing={0}>
-      <CookTemplate tool={"pan"} w='13em' zIndex={1} />
+      <CookTemplate tool={"pan"} w="13em" zIndex={1} />
       <FoodPlateSection />
     </HStack>
   );
@@ -93,13 +93,14 @@ function HomePage({ repo }) {
 
   return (
     <Media
-      greaterThanOrEqual='md'
+      greaterThanOrEqual="md"
       at={undefined}
       greaterThan={undefined}
       lessThan={undefined}
-      between={undefined}>
+      between={undefined}
+    >
       <FormProvider {...methods}>
-        <Box as='form'>
+        <Box as="form">
           <TimerBoard
             setStart={setStart}
             start={start}
@@ -110,15 +111,16 @@ function HomePage({ repo }) {
           {useMemo(() => {
             return (
               <>
-                <Center pt='3em' pos='relative'>
-                  <Image src='./window.svg' w='70em' minW='70em' alt='game' />
+                <Center pt="3em" pos="relative">
+                  <Image src="./window.svg" w="70em" minW="70em" alt="game" />
                   <HStack
-                    pos='absolute'
+                    pos="absolute"
                     zIndex={10}
                     spacing={20}
-                    alignItems='center'
-                    justifyContent='center'
-                    py='20'>
+                    alignItems="center"
+                    justifyContent="center"
+                    py="20"
+                  >
                     {range(data.customer).map((e, i) => (
                       <CustomerTemplate
                         id={`customer${i + 1}`}
@@ -129,12 +131,12 @@ function HomePage({ repo }) {
                     ))}
                   </HStack>
                 </Center>
-                <Box pos='relative' userSelect='none'>
+                <Box pos="relative" userSelect="none">
                   <Gress1 />
                   <Table />
                   <Center>
                     <PlateSection data={data} methods={methods} />
-                    <HStack pos='absolute' bottom={tool} spacing={10}>
+                    <HStack pos="absolute" bottom={tool} spacing={10}>
                       <LittleTree />
                       {toasterSection}
                       {cookSection}
