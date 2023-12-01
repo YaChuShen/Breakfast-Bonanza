@@ -23,10 +23,10 @@ const CustomerImg = ({ src }) => {
     <Image
       top={1}
       left={2}
-      pos="absolute"
+      pos='absolute'
       src={`${src}.svg`}
       w={`${customerW}em`}
-      alt=""
+      alt=''
     />
   );
 };
@@ -38,11 +38,8 @@ const CustomerTemplate = ({ id, src, start }) => {
   const wishFood = data[id].order ?? "";
   const overTime = data[id].overtime;
   const isCoffee = wishFood === "coffee";
-  // const [overTime, setOverTime] = useState();
   const [getScoreAni, setGetScoreAni] = useState();
   const targetScore = scoreList[data.targetItem];
-
-  console.log(overTime);
 
   useEffect(() => {
     const controlTime = (s, time) => {
@@ -92,10 +89,9 @@ const CustomerTemplate = ({ id, src, start }) => {
   };
 
   const controlNextOrder = () => {
-    const t = setTimeout(() => {
+    setTimeout(() => {
       setValue(`${id}.order`, sample(foodList));
     }, [CUSTOMERNEXTORDER]);
-    return () => clearTimeout(t);
   };
 
   useEffect(() => {
@@ -106,35 +102,40 @@ const CustomerTemplate = ({ id, src, start }) => {
     }
   }, [getScoreAni]);
 
+  const submitOrder = () => {
+    setValue(`${id}.overtime`, false);
+    setValue(`${id}.status`, "eating");
+    controlNextOrder();
+    getScore();
+    setGetScoreAni(true);
+  };
+
+  const failureSubmit = () => {
+    if (status === "eating") return;
+    setValue(`${id}.status`, "errors");
+    minusScore();
+    setGetScoreAni(true);
+  };
+
   return (
     <Box
-      userSelect="none"
+      userSelect='none'
       onDrop={(e) => {
         e.preventDefault();
         const key = `plateContent${data?.targetPlate}`;
         if (handleValidateFood()) {
-          setValue(`${id}.overtime`, false);
-          setValue(`${id}.status`, "eating");
-          controlNextOrder();
-          getScore();
-          setGetScoreAni(true);
+          submitOrder();
         } else {
-          if (status === "eating") return;
-          setValue(`${id}.status`, "errors");
-          minusScore();
-          setGetScoreAni(true);
+          failureSubmit();
         }
         setValue(key, []);
         setValue("targetPlate", null);
-        console.log("DROP CUSTOMER");
       }}
       onDragOver={(e) => {
         e.preventDefault();
-        e.stopPropagation();
       }}
-      pos="relative"
-    >
-      <Box pos="absolute" bottom="70%" left="-30%">
+      pos='relative'>
+      <Box pos='absolute' bottom='70%' left='-30%'>
         {getScoreAni && (
           <MotionComponent
             initial={{ opacity: 0.2, x: 0, y: -100, scale: 0.8 }}
@@ -143,15 +144,14 @@ const CustomerTemplate = ({ id, src, start }) => {
               opacity: 0,
               transition: { duration: 0.3 },
             }}
-            transition={{ duration: 0.2, stiffness: 200 }}
-          >
+            transition={{ duration: 0.2, stiffness: 200 }}>
             {status === "eating" && (
-              <Text fontSize="20px" fontWeight={900} color="green.500">
+              <Text fontSize='20px' fontWeight={900} color='green.500'>
                 {`+${targetScore}`}
               </Text>
             )}
             {status === "errors" && (
-              <Text fontSize="20px" fontWeight={900} color="red.500">
+              <Text fontSize='20px' fontWeight={900} color='red.500'>
                 - 30
               </Text>
             )}
@@ -161,16 +161,14 @@ const CustomerTemplate = ({ id, src, start }) => {
       <Center
         visibility={status !== "eating" ? "visible" : "hidden"}
         w={isCoffee ? "3em" : "7em"}
-        h="4em"
-      >
-        <Image src={`/${wishFood}.svg`} w="100%" zIndex={2} />
+        h='4em'>
+        <Image src={`/${wishFood}.svg`} w='100%' zIndex={2} />
       </Center>
       <Circle
         bg={statusColor[status]}
         w={`${circleW}em`}
         h={`${circleW}em`}
-        pos="relative"
-      >
+        pos='relative'>
         {overTime ? (
           <CustomerImg src={`${src}-angry`} />
         ) : (

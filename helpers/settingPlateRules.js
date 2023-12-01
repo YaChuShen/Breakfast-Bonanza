@@ -1,9 +1,7 @@
-import React from "react";
-
-const notValidArr = ["hotDog", "sunnyEgg"];
+const toastNotValidArr = ["hotDog", "sunnyEgg"];
 
 const rules = (plateContent) => {
-  return { toast: notValidArr.includes(plateContent?.[0]) };
+  return { toast: toastNotValidArr.includes(plateContent?.[0]) };
 };
 const settingPlateRules = (plateContent, currentValue) => {
   if (

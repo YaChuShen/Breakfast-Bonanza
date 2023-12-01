@@ -6,10 +6,7 @@ const autoPlateSystem = (data, target, isDone, setValue) => {
     const key = `plateContent${i}`;
     const isPlateFull = data[key]?.length > 1;
     if (isDone && settingPlateRules(data[key], target) && !isPlateFull) {
-      setValue(
-        `plateContent${i}`,
-        data[key] ? [...data[key], target] : [target]
-      );
+      setValue(`plateContent${i}`, [...data[key], target]);
       break;
     }
     i++;
