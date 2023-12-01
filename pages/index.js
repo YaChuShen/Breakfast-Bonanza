@@ -1,13 +1,4 @@
-import {
-  Box,
-  Center,
-  ChakraProvider,
-  HStack,
-  Image,
-  Text,
-  VStack,
-  Flex,
-} from "@chakra-ui/react";
+import { Box, Center, HStack, Image, VStack } from "@chakra-ui/react";
 import { FormProvider, useForm } from "react-hook-form";
 import values from "helpers/customerForm";
 import FoodTemplate from "../Components/FoodTemplate";
@@ -22,15 +13,11 @@ import FoodPlateSection from "../Components/FoodPlateSection";
 import PlateSection from "../Components/PlateSection";
 import ScoreSection from "../Components/ScoreSection";
 import { tool } from "../helpers/rwd";
-import { useSession, signIn, signOut } from "next-auth/react";
-import React, { useEffect, useMemo, useState } from "react";
+import { useSession } from "next-auth/react";
+import React, { useMemo, useState } from "react";
 import Media from "Components/Media";
 import Gress1 from "Components/Gress1";
-// import CustomerTemplate from "../Components/CustomerTemplate";
-import StartBoard from "Components/StartBoard";
 import TimerBoard from "Components/TimerBoard";
-import { AnimatePresence } from "framer-motion";
-import useExpiryTimer from "hooks/useExpiryTimer";
 import LittleTree from "Components/LittleTree";
 
 const CustomerTemplate = dynamic(
@@ -40,26 +27,11 @@ const CustomerTemplate = dynamic(
   }
 );
 
-// type Media = {
-//   greaterThanOrEqual: string;
-// };
-
-// type StartBoard = {
-//   session: object;
-//   setStart: any;
-// };
-
-// const CustomerTemplate = dynamic(() =>
-//   import("../Components/CustomerTemplate").then((module) => module.default)
-// );
-
-function HomePage({ repo }) {
+function HomePage() {
   const methods = useForm({ defaultValues: values });
   const data = methods.watch();
   const { data: session } = useSession();
   const [start, setStart] = useState(false);
-  // const { seconds, minutes, isRunning, timerStart, restart } = useExpiryTimer();
-  // const { handleSubmit, reset } = methods;
 
   const toasterSection = (
     <HStack spacing={0}>
@@ -92,12 +64,7 @@ function HomePage({ repo }) {
   };
 
   return (
-    <Media
-      greaterThanOrEqual='md'
-      at={undefined}
-      greaterThan={undefined}
-      lessThan={undefined}
-      between={undefined}>
+    <Media greaterThanOrEqual='md'>
       <FormProvider {...methods}>
         <Box as='form'>
           <TimerBoard
@@ -106,7 +73,6 @@ function HomePage({ repo }) {
             session={session}
             data={data}
           />
-
           {useMemo(() => {
             return (
               <>
@@ -153,9 +119,3 @@ function HomePage({ repo }) {
 }
 
 export default HomePage;
-
-export async function getServerSideProps() {
-  const res = await fetch("https://api.github.com/repos/vercel/next.js");
-  const repo = await res.json();
-  return { props: { repo } };
-}

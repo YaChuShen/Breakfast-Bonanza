@@ -73,8 +73,6 @@ const CustomerTemplate = ({ id, src, start }) => {
     setValue("score", (data.score -= 30));
   };
 
-  console.log(targetScore);
-
   const handleValidateFood = () => {
     if (data[id].order.includes("&")) {
       const checkContent = (s) => {
