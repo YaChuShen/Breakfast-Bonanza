@@ -2,7 +2,7 @@ import { Box, Center, Circle, Image, Text } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import foodList from "../contents/foodList";
-import { isEqual, sample } from "lodash";
+import { isEqual, over, sample } from "lodash";
 import { CUSTOMERNEXTORDER, CUSTOMEROVERTIME } from "../contents/rulse";
 import scoreList from "../contents/scoreList";
 import { motion } from "framer-motion";
@@ -41,6 +41,14 @@ const CustomerTemplate = ({ id, src, start }) => {
   const [getScoreAni, setGetScoreAni] = useState();
   const targetScore = scoreList[data.targetItem];
 
+  const getScore = () => {
+    setValue("score", (data.score += targetScore));
+  };
+
+  const minusScore = () => {
+    setValue("score", (data.score -= 30));
+  };
+
   useEffect(() => {
     const controlTime = (s, time) => {
       if (status === s && !overTime) {
@@ -62,17 +70,12 @@ const CustomerTemplate = ({ id, src, start }) => {
         setGetScoreAni(true);
         setValue(`${id}.status`, "errors");
       }, [CUSTOMEROVERTIME]);
+
+      if (status === "eating") clearTimeout(t);
+
       return () => clearTimeout(t);
     }
-  }, [overTime, start]);
-
-  const getScore = () => {
-    setValue("score", (data.score += targetScore));
-  };
-
-  const minusScore = () => {
-    setValue("score", (data.score -= 30));
-  };
+  }, [overTime, start, status]);
 
   const handleValidateFood = () => {
     if (data[id].order.includes("&")) {
