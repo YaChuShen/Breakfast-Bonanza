@@ -2,7 +2,7 @@ import { useTimer } from "react-timer-hook";
 
 const useExpiryTimer = () => {
   const time = new Date();
-  time.setSeconds(time.getSeconds() + 120);
+  time.setSeconds(time.getSeconds() + 180);
   const {
     seconds,
     minutes,
