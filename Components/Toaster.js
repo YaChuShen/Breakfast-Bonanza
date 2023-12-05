@@ -97,9 +97,6 @@ const Toaster = ({ tool, w = "14em", ...props }) => {
     </Box>
   );
 
-  console.log(isOverDone);
-  console.log("status", status);
-
   return (
     <Box
       onDragEnter={() =>
