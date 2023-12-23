@@ -67,40 +67,38 @@ const StartBoard = ({ setStart, session, timerStart }, ...props) => {
           fontWeight={900}>
           START
         </Button>
-        {/* <VStack spacing={0} pt="10">
+        <VStack spacing={0} pt='10'>
           {session ? (
-            <Text onClick={signOut} textDecoration="underline" cursor="pointer">
+            <Text onClick={signOut} textDecoration='underline' cursor='pointer'>
               logout
             </Text>
           ) : (
-            <VStack justifyContent="start" alignItems="start">
+            <VStack justifyContent='start' alignItems='start'>
               <Text>
                 Already have an account?{" "}
                 <Text
-                  cursor="pointer"
-                  as="span"
-                  textDecoration="underline"
-                  color="red.500"
-                  onClick={() => router.push("auth/signin")}
-                >
+                  cursor='pointer'
+                  as='span'
+                  textDecoration='underline'
+                  color='red.500'
+                  onClick={() => router.push("auth/signin")}>
                   LogIn
                 </Text>
               </Text>
               <HStack>
-                <Text as="span">or </Text>
+                <Text as='span'>or </Text>
                 <Text
-                  as="span"
-                  textDecoration="underline"
-                  color="red.500"
-                  cursor="pointer"
-                  onClick={() => router.push("/register")}
-                >
+                  as='span'
+                  textDecoration='underline'
+                  color='red.500'
+                  cursor='pointer'
+                  onClick={() => router.push("/register")}>
                   Register for an account
                 </Text>
               </HStack>
             </VStack>
           )}
-        </VStack> */}
+        </VStack>
       </VStack>
     </MotionComponent>
   );

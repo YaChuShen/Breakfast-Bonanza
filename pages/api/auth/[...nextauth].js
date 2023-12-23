@@ -8,17 +8,15 @@ import admin from "../../../functions/admin";
 
 const authHandler = NextAuth({
   session: {
-    // This is the default. The session is saved in a cookie and never persisted anywhere.
     strategy: "jwt",
   },
   pages: {
     signIn: "/auth/signin",
   },
-  // Enable debug messages in the console if you are having problems
   debug: true,
   providers: [
     CredentialsProvider({
-      id: "username-login",
+      id: "credentials",
       name: "Credentials",
       credentials: {
         email: {
@@ -30,6 +28,7 @@ const authHandler = NextAuth({
       },
       async authorize(credentials, req) {
         const db = admin.firestore();
+        console.log(credentials);
 
         const userRef = await db
           .collection("users")
@@ -59,6 +58,9 @@ const authHandler = NextAuth({
       },
     }),
   ],
+  jwt: {
+    maxAge: 60 * 60 * 24 * 30, // 1 day
+  },
   adapter: FirestoreAdapter({ db: db, ...firestoreFunctions }),
   secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
