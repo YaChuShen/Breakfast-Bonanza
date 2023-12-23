@@ -11,6 +11,12 @@ const autoPlateSystem = (data, target, isDone, setValue) => {
     }
     i++;
   }
+
+  // Object.entries(data).filter(([key, value]) => {
+  //   if (key.startsWith("plateContent") && value.length < 2) {
+  //     /**Todo */
+  //   }
+  // });
 };
 
 export default autoPlateSystem;
