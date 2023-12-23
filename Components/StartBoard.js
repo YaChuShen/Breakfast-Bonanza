@@ -9,7 +9,7 @@ import {
 } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import React from "react";
-import { signIn, signOut } from "next-auth/react";
+import { signOut } from "next-auth/react";
 import { useRouter } from "next/router";
 
 const MotionComponent = motion(Box);
@@ -63,40 +63,34 @@ const StartBoard = ({ setStart, session, timerStart }, ...props) => {
           size='xl'
           borderRadius='20px'
           letterSpacing='1px'
-          _hover={{ bg: "red.700", color: "white" }}
+          _hover={{ bg: "red.400", color: "white" }}
           fontWeight={900}>
           START
         </Button>
-        <VStack spacing={0} pt='10'>
+        <VStack spacing={0}>
           {session ? (
             <Text onClick={signOut} textDecoration='underline' cursor='pointer'>
               logout
             </Text>
           ) : (
-            <VStack justifyContent='start' alignItems='start'>
-              <Text>
-                Already have an account?{" "}
-                <Text
-                  cursor='pointer'
-                  as='span'
-                  textDecoration='underline'
-                  color='red.500'
-                  onClick={() => router.push("auth/signin")}>
-                  LogIn
-                </Text>
-              </Text>
-              <HStack>
-                <Text as='span'>or </Text>
-                <Text
-                  as='span'
-                  textDecoration='underline'
-                  color='red.500'
-                  cursor='pointer'
-                  onClick={() => router.push("/register")}>
-                  Register for an account
-                </Text>
-              </HStack>
-            </VStack>
+            <HStack>
+              <Button
+                borderRadius='12px'
+                border=' 2px solid #d67558'
+                flex={1}
+                variant='outline'
+                onClick={() => router.push("auth/signin")}>
+                LogIn
+              </Button>
+              <Button
+                borderRadius='12px'
+                border=' 2px solid #978e8b'
+                flex={1}
+                onClick={() => router.push("/register")}
+                variant='outline'>
+                Sign Up
+              </Button>
+            </HStack>
           )}
         </VStack>
       </VStack>
