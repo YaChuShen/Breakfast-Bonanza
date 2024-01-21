@@ -1,27 +1,30 @@
-import { Center, Image } from "@chakra-ui/react";
-import React from "react";
-import { useFormContext } from "react-hook-form";
+import { Center, Image } from '@chakra-ui/react';
+import React from 'react';
+import { useFormContext } from 'react-hook-form';
+import { useSelector, useDispatch } from 'react-redux';
+import { setTargetItem } from '../pages/features/plateSlice';
 
 const size = {
-  coffee: "3.5em",
-  toast: "8em",
-  "blueberry-toast": "8em",
+  coffee: '3.5em',
+  toast: '8em',
+  'blueberry-toast': '8em',
 };
 
-const FoodTemplate = ({ value, src, w = "5em", setCrackEggs, ...props }) => {
+const FoodTemplate = ({ value, src, w = '5em', setCrackEggs, ...props }) => {
   const { setValue } = useFormContext();
-  
-  
+  const dispatch = useDispatch();
 
   return (
     <Center
       {...props}
-      draggable='true'
-      cursor='grab'
+      draggable="true"
+      cursor="grab"
       onDragStart={() => {
-        setValue("targetItem", value);
-      }}>
-      <Image src={`/${src}.svg`} w={size[value] ?? w} maxW='8em'></Image>
+        setValue('targetItem', value);
+        dispatch(setTargetItem({ target: value }));
+      }}
+    >
+      <Image src={`/${src}.svg`} w={size[value] ?? w} maxW="8em"></Image>
     </Center>
   );
 };

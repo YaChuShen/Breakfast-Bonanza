@@ -1,12 +1,19 @@
-import { Box, Center, HStack, Image } from "@chakra-ui/react";
-import React from "react";
-import FoodTemplate from "./FoodTemplate";
-import { plateToDropFood } from "contents/rulse";
-import materialList from "contents/materialList";
+import { Box, Center, HStack, Image } from '@chakra-ui/react';
+import React from 'react';
+import FoodTemplate from './FoodTemplate';
+import { plateToDropFood } from 'contents/rulse';
+import materialList from 'contents/materialList';
+import { useSelector, useDispatch } from 'react-redux';
+import {
+  seletePlate,
+  addFood,
+  setTargetItem,
+  setTargetPlate,
+} from '../pages/features/plateSlice';
 
 const foodPosition = {
-  sunnyEgg: "0",
-  hotDog: "3em",
+  sunnyEgg: '0',
+  hotDog: '3em',
 };
 
 const foodIndex = {
@@ -44,16 +51,19 @@ const shadow = {
 };
 
 const Plate = ({ data, setValue, index }) => {
+  const dispatch = useDispatch();
+  const currentData = useSelector(seletePlate);
+
   const key = `plateContent${index + 1}`;
   const food = data[key];
   const { targetPlate, targetItem } = data;
   const isValide = food?.every((e) => plateToDropFood.includes(e));
-  const toastFirst = food?.[0] === "toast";
-  const jam = food?.[1] === "blueberry" || food?.[1] === "butter";
+  const toastFirst = food?.[0] === 'toast';
+  const jam = food?.[1] === 'blueberry' || food?.[1] === 'butter';
 
   const displayRules = (category) => {
-    const isToast = category === "toast";
-    const okFood = category === "sunnyEgg" || category === "hotDog";
+    const isToast = category === 'toast';
+    const okFood = category === 'sunnyEgg' || category === 'hotDog';
 
     if (toastFirst) {
       return list1[category];
@@ -78,11 +88,14 @@ const Plate = ({ data, setValue, index }) => {
         //檢查可不可以丟進盤子裡，
         if (
           !targetPlate &&
-          !targetItem?.includes("2") &&
+          !targetItem?.includes('2') &&
           !materialList?.includes(targetItem)
         ) {
+          dispatch(addFood({ id: index + 1, targetItem }));
+          dispatch(setTargetItem({ target: null }));
+
           setValue(key, [...food, targetItem]);
-          setValue("targetItem", null);
+          setValue('targetItem', null);
         }
       }}
       onDragOver={(e) => {
@@ -90,11 +103,14 @@ const Plate = ({ data, setValue, index }) => {
         e.stopPropagation();
       }}
       onDragStart={() => {
-        setValue("targetItem", food.join("&"));
-        setValue("targetPlate", index + 1);
+        setValue('targetItem', food.join('&'));
+        setValue('targetPlate', index + 1);
+        dispatch(setTargetItem({ target: food.join('&') }));
+        dispatch(setTargetPlate({ index: index + 1 }));
       }}
       onDragEnd={(e) => {
-        setValue("targetPlate", null);
+        dispatch(setTargetPlate({ index: null }));
+        setValue('targetPlate', null);
       }}
     >
       <Image src="plate.svg" w="8em" />
@@ -117,7 +133,7 @@ const Plate = ({ data, setValue, index }) => {
               bottom={displayRules(food[1]).bottom}
               left={displayRules(food[1]).left}
               zIndex={displayRules(food[1]).index}
-              w={jam ? "10em" : "5em"}
+              w={jam ? '10em' : '5em'}
             />
           )}
         </>
