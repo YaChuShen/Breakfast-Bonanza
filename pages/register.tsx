@@ -20,27 +20,15 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { string } from 'prop-types';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-
-const errorMessage = {
-  email: '請提供正確的信箱',
-  password: '請提供正確的信箱',
-};
+import {
+  emailMessage,
+  passwordMessage,
+} from 'contents/emailPasswordErrorMessage';
 
 type Inputs = {
   email: string;
   password: string;
   name: string;
-};
-
-const emailMessage = {
-  pattern: '請檢查信箱格式',
-  required: '請填寫信箱',
-};
-
-const passwordMessage = {
-  pattern: '密碼請勿設定特殊符號，請設定英文或數字',
-  required: '請設定密碼',
-  minLength: '密碼至少要6碼',
 };
 
 const Index = () => {

@@ -1,49 +1,56 @@
-import NextAuth from "next-auth";
-import { FirestoreAdapter } from "@auth/firebase-adapter";
-import GoogleProvider from "next-auth/providers/google";
-import CredentialsProvider from "next-auth/providers/credentials";
-import { db } from "../../../firebase.config";
-import * as firestoreFunctions from "firebase/firestore";
-import admin from "../../../functions/admin";
+import NextAuth from 'next-auth';
+import { FirestoreAdapter } from '@auth/firebase-adapter';
+import GoogleProvider from 'next-auth/providers/google';
+import CredentialsProvider from 'next-auth/providers/credentials';
+import { db } from '../../../firebase.config';
+import * as firestoreFunctions from 'firebase/firestore';
+import admin from '../../../functions/admin';
+import bcrypt from 'bcrypt';
 
 const authHandler = NextAuth({
   session: {
-    strategy: "jwt",
+    strategy: 'jwt',
   },
   pages: {
-    signIn: "/auth/signin",
+    signIn: '/auth/signin',
   },
   debug: true,
   providers: [
     CredentialsProvider({
-      id: "credentials",
-      name: "Credentials",
+      id: 'credentials',
+      name: 'Credentials',
       credentials: {
         email: {
-          label: "Email",
-          type: "text",
+          label: 'Email',
+          type: 'text',
           // placeholder: "your cool email",
         },
-        password: { label: "Password", type: "password" },
+        password: { label: 'Password', type: 'password' },
       },
-      async authorize(credentials, req) {
+      async authorize(credentials, req, res) {
         const db = admin.firestore();
-        console.log(credentials);
+        const { password, email } = credentials;
 
         const userRef = await db
-          .collection("users")
-          .where("email", "==", credentials?.email)
+          .collection('users')
+          .where('email', '==', email)
           .get();
 
-        const user = userRef.docs[0].data();
+        if (!userRef.docs.length) return { error: 'no user' };
 
-        if (user) {
-          return {
-            ...user,
-            token: credentials?.csrfToken,
-            profileId: userRef.docs[0]?.id,
-          };
+        const user = userRef.docs[0].data();
+        const isValid = await bcrypt.compare(password, user?.password);
+        if (!isValid) {
+          return { error: 'password error' };
         }
+
+        console.log('Successful login');
+        delete user.password;
+
+        return {
+          ...user,
+          profileId: userRef.docs[0]?.id,
+        };
       },
     }),
     GoogleProvider({
@@ -51,15 +58,15 @@ const authHandler = NextAuth({
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       authorization: {
         params: {
-          prompt: "consent",
-          access_type: "offline",
-          response_type: "code",
+          prompt: 'consent',
+          access_type: 'offline',
+          response_type: 'code',
         },
       },
     }),
   ],
   jwt: {
-    maxAge: 60 * 60 * 24 * 30, // 1 day
+    maxAge: 60 * 60 * 24 * 1, // 1 day
   },
   adapter: FirestoreAdapter({ db: db, ...firestoreFunctions }),
   secret: process.env.NEXTAUTH_SECRET,
@@ -70,6 +77,19 @@ const authHandler = NextAuth({
     session: async ({ session, token }) => {
       session.user = token;
       return session;
+    },
+    async signIn({ user }) {
+      if (user?.error === 'password error') {
+        throw new Error(
+          'The password you entered is incorrect. Please try again.'
+        );
+      }
+      if (user?.error === 'no user') {
+        throw new Error(
+          'No account found with that email. Please check your email or register.'
+        );
+      }
+      return true;
     },
   },
 });
