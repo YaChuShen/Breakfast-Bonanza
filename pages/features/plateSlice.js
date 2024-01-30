@@ -1,13 +1,8 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import { range, sample } from 'lodash';
-import foodList from 'contents/foodList';
+import defaultConfig from 'contents/rootConfig';
 
-const settings = {
-  customers: 3,
-  plate: 3,
-};
-
-const p = range(settings.plate).reduce((all, curr, i) => {
+const p = range(defaultConfig.plate).reduce((all, curr, i) => {
   all[`plateContent${i + 1}`] = [];
   return all;
 }, {});

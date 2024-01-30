@@ -3,9 +3,8 @@ import React from 'react';
 import FoodTemplate from './FoodTemplate';
 import { plateToDropFood } from 'contents/rulse';
 import materialList from 'contents/materialList';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import {
-  seletePlate,
   addFood,
   setTargetItem,
   setTargetPlate,
@@ -52,8 +51,6 @@ const shadow = {
 
 const Plate = ({ data, setValue, index }) => {
   const dispatch = useDispatch();
-  const currentData = useSelector(seletePlate);
-
   const key = `plateContent${index + 1}`;
   const food = data[key];
   const { targetPlate, targetItem } = data;
