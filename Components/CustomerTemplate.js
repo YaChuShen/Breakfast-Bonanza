@@ -12,6 +12,13 @@ import {
   handleCustomStatus,
   getNextOrder,
 } from 'pages/features/customerSlice';
+import {
+  addFood,
+  setTargetItem,
+  setTargetPlate,
+} from '../pages/features/plateSlice';
+import { seletePlate } from 'pages/features/plateSlice';
+import { useSelector } from 'react-redux';
 
 const MotionComponent = motion(Box);
 
@@ -45,6 +52,8 @@ const CustomerTemplate = ({ wishFood, id, src, start }) => {
   const isCoffee = wishFood === 'coffee';
   const [getScoreAni, setGetScoreAni] = useState();
   const targetScore = scoreList[data.targetItem];
+  const plateData = useSelector(seletePlate);
+
   const dispatch = useDispatch();
 
   const getScore = () => {
@@ -84,16 +93,16 @@ const CustomerTemplate = ({ wishFood, id, src, start }) => {
   }, [overTime, start, status]);
 
   const handleValidateFood = () => {
-    if (data[id].order.includes('&')) {
+    if (wishFood.includes('&')) {
       const checkContent = (s) => {
         return s?.split('&');
       };
       return isEqual(
-        checkContent(data.targetItem)?.sort(),
-        checkContent(data[id].order)?.sort()
+        checkContent(plateData.targetItem)?.sort(),
+        checkContent(wishFood)?.sort()
       );
     } else {
-      return data[id].order === data.targetItem;
+      return wishFood === plateData.targetItem;
     }
   };
 
@@ -145,6 +154,8 @@ const CustomerTemplate = ({ wishFood, id, src, start }) => {
         }
         setValue(key, []);
         setValue('targetPlate', null);
+        dispatch(addFood({ id: plateData.targetPlate, targetItem: [] }));
+        dispatch(setTargetPlate({ index: null }));
       }}
       onDragOver={(e) => {
         e.preventDefault();

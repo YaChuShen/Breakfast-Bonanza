@@ -1,10 +1,16 @@
-import { HStack } from "@chakra-ui/react";
-import React from "react";
-import Plate from "./Plate";
-import { range } from "lodash";
-import { plate } from "../helpers/rwd";
+import { HStack } from '@chakra-ui/react';
+import React from 'react';
+import Plate from './Plate';
+import { range } from 'lodash';
+import { plate } from '../helpers/rwd';
+import { seletePlate } from 'pages/features/plateSlice';
+import { useSelector } from 'react-redux';
 
 const PlateSection = ({ data, methods }) => {
+  const plateData = useSelector(seletePlate);
+
+  console.log(plateData);
+
   return (
     <HStack
       spacing={10}
@@ -14,7 +20,7 @@ const PlateSection = ({ data, methods }) => {
       bottom={plate}
     >
       {range(data?.plate).map((e, i) => (
-        <Plate data={data} setValue={methods.setValue} index={e} key={i} />
+        <Plate data={plateData} setValue={methods.setValue} index={e} key={i} />
       ))}
     </HStack>
   );

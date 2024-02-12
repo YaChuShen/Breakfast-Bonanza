@@ -1,24 +1,26 @@
-import { Box, Center, CircularProgress, HStack, Image } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
-import { useFormContext } from "react-hook-form";
-import { toasterList } from "../contents/cookedList";
-import autoPlateSystem from "../helpers/autoPlateSystem";
-import Progress from "./Progress";
-import FoodTemplate from "./FoodTemplate";
-import onDragEnter from "../helpers/cook/onDragEnter";
-import onDrop from "../helpers/cook/onDrop";
-import passToPlate from "../helpers/cook/passToPlate";
-import { MUTURITYTIME, OVERTIME } from "contents/rulse";
+import { Box, Center, CircularProgress, HStack, Image } from '@chakra-ui/react';
+import React, { useEffect, useState } from 'react';
+import { useFormContext } from 'react-hook-form';
+import { toasterList } from '../contents/cookedList';
+import autoPlateSystem from '../helpers/autoPlateSystem';
+import Progress from './Progress';
+import FoodTemplate from './FoodTemplate';
+import onDragEnter from '../helpers/cook/onDragEnter';
+import onDrop from '../helpers/cook/onDrop';
+import passToPlate from '../helpers/cook/passToPlate';
+import { MUTURITYTIME, OVERTIME } from 'contents/rulse';
+import { useDispatch } from 'react-redux';
 
 const statusList = {
-  cooking: "toasterIn0",
-  maturity: "toasterIn1",
-  over: "toasterIn2",
-  done: "toaster1",
-  overDone: "toaster2",
+  cooking: 'toasterIn0',
+  maturity: 'toasterIn1',
+  over: 'toasterIn2',
+  done: 'toaster1',
+  overDone: 'toaster2',
 };
 
-const Toaster = ({ tool, w = "14em", ...props }) => {
+const Toaster = ({ tool, w = '14em', ...props }) => {
+  const dispatch = useDispatch();
   const { setValue, watch } = useFormContext();
   const data = watch();
   const [cookedGroup, setCookedGroup] = useState();
@@ -26,22 +28,22 @@ const Toaster = ({ tool, w = "14em", ...props }) => {
   const [move, setMove] = useState();
   const [haveOverCook, setHaveOverCook] = useState();
 
-  const isCooking = status === "cooking";
-  const isMaturity = status === "maturity";
-  const isDone = status === "done";
-  const isOver = status === "over";
-  const isOverDone = status === "overDone";
+  const isCooking = status === 'cooking';
+  const isMaturity = status === 'maturity';
+  const isDone = status === 'done';
+  const isOver = status === 'over';
+  const isOverDone = status === 'overDone';
 
   useEffect(() => {
     if (isCooking) {
       const s = setTimeout(() => {
-        setStatus("maturity");
+        setStatus('maturity');
       }, [MUTURITYTIME]);
       return () => clearTimeout(s);
     }
     if (isMaturity) {
       const s = setTimeout(() => {
-        setStatus("over");
+        setStatus('over');
       }, [OVERTIME]);
       return () => clearTimeout(s);
     }
@@ -52,9 +54,9 @@ const Toaster = ({ tool, w = "14em", ...props }) => {
 
   const turnOn = () => {
     if (isMaturity) {
-      setStatus("done");
+      setStatus('done');
     } else if (isOver) {
-      setStatus("overDone");
+      setStatus('overDone');
     }
   };
 
@@ -67,14 +69,14 @@ const Toaster = ({ tool, w = "14em", ...props }) => {
 
   const overCookOnDragStart = () => {
     if (haveOverCook) {
-      setValue("targetItem", cookedGroup?.over.value);
+      setValue('targetItem', cookedGroup?.over.value);
     }
   };
 
   const overCookOnDoubleClick = () => {
     if (haveOverCook) {
       setStatus(null);
-      setValue("trashCanOpen", true);
+      setValue('trashCanOpen', true);
       setHaveOverCook(false);
       setMove(false);
     }
@@ -82,17 +84,18 @@ const Toaster = ({ tool, w = "14em", ...props }) => {
 
   const dragItem = (
     <Box
-      visibility={move ? "visible" : "hidden"}
-      draggable='true'
+      visibility={move ? 'visible' : 'hidden'}
+      draggable="true"
       onDragEnd={overCookOnDragEnd}
       onDragStart={overCookOnDragStart}
-      onDoubleClick={overCookOnDoubleClick}>
+      onDoubleClick={overCookOnDoubleClick}
+    >
       <FoodTemplate
-        src={haveOverCook ? "toast2" : "toast"}
-        pos='absolute'
+        src={haveOverCook ? 'toast2' : 'toast'}
+        pos="absolute"
         top={-2}
         left={10}
-        w='7em'
+        w="7em"
       />
     </Box>
   );
@@ -107,13 +110,14 @@ const Toaster = ({ tool, w = "14em", ...props }) => {
         e.preventDefault();
         e.stopPropagation();
       }}
-      {...props}>
-      <Box pos='relative' cursor={(isDone || isOverDone) && "pointer"}>
+      {...props}
+    >
+      <Box pos="relative" cursor={(isDone || isOverDone) && 'pointer'}>
         {(isCooking || isMaturity) && (
           <Progress
             time={MUTURITYTIME / 20}
-            pos='absolute'
-            size='30px'
+            pos="absolute"
+            size="30px"
             top={5}
             left={5}
           />
@@ -121,8 +125,8 @@ const Toaster = ({ tool, w = "14em", ...props }) => {
         {dragItem}
         {status ? (
           <Box
-            h='12em'
-            pos='relative'
+            h="12em"
+            pos="relative"
             onClick={() =>
               passToPlate(
                 data,
@@ -130,7 +134,8 @@ const Toaster = ({ tool, w = "14em", ...props }) => {
                 isDone,
                 setValue,
                 setStatus,
-                setMove
+                setMove,
+                dispatch
               )
             }
             onMouseDown={(e) => {
@@ -138,21 +143,22 @@ const Toaster = ({ tool, w = "14em", ...props }) => {
                 setMove(true);
                 setStatus(null);
               }
-            }}>
+            }}
+          >
             <Image
               src={`/${statusList[status]}.svg`}
-              pointerEvents='none'
-              cursor={(isDone || isOver) && "pointer"}
-              userSelect='none'
+              pointerEvents="none"
+              cursor={(isDone || isOver) && 'pointer'}
+              userSelect="none"
               w={w}
             />
           </Box>
         ) : (
-          <Box w={w} h='12em'>
+          <Box w={w} h="12em">
             <Image
               src={`/toaster.svg`}
-              pointerEvents={"none"}
-              userSelect='none'
+              pointerEvents={'none'}
+              userSelect="none"
               w={w}
             />
           </Box>
@@ -160,11 +166,11 @@ const Toaster = ({ tool, w = "14em", ...props }) => {
 
         <Box
           onClick={turnOn}
-          w='3em'
-          h='3em'
-          cursor='pointer'
-          pos='absolute'
-          bottom={"3em"}
+          w="3em"
+          h="3em"
+          cursor="pointer"
+          pos="absolute"
+          bottom={'3em'}
           right={2}
         />
       </Box>

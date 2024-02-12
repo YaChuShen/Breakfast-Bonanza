@@ -1,4 +1,4 @@
-import autoPlateSystem from "../autoPlateSystem";
+import autoPlateSystem from '../autoPlateSystem';
 
 const passToPlate = (
   data,
@@ -6,9 +6,10 @@ const passToPlate = (
   isDone,
   setValue,
   setStatus,
-  setMove
+  setMove,
+  dispatch
 ) => {
-  autoPlateSystem(data, cookedGroup?.done.value, isDone, setValue);
+  autoPlateSystem(data, cookedGroup?.done.value, isDone, setValue, dispatch);
   if (isDone) {
     setStatus(null);
     setMove && setMove(false);

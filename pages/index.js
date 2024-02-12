@@ -36,9 +36,6 @@ function HomePage() {
   const { data: session } = useSession();
   const [start, setStart] = useState(false);
   const currentData = useSelector(seleteCustomer);
-  console.log(currentData);
-  // console.log(data);
-  console.log(data.customer);
 
   const toasterSection = (
     <HStack spacing={0}>

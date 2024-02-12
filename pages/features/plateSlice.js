@@ -21,10 +21,11 @@ export const plateSlice = createSlice({
     addFood: (state, action) => {
       const { id, targetItem } = action.payload;
       const plateKey = `plateContent${id}`;
-      if (!state[plateKey]) {
+      if (!state[plateKey] || targetItem.length === 0) {
         state[plateKey] = [];
+      } else {
+        state[plateKey].push(targetItem);
       }
-      state[plateKey].push(targetItem);
     },
     setTargetItem: (state, action) => {
       const { target } = action.payload;
