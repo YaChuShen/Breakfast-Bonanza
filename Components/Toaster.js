@@ -1,8 +1,6 @@
-import { Box, Center, CircularProgress, HStack, Image } from '@chakra-ui/react';
+import { Box, Image } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
-import { useFormContext } from 'react-hook-form';
 import { toasterList } from '../contents/cookedList';
-import autoPlateSystem from '../helpers/autoPlateSystem';
 import Progress from './Progress';
 import FoodTemplate from './FoodTemplate';
 import onDragEnter from '../helpers/cook/onDragEnter';
@@ -12,15 +10,8 @@ import { MUTURITYTIME, OVERTIME } from 'contents/rulse';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { selectPlate } from 'pages/features/plateSlice';
-import {
-  addFood,
-  setTargetItem,
-  setTargetPlate,
-} from '../pages/features/plateSlice';
-import {
-  selectGameConfig,
-  handleTrashCan,
-} from 'pages/features/gameConfigSlice';
+import { setTargetItem } from '../pages/features/plateSlice';
+import { handleTrashCan } from 'pages/features/gameConfigSlice';
 
 const statusList = {
   cooking: 'toasterIn0',

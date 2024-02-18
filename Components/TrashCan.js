@@ -26,7 +26,6 @@ const TrashCan = ({ ...props }) => {
       setOpen(true);
       setTimeout(() => {
         setOpen(false);
-        // setValue('trashCanOpen', false);
         dispatch(handleTrashCan({ value: false }));
       }, 1500);
     }

@@ -1,7 +1,6 @@
 import { Center, Image } from '@chakra-ui/react';
 import React from 'react';
-import { useFormContext } from 'react-hook-form';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { setTargetItem } from '../pages/features/plateSlice';
 
 const size = {
@@ -10,8 +9,7 @@ const size = {
   'blueberry-toast': '8em',
 };
 
-const FoodTemplate = ({ value, src, w = '5em', setCrackEggs, ...props }) => {
-  const { setValue } = useFormContext();
+const FoodTemplate = ({ value, src, w = '5em', ...props }) => {
   const dispatch = useDispatch();
 
   return (
@@ -20,7 +18,6 @@ const FoodTemplate = ({ value, src, w = '5em', setCrackEggs, ...props }) => {
       draggable="true"
       cursor="grab"
       onDragStart={() => {
-        setValue('targetItem', value);
         dispatch(setTargetItem({ target: value }));
       }}
     >
