@@ -20,7 +20,7 @@ import Gress1 from 'Components/Gress1';
 import TimerBoard from 'Components/TimerBoard';
 import LittleTree from 'Components/LittleTree';
 import { useSelector } from 'react-redux';
-import { seleteCustomer } from 'pages/features/customerSlice';
+import { selectCustomer } from 'pages/features/customerSlice';
 import defaultConfig from 'contents/rootConfig';
 
 const CustomerTemplate = dynamic(
@@ -35,7 +35,7 @@ function HomePage() {
   const data = methods.watch();
   const { data: session } = useSession();
   const [start, setStart] = useState(false);
-  const currentData = useSelector(seleteCustomer);
+  const currentData = useSelector(selectCustomer);
 
   const toasterSection = (
     <HStack spacing={0}>
@@ -96,6 +96,8 @@ function HomePage() {
                     {range(defaultConfig.customers).map((e, i) => (
                       <CustomerTemplate
                         wishFood={currentData[`customer${i + 1}`].order}
+                        status={currentData[`customer${i + 1}`].status}
+                        overtime={currentData[`customer${i + 1}`].overtime}
                         id={`customer${i + 1}`}
                         src={`customer${i + 1}`}
                         key={e}

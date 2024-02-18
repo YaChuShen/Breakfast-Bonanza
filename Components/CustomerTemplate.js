@@ -17,7 +17,7 @@ import {
   setTargetItem,
   setTargetPlate,
 } from '../pages/features/plateSlice';
-import { seletePlate } from 'pages/features/plateSlice';
+import { selectPlate } from 'pages/features/plateSlice';
 import { useSelector } from 'react-redux';
 
 const MotionComponent = motion(Box);
@@ -44,16 +44,13 @@ const CustomerImg = ({ src }) => {
   );
 };
 
-const CustomerTemplate = ({ wishFood, id, src, start }) => {
+const CustomerTemplate = ({ wishFood, status, overtime, id, src, start }) => {
   const { setValue, watch } = useFormContext();
   const data = watch();
-  const status = data[id].status;
-  const overTime = data[id].overtime;
   const isCoffee = wishFood === 'coffee';
   const [getScoreAni, setGetScoreAni] = useState();
-  const targetScore = scoreList[data.targetItem];
-  const plateData = useSelector(seletePlate);
-
+  const plateData = useSelector(selectPlate);
+  const targetScore = scoreList[plateData.targetItem];
   const dispatch = useDispatch();
 
   const getScore = () => {
@@ -66,9 +63,10 @@ const CustomerTemplate = ({ wishFood, id, src, start }) => {
 
   useEffect(() => {
     const controlTime = (s, time) => {
-      if (status === s && !overTime) {
+      if (status === s && !overtime) {
         const t = setTimeout(() => {
-          setValue(`${id}.status`, 'waiting');
+          dispatch(handleCustomStatus({ id, status: 'waiting' }));
+          // setValue(`${id}.status`, 'waiting');
         }, [time]);
         return () => clearTimeout(t);
       }
@@ -78,19 +76,22 @@ const CustomerTemplate = ({ wishFood, id, src, start }) => {
   }, [status]);
 
   useEffect(() => {
-    if (!overTime && start) {
+    if (!overtime && start) {
       const t = setTimeout(() => {
-        setValue(`${id}.overtime`, true);
+        dispatch(handleOvertime({ id, status: true }));
+
+        // setValue(`${id}.overtime`, true);
         minusScore();
         setGetScoreAni(true);
-        setValue(`${id}.status`, 'errors');
+        dispatch(handleCustomStatus({ id, status: 'errors' }));
+        // setValue(`${id}.status`, 'errors');
       }, [CUSTOMEROVERTIME]);
 
       if (status === 'eating') clearTimeout(t);
 
       return () => clearTimeout(t);
     }
-  }, [overTime, start, status]);
+  }, [overtime, start, status]);
 
   const handleValidateFood = () => {
     if (wishFood.includes('&')) {
@@ -104,12 +105,6 @@ const CustomerTemplate = ({ wishFood, id, src, start }) => {
     } else {
       return wishFood === plateData.targetItem;
     }
-  };
-
-  const controlNextOrder = () => {
-    setTimeout(() => {
-      setValue(`${id}.order`, sample(foodList));
-    }, [CUSTOMERNEXTORDER]);
   };
 
   useEffect(() => {
@@ -127,9 +122,8 @@ const CustomerTemplate = ({ wishFood, id, src, start }) => {
       dispatch(getNextOrder({ id }));
     }, [CUSTOMERNEXTORDER]);
 
-    setValue(`${id}.overtime`, false);
-    setValue(`${id}.status`, 'eating');
-    // controlNextOrder();
+    // setValue(`${id}.overtime`, false);
+    // setValue(`${id}.status`, 'eating');
     getScore();
     setGetScoreAni(true);
   };
@@ -199,7 +193,7 @@ const CustomerTemplate = ({ wishFood, id, src, start }) => {
         h={`${circleW}em`}
         pos="relative"
       >
-        {overTime ? (
+        {overtime ? (
           <CustomerImg src={`${src}-angry`} />
         ) : (
           <CustomerImg src={src} />

@@ -38,7 +38,7 @@ export const plateSlice = createSlice({
   },
 });
 
-export const seletePlate = (state) => state.plate;
+export const selectPlate = (state) => state.plate;
 export const { addFood, setTargetItem, setTargetPlate } = plateSlice.actions;
 
 export default plateSlice.reducer;

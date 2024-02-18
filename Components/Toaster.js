@@ -10,6 +10,8 @@ import onDrop from '../helpers/cook/onDrop';
 import passToPlate from '../helpers/cook/passToPlate';
 import { MUTURITYTIME, OVERTIME } from 'contents/rulse';
 import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { selectPlate } from 'pages/features/plateSlice';
 
 const statusList = {
   cooking: 'toasterIn0',
@@ -27,6 +29,7 @@ const Toaster = ({ tool, w = '14em', ...props }) => {
   const [status, setStatus] = useState();
   const [move, setMove] = useState();
   const [haveOverCook, setHaveOverCook] = useState();
+  const { targetPlate, targetItem } = useSelector(selectPlate);
 
   const isCooking = status === 'cooking';
   const isMaturity = status === 'maturity';
@@ -61,7 +64,7 @@ const Toaster = ({ tool, w = '14em', ...props }) => {
   };
 
   const overCookOnDragEnd = () => {
-    if (data.targetItem === null) {
+    if (targetItem === null) {
       setMove(false);
       setHaveOverCook(false);
     }

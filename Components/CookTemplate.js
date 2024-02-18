@@ -9,6 +9,8 @@ import onDrop from '../helpers/cook/onDrop';
 import passToPlate from '../helpers/cook/passToPlate';
 import { useDispatch } from 'react-redux';
 import { setTargetItem } from '../pages/features/plateSlice';
+import { useSelector } from 'react-redux';
+import { selectPlate } from 'pages/features/plateSlice';
 
 const statusList = {
   cooking: 'init',
@@ -26,6 +28,7 @@ const CookTemplate = ({ tool, w = '14em', ...props }) => {
   const isMaturity = status === 'maturity';
   const isOver = status === 'over';
   const key = statusList[status];
+  const { targetPlate, targetItem } = useSelector(selectPlate);
 
   useEffect(() => {
     if (isCooking) {
@@ -57,7 +60,7 @@ const CookTemplate = ({ tool, w = '14em', ...props }) => {
   };
 
   const foodOnDragEnd = () => {
-    if (data.targetItem === null) {
+    if (targetItem === null) {
       setStatus(null);
     }
   };

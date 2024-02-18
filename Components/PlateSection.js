@@ -3,13 +3,11 @@ import React from 'react';
 import Plate from './Plate';
 import { range } from 'lodash';
 import { plate } from '../helpers/rwd';
-import { seletePlate } from 'pages/features/plateSlice';
+import { selectPlate } from 'pages/features/plateSlice';
 import { useSelector } from 'react-redux';
 
 const PlateSection = ({ data, methods }) => {
-  const plateData = useSelector(seletePlate);
-
-  console.log(plateData);
+  const plateData = useSelector(selectPlate);
 
   return (
     <HStack

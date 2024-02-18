@@ -4,7 +4,10 @@ import foodList from 'contents/foodList';
 import defaultConfig from 'contents/rootConfig';
 
 const defaultSetting = range(defaultConfig.customers).reduce((all, curr, i) => {
-  all[`customer${i + 1}`] = { order: sample(foodList), status: 'waiting' };
+  all[`customer${i + 1}`] = {
+    order: sample(foodList),
+    status: 'waiting',
+  };
   return all;
 }, {});
 
@@ -35,7 +38,7 @@ export const customerSlice = createSlice({
   },
 });
 
-export const seleteCustomer = (state) => state.customer;
+export const selectCustomer = (state) => state.customer;
 export const { handleOvertime, handleCustomStatus, getNextOrder } =
   customerSlice.actions;
 
