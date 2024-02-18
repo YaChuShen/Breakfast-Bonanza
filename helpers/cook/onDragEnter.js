@@ -1,6 +1,12 @@
-const onDragEnter = (data, status, haveOverCook, list, setCookedGroup) => {
+const onDragEnter = (
+  targetItem,
+  status,
+  haveOverCook,
+  list,
+  setCookedGroup
+) => {
   if (!status && !haveOverCook) {
-    setCookedGroup(list.find((e) => e.init.value === data.targetItem));
+    setCookedGroup(list.find((e) => e.init.value === targetItem));
   }
 };
 

@@ -4,12 +4,11 @@ const passToPlate = (
   data,
   cookedGroup,
   isDone,
-  setValue,
   setStatus,
   setMove,
   dispatch
 ) => {
-  autoPlateSystem(data, cookedGroup?.done.value, isDone, setValue, dispatch);
+  autoPlateSystem(data, cookedGroup?.done.value, isDone, dispatch);
   if (isDone) {
     setStatus(null);
     setMove && setMove(false);

@@ -7,7 +7,7 @@ export const gameConfigSlice = createSlice({
     score: 0,
   },
   reducers: {
-    trashCanOpen: (state, action) => {
+    handleTrashCan: (state, action) => {
       const { value } = action.payload;
       state.trashCanOpen = value;
     },
@@ -15,6 +15,6 @@ export const gameConfigSlice = createSlice({
 });
 
 export const selectGameConfig = (state) => state.gameConfig;
-export const { trashCanOpen } = gameConfigSlice.actions;
+export const { handleTrashCan } = gameConfigSlice.actions;
 
 export default gameConfigSlice.reducer;

@@ -12,6 +12,7 @@ const initialState = {
   status: 'idle',
   targetItem: '',
   targetPlate: '',
+  plate: defaultConfig.plate,
 };
 
 export const plateSlice = createSlice({

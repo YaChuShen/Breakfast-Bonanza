@@ -8,7 +8,7 @@ import {
   addFood,
   setTargetItem,
   setTargetPlate,
-} from '../pages/features/plateSlice';
+} from 'pages/features/plateSlice';
 
 const foodPosition = {
   sunnyEgg: '0',

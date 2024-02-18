@@ -3,6 +3,8 @@ import React from 'react';
 import { useFormContext } from 'react-hook-form';
 import autoJamSystem from '../helpers/autoJamSystem';
 import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { selectPlate } from 'pages/features/plateSlice';
 
 // type JamObj = {
 //   done: string,
@@ -15,8 +17,7 @@ const jamArr = [
 ];
 
 const Jam = () => {
-  const { setValue, watch } = useFormContext();
-  const data = watch();
+  const plateData = useSelector(selectPlate);
   const dispatch = useDispatch();
 
   return (
@@ -27,7 +28,7 @@ const Jam = () => {
           px="0"
           cursor="pointer"
           onClick={() => {
-            autoJamSystem(data, e.done, setValue, dispatch);
+            autoJamSystem(plateData, e.done, dispatch);
           }}
         >
           <Image src={`/${e.init}.svg`} w="4em" pointerEvents="none" />

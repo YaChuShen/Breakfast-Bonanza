@@ -79,12 +79,9 @@ const CustomerTemplate = ({ wishFood, status, overtime, id, src, start }) => {
     if (!overtime && start) {
       const t = setTimeout(() => {
         dispatch(handleOvertime({ id, status: true }));
-
-        // setValue(`${id}.overtime`, true);
         minusScore();
         setGetScoreAni(true);
         dispatch(handleCustomStatus({ id, status: 'errors' }));
-        // setValue(`${id}.status`, 'errors');
       }, [CUSTOMEROVERTIME]);
 
       if (status === 'eating') clearTimeout(t);
@@ -121,16 +118,13 @@ const CustomerTemplate = ({ wishFood, status, overtime, id, src, start }) => {
     setTimeout(() => {
       dispatch(getNextOrder({ id }));
     }, [CUSTOMERNEXTORDER]);
-
-    // setValue(`${id}.overtime`, false);
-    // setValue(`${id}.status`, 'eating');
     getScore();
     setGetScoreAni(true);
   };
 
   const failureSubmit = () => {
     if (status === 'eating') return;
-    setValue(`${id}.status`, 'errors');
+    dispatch(handleCustomStatus({ id, status: 'errors' }));
     minusScore();
     setGetScoreAni(true);
   };
@@ -140,14 +134,11 @@ const CustomerTemplate = ({ wishFood, status, overtime, id, src, start }) => {
       userSelect="none"
       onDrop={(e) => {
         e.preventDefault();
-        const key = `plateContent${data?.targetPlate}`;
         if (handleValidateFood()) {
           submitOrder();
         } else {
           failureSubmit();
         }
-        setValue(key, []);
-        setValue('targetPlate', null);
         dispatch(addFood({ id: plateData.targetPlate, targetItem: [] }));
         dispatch(setTargetPlate({ index: null }));
       }}

@@ -20,15 +20,15 @@ const statusList = {
 
 const CookTemplate = ({ tool, w = '14em', ...props }) => {
   const dispatch = useDispatch();
-  const { setValue, watch } = useFormContext();
-  const data = watch();
+  const { setValue } = useFormContext();
   const [cookedGroup, setCookedGroup] = useState();
   const [status, setStatus] = useState();
   const isCooking = status === 'cooking';
   const isMaturity = status === 'maturity';
   const isOver = status === 'over';
   const key = statusList[status];
-  const { targetPlate, targetItem } = useSelector(selectPlate);
+  const plateData = useSelector(selectPlate);
+  const { targetItem } = plateData;
 
   useEffect(() => {
     if (isCooking) {
@@ -47,10 +47,6 @@ const CookTemplate = ({ tool, w = '14em', ...props }) => {
 
   const foodOnDragStart = () => {
     if (isMaturity || isOver) {
-      setValue(
-        'targetItem',
-        isOver ? cookedGroup?.over.value : cookedGroup?.done.value
-      );
       dispatch(
         setTargetItem({
           target: isOver ? cookedGroup?.over.value : cookedGroup?.done.value,
@@ -69,9 +65,9 @@ const CookTemplate = ({ tool, w = '14em', ...props }) => {
     <Box
       {...props}
       onDragEnter={() =>
-        onDragEnter(data, status, isOver, stoveList, setCookedGroup)
+        onDragEnter(targetItem, status, isOver, stoveList, setCookedGroup)
       }
-      onDrop={() => onDrop(data, cookedGroup, status, setStatus)}
+      onDrop={() => onDrop(targetItem, cookedGroup, status, setStatus)}
       onDragOver={(e) => {
         e.preventDefault();
         e.stopPropagation();
@@ -103,10 +99,9 @@ const CookTemplate = ({ tool, w = '14em', ...props }) => {
             draggable="true"
             onClick={() =>
               passToPlate(
-                data,
+                plateData,
                 cookedGroup,
                 isMaturity,
-                setValue,
                 setStatus,
                 null,
                 dispatch

@@ -12,6 +12,15 @@ import { MUTURITYTIME, OVERTIME } from 'contents/rulse';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { selectPlate } from 'pages/features/plateSlice';
+import {
+  addFood,
+  setTargetItem,
+  setTargetPlate,
+} from '../pages/features/plateSlice';
+import {
+  selectGameConfig,
+  handleTrashCan,
+} from 'pages/features/gameConfigSlice';
 
 const statusList = {
   cooking: 'toasterIn0',
@@ -23,13 +32,12 @@ const statusList = {
 
 const Toaster = ({ tool, w = '14em', ...props }) => {
   const dispatch = useDispatch();
-  const { setValue, watch } = useFormContext();
-  const data = watch();
   const [cookedGroup, setCookedGroup] = useState();
   const [status, setStatus] = useState();
   const [move, setMove] = useState();
   const [haveOverCook, setHaveOverCook] = useState();
-  const { targetPlate, targetItem } = useSelector(selectPlate);
+  const plateData = useSelector(selectPlate);
+  const { targetItem } = plateData;
 
   const isCooking = status === 'cooking';
   const isMaturity = status === 'maturity';
@@ -72,14 +80,14 @@ const Toaster = ({ tool, w = '14em', ...props }) => {
 
   const overCookOnDragStart = () => {
     if (haveOverCook) {
-      setValue('targetItem', cookedGroup?.over.value);
+      dispatch(setTargetItem({ target: cookedGroup?.over.value }));
     }
   };
 
   const overCookOnDoubleClick = () => {
     if (haveOverCook) {
       setStatus(null);
-      setValue('trashCanOpen', true);
+      dispatch(handleTrashCan({ value: true }));
       setHaveOverCook(false);
       setMove(false);
     }
@@ -106,9 +114,15 @@ const Toaster = ({ tool, w = '14em', ...props }) => {
   return (
     <Box
       onDragEnter={() =>
-        onDragEnter(data, status, haveOverCook, toasterList, setCookedGroup)
+        onDragEnter(
+          targetItem,
+          status,
+          haveOverCook,
+          toasterList,
+          setCookedGroup
+        )
       }
-      onDrop={() => !move && onDrop(data, cookedGroup, status, setStatus)}
+      onDrop={() => !move && onDrop(targetItem, cookedGroup, status, setStatus)}
       onDragOver={(e) => {
         e.preventDefault();
         e.stopPropagation();
@@ -132,10 +146,9 @@ const Toaster = ({ tool, w = '14em', ...props }) => {
             pos="relative"
             onClick={() =>
               passToPlate(
-                data,
+                plateData,
                 cookedGroup,
                 isDone,
-                setValue,
                 setStatus,
                 setMove,
                 dispatch
