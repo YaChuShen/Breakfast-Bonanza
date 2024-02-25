@@ -1,5 +1,5 @@
 import settingPlateRules from './settingPlateRules';
-import { addFood } from 'pages/features/plateSlice';
+import { addFood } from 'store/features/plateSlice';
 
 const autoPlateSystem = (data, target, isDone, dispatch) => {
   let i = 1;

@@ -11,13 +11,13 @@ import {
   handleOvertime,
   handleCustomStatus,
   getNextOrder,
-} from 'pages/features/customerSlice';
+} from 'store/features/customerSlice';
 import {
   addFood,
   setTargetItem,
   setTargetPlate,
-} from '../pages/features/plateSlice';
-import { selectPlate } from 'pages/features/plateSlice';
+} from 'store/features/plateSlice';
+import { selectPlate } from 'store/features/plateSlice';
 import { useSelector } from 'react-redux';
 
 const MotionComponent = motion(Box);

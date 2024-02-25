@@ -4,15 +4,15 @@ import { trashCanNoList } from '../contents/rulse';
 import {
   selectGameConfig,
   handleTrashCan,
-} from 'pages/features/gameConfigSlice';
+} from 'store/features/gameConfigSlice';
 import { useSelector } from 'react-redux';
-import { selectPlate } from 'pages/features/plateSlice';
+import { selectPlate } from 'store/features/plateSlice';
 import { useDispatch } from 'react-redux';
 import {
   addFood,
   setTargetItem,
   setTargetPlate,
-} from 'pages/features/plateSlice';
+} from 'store/features/plateSlice';
 
 const TrashCan = ({ ...props }) => {
   const dispatch = useDispatch();

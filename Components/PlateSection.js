@@ -3,7 +3,7 @@ import React from 'react';
 import Plate from './Plate';
 import { range } from 'lodash';
 import { plate } from '../helpers/rwd';
-import { selectPlate } from 'pages/features/plateSlice';
+import { selectPlate } from 'store/features/plateSlice';
 import { useSelector } from 'react-redux';
 
 const PlateSection = ({ data, methods }) => {

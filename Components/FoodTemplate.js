@@ -1,7 +1,7 @@
 import { Center, Image } from '@chakra-ui/react';
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { setTargetItem } from '../pages/features/plateSlice';
+import { setTargetItem } from 'store/features/plateSlice';
 
 const size = {
   coffee: '3.5em',

@@ -4,7 +4,7 @@ import React from 'react';
 import { ChakraProvider } from '@chakra-ui/react';
 import theme from 'contents/theme';
 import { Provider } from 'react-redux';
-import store from './store';
+import store from '../store/index';
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }) {
   return (

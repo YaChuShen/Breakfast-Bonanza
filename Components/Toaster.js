@@ -9,9 +9,9 @@ import passToPlate from '../helpers/cook/passToPlate';
 import { MUTURITYTIME, OVERTIME } from 'contents/rulse';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
-import { selectPlate } from 'pages/features/plateSlice';
-import { setTargetItem } from '../pages/features/plateSlice';
-import { handleTrashCan } from 'pages/features/gameConfigSlice';
+import { selectPlate } from 'store/features/plateSlice';
+import { setTargetItem } from 'store/features/plateSlice';
+import { handleTrashCan } from 'store/features/gameConfigSlice';
 
 const statusList = {
   cooking: 'toasterIn0',

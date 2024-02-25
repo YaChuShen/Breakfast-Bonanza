@@ -3,7 +3,7 @@ import React from 'react';
 import autoJamSystem from '../helpers/autoJamSystem';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
-import { selectPlate } from 'pages/features/plateSlice';
+import { selectPlate } from 'store/features/plateSlice';
 
 const jamArr = [
   { init: 'blueberry-can', done: 'blueberry' },

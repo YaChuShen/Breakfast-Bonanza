@@ -1,4 +1,4 @@
-import { addFood } from 'pages/features/plateSlice';
+import { addFood } from 'store/features/plateSlice';
 
 const autoJamSystem = (data, target, dispatch) => {
   let i = 1;

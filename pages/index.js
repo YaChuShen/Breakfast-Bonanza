@@ -20,7 +20,7 @@ import Gress1 from 'Components/Gress1';
 import TimerBoard from 'Components/TimerBoard';
 import LittleTree from 'Components/LittleTree';
 import { useSelector } from 'react-redux';
-import { selectCustomer } from 'pages/features/customerSlice';
+import { selectCustomer } from 'store/features/customerSlice';
 import defaultConfig from 'contents/rootConfig';
 
 const CustomerTemplate = dynamic(

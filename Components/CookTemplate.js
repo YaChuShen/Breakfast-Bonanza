@@ -8,9 +8,9 @@ import onDragEnter from '../helpers/cook/onDragEnter';
 import onDrop from '../helpers/cook/onDrop';
 import passToPlate from '../helpers/cook/passToPlate';
 import { useDispatch } from 'react-redux';
-import { setTargetItem } from '../pages/features/plateSlice';
+import { setTargetItem } from 'store/features/plateSlice';
 import { useSelector } from 'react-redux';
-import { selectPlate } from 'pages/features/plateSlice';
+import { selectPlate } from 'store/features/plateSlice';
 
 const statusList = {
   cooking: 'init',
