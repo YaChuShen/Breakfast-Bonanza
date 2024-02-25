@@ -3,10 +3,12 @@ import plateReducer from './features/plateSlice';
 import customerReducer from './features/customerSlice';
 import gameConfigReducer from './features/gameConfigSlice';
 
-export const store = configureStore({
+const store = configureStore({
   reducer: {
     plate: plateReducer,
     customer: customerReducer,
     gameConfig: gameConfigReducer,
   },
 });
+
+export default store;
