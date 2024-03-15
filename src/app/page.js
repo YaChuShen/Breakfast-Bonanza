@@ -37,7 +37,7 @@ function HomePage() {
   const [start, setStart] = useState(false);
   const currentData = useSelector(selectCustomer);
 
-  console.log('1');
+  console.log('hi');
 
   const toasterSection = (
     <HStack spacing={0}>
@@ -75,13 +75,13 @@ function HomePage() {
   return (
     <Media greaterThanOrEqual="md">
       <FormProvider {...methods}>
-        <Box as="form">
-          {/* <TimerBoard
+        {/* <Box as="form">
+          <TimerBoard
             setStart={setStart}
             start={start}
             session={session}
             data={data}
-          /> */}
+          />
           {useMemo(() => {
             return (
               <>
@@ -124,7 +124,7 @@ function HomePage() {
               </>
             );
           }, [data])}
-        </Box>
+        </Box> */}
       </FormProvider>
     </Media>
   );
