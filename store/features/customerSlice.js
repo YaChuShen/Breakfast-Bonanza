@@ -1,3 +1,4 @@
+'use client';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { range, sample } from 'lodash';
 import foodList from 'contents/foodList';

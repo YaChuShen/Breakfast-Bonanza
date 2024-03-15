@@ -1,3 +1,5 @@
+'use client';
+
 import { createSlice } from '@reduxjs/toolkit';
 import { range, sample } from 'lodash';
 import defaultConfig from 'contents/rootConfig';

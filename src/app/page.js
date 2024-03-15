@@ -1,18 +1,20 @@
+'use client';
+
 import { Box, Center, HStack, Image, VStack } from '@chakra-ui/react';
 import { FormProvider, useForm } from 'react-hook-form';
 import values from 'helpers/customerForm';
-import FoodTemplate from '../Components/FoodTemplate';
+import FoodTemplate from 'Components/FoodTemplate';
 import dynamic from 'next/dynamic';
 import CookTemplate from 'Components/CookTemplate';
 import Toaster from 'Components/Toaster';
 import { range } from 'lodash';
 import Jam from 'Components/Jam';
-import TrashCan from '../Components/TrashCan';
-import Table from '../Components/Table';
-import FoodPlateSection from '../Components/FoodPlateSection';
-import PlateSection from '../Components/PlateSection';
-import ScoreSection from '../Components/ScoreSection';
-import { tool } from '../helpers/rwd';
+import TrashCan from 'Components/TrashCan';
+import Table from 'Components/Table';
+import FoodPlateSection from 'Components/FoodPlateSection';
+import PlateSection from 'Components/PlateSection';
+import ScoreSection from 'Components/ScoreSection';
+import { tool } from 'helpers/rwd';
 import { useSession } from 'next-auth/react';
 import React, { useMemo, useState } from 'react';
 import Media from 'Components/Media';
@@ -22,13 +24,11 @@ import LittleTree from 'Components/LittleTree';
 import { useSelector } from 'react-redux';
 import { selectCustomer } from 'store/features/customerSlice';
 import defaultConfig from 'contents/rootConfig';
+import CustomerTemplate from 'Components/CustomerTemplate';
 
-const CustomerTemplate = dynamic(
-  () => import('../Components/CustomerTemplate'),
-  {
-    ssr: false,
-  }
-);
+// const CustomerTemplate = dynamic(() => import('Components/CustomerTemplate'), {
+//   ssr: false,
+// });
 
 function HomePage() {
   const methods = useForm({ defaultValues: values });
@@ -36,6 +36,8 @@ function HomePage() {
   const { data: session } = useSession();
   const [start, setStart] = useState(false);
   const currentData = useSelector(selectCustomer);
+
+  console.log('1');
 
   const toasterSection = (
     <HStack spacing={0}>

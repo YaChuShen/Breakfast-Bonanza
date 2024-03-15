@@ -1,3 +1,5 @@
+'use client';
+
 import { configureStore } from '@reduxjs/toolkit';
 import plateReducer from './features/plateSlice';
 import customerReducer from './features/customerSlice';
