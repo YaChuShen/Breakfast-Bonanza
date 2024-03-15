@@ -24,11 +24,11 @@ import LittleTree from 'Components/LittleTree';
 import { useSelector } from 'react-redux';
 import { selectCustomer } from 'store/features/customerSlice';
 import defaultConfig from 'contents/rootConfig';
-import CustomerTemplate from 'Components/CustomerTemplate';
+// import CustomerTemplate from 'Components/CustomerTemplate';
 
-// const CustomerTemplate = dynamic(() => import('Components/CustomerTemplate'), {
-//   ssr: false,
-// });
+const CustomerTemplate = dynamic(() => import('Components/CustomerTemplate'), {
+  ssr: false,
+});
 
 function HomePage() {
   const methods = useForm({ defaultValues: values });
