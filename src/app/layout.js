@@ -5,13 +5,19 @@ import { Globals } from './GlobalProviders';
 
 export default function RootLayout({ children }) {
   return (
-    <ReduxProviders>
-      <SessionProviders>
-        <ChakraProviders>
-          {children}
-          <Globals />
-        </ChakraProviders>
-      </SessionProviders>
-    </ReduxProviders>
+    <html lang="en">
+      <body>
+        <main>
+          <ReduxProviders>
+            <SessionProviders>
+              <ChakraProviders>
+                {children}
+                <Globals />
+              </ChakraProviders>
+            </SessionProviders>
+          </ReduxProviders>
+        </main>
+      </body>
+    </html>
   );
 }
