@@ -1,9 +1,11 @@
-import { AnimatePresence } from "framer-motion";
-import React from "react";
-import StartBoard from "Components/StartBoard";
-import EndBoard from "Components/EndBoard";
-import useExpiryTimer from "hooks/useExpiryTimer";
-import ScoreSection from "./ScoreSection";
+'use client';
+
+import { AnimatePresence } from 'framer-motion';
+import React from 'react';
+import StartBoard from 'Components/StartBoard';
+import EndBoard from 'Components/EndBoard';
+import useExpiryTimer from 'hooks/useExpiryTimer';
+import ScoreSection from './ScoreSection';
 
 const TimerBoard = ({ setStart, start, session, data }) => {
   const { seconds, minutes, isRunning, timerStart, restart } = useExpiryTimer();

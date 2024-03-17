@@ -13,10 +13,9 @@ import TrashCan from 'Components/TrashCan';
 import Table from 'Components/Table';
 import FoodPlateSection from 'Components/FoodPlateSection';
 import PlateSection from 'Components/PlateSection';
-import ScoreSection from 'Components/ScoreSection';
 import { tool } from 'helpers/rwd';
 import { useSession } from 'next-auth/react';
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import Media from 'Components/Media';
 import Gress1 from 'Components/Gress1';
 import TimerBoard from 'Components/TimerBoard';
@@ -24,7 +23,6 @@ import LittleTree from 'Components/LittleTree';
 import { useSelector } from 'react-redux';
 import { selectCustomer } from 'store/features/customerSlice';
 import defaultConfig from 'contents/rootConfig';
-// import CustomerTemplate from 'Components/CustomerTemplate';
 
 const CustomerTemplate = dynamic(() => import('Components/CustomerTemplate'), {
   ssr: false,
@@ -74,12 +72,12 @@ function HomePage() {
     <Media greaterThanOrEqual="md">
       <FormProvider {...methods}>
         <Box as="form">
-          {/* <TimerBoard
+          <TimerBoard
             setStart={setStart}
             start={start}
             session={session}
             data={data}
-          /> */}
+          />
           {useMemo(() => {
             return (
               <>

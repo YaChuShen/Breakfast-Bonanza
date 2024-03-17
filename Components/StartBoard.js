@@ -1,3 +1,5 @@
+'use client';
+
 import {
   Box,
   Button,
@@ -10,7 +12,7 @@ import {
 import { motion } from 'framer-motion';
 import React from 'react';
 import { signOut } from 'next-auth/react';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 
 const MotionComponent = motion(Box);
 
@@ -43,7 +45,7 @@ const StartBoard = ({ setStart, session, timerStart }, ...props) => {
         <VStack w="100%">
           <Image src="/breakfast_bonanza_logo.svg" w="60%" />
           <Text color="red.500" fontSize="24px" fontWeight={700}>
-            Produce Maximum Breakfasts in Limited Time
+            Make Maximum Breakfasts in Limited Time
           </Text>
         </VStack>
         {session && (

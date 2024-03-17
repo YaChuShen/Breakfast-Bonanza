@@ -1,33 +1,33 @@
-import { Box, Button, Image, Text, VStack } from "@chakra-ui/react";
-import { motion } from "framer-motion";
-import { method } from "lodash";
-import React, { useEffect } from "react";
+import { Box, Button, Image, Text, VStack } from '@chakra-ui/react';
+import { motion } from 'framer-motion';
+import { method } from 'lodash';
+import React, { useEffect } from 'react';
 
 const MotionComponent = motion(Box);
 
 const EndBoard = ({ score, isRunning, session }, ...props) => {
   useEffect(() => {
-    // const fetchData = async () => {
-    //   const res = await fetch("/api/pointsTable", {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify({
-    //       score: score ?? 0,
-    //       profileId: session?.user?.profileId,
-    //     }),
-    //   }).then((res) => {
-    //     console.log(res);
-    //   });
-    // };
-    // fetchData();
+    const fetchData = async () => {
+      await fetch('/api/pointsTable', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          score: score ?? 0,
+          profileId: session?.user?.id,
+        }),
+      }).then((res) => {
+        // console.log(res);
+      });
+    };
+    fetchData();
   }, []);
 
   return (
     <MotionComponent
       w="80%"
-      py={{ md: "5em", xl: "7em" }}
+      py={{ md: '5em', xl: '7em' }}
       bg="rgba(255, 255, 255, 0.9)"
       pos="fixed"
       top="10%"
@@ -39,9 +39,9 @@ const EndBoard = ({ score, isRunning, session }, ...props) => {
         opacity: 0,
         y: -300,
         scale: 0.8,
-        transition: { duration: 0.3, type: "spring" },
+        transition: { duration: 0.3, type: 'spring' },
       }}
-      transition={{ duration: 0.5, type: "spring", stiffness: 200 }}
+      transition={{ duration: 0.5, type: 'spring', stiffness: 200 }}
       borderRadius="80px"
       border="10px solid #db542c"
       {...props}
@@ -76,7 +76,7 @@ const EndBoard = ({ score, isRunning, session }, ...props) => {
             size="xl"
             borderRadius="20px"
             letterSpacing="1px"
-            _hover={{ bg: "red.700", color: "white" }}
+            _hover={{ bg: 'red.700', color: 'white' }}
             fontWeight={900}
           >
             Re-START
