@@ -26,6 +26,7 @@ import {
   emailMessage,
   passwordMessage,
 } from 'contents/emailPasswordErrorMessage';
+import CustomContainer from 'Components/CustomContainer';
 
 type Inputs = {
   email: string;
@@ -80,7 +81,7 @@ const Index = () => {
   // const emailType = errors?.email?.type;
 
   return (
-    <Container maxW="2xl" pt="10em">
+    <CustomContainer>
       <Stack flex={1} justifyContent="center" w="100%" spacing={10} px="3em">
         <Text textAlign="center" fontWeight={700} fontSize="30px">
           Sign Up
@@ -150,7 +151,7 @@ const Index = () => {
           </Link>
         </HStack>
       </Stack>
-    </Container>
+    </CustomContainer>
   );
 };
 

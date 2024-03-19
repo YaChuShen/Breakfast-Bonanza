@@ -3,7 +3,6 @@
 import {
   Button,
   Center,
-  Container,
   HStack,
   Image,
   Input,
@@ -27,6 +26,7 @@ import {
 } from 'contents/emailPasswordErrorMessage';
 import PasswordInput from '../../Components/PasswordInput';
 import { useState } from 'react';
+import CustomContainer from 'Components/CustomContainer';
 
 export default function SignIn({ providers, csrfToken }) {
   const router = useRouter();
@@ -58,7 +58,7 @@ export default function SignIn({ providers, csrfToken }) {
     }
   };
   return (
-    <Container maxW="2xl" pt="10em">
+    <CustomContainer>
       <Stack flex={1} justifyContent="center" w="100%" spacing={10} px="3em">
         <Text textAlign="center" fontWeight={700} fontSize="30px">
           LogIn
@@ -125,7 +125,7 @@ export default function SignIn({ providers, csrfToken }) {
           </Link>
         </HStack>
       </Stack>
-    </Container>
+    </CustomContainer>
   );
 }
 
