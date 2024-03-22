@@ -23,6 +23,7 @@ import LittleTree from 'Components/LittleTree';
 import { useSelector } from 'react-redux';
 import { selectCustomer } from 'store/features/customerSlice';
 import defaultConfig from 'contents/rootConfig';
+import Navbar from 'Components/Navbar';
 
 const CustomerTemplate = dynamic(() => import('Components/CustomerTemplate'), {
   ssr: false,
@@ -34,6 +35,8 @@ function HomePage() {
   const { data: session } = useSession();
   const [start, setStart] = useState(false);
   const currentData = useSelector(selectCustomer);
+
+  console.log(session);
 
   const toasterSection = (
     <HStack spacing={0}>
@@ -72,6 +75,7 @@ function HomePage() {
     <Media greaterThanOrEqual="md">
       <FormProvider {...methods}>
         <Box as="form">
+          {session && <Navbar profileId={session?.user?.profileId} />}
           <TimerBoard
             setStart={setStart}
             start={start}

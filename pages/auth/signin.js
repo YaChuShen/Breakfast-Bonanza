@@ -130,7 +130,7 @@ export default function SignIn({ providers, csrfToken }) {
 }
 
 export async function getServerSideProps(context) {
-  const csrfToken = await getCsrfToken(context);
+  const csrfToken = (await getCsrfToken(context)) ?? null;
   const providers = await getProviders();
 
   return {

@@ -2,16 +2,14 @@ import admin from 'functions/admin';
 import { NextResponse } from 'next/server';
 
 export async function POST(request) {
-  const { profileId, score } = await request?.json();
+  const { profileId, publicURL } = await request?.json();
   const db = admin.firestore();
-
   try {
     await db
       .collection('users')
       .doc(profileId)
       .update({
-        score: admin.firestore.FieldValue.arrayUnion(score),
-        lastPlayTime: admin.firestore.FieldValue.serverTimestamp(),
+        avatar: publicURL || '',
       });
     return NextResponse.json({
       status: 200,

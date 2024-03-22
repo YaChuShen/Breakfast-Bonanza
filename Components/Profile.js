@@ -1,16 +1,29 @@
 'use client';
 
-import { Text, VStack } from '@chakra-ui/react';
+import { Link, Text, VStack } from '@chakra-ui/react';
 import React from 'react';
 import AvatarPicker from 'Components/AvatarPicker';
 import CustomContainer from 'Components/CustomContainer';
 
-const Profile = ({ data }) => {
+const Profile = ({ data, profileId }) => {
   return (
     <CustomContainer>
+      <Link href="/">
+        <Text>Back</Text>
+      </Link>
       <VStack>
         <Text>{data.name}</Text>
-        <AvatarPicker />
+        <AvatarPicker profileId={profileId} avatar={data?.avatar} />
+        {data?.score?.length > 0 && (
+          <VStack>
+            <Text fontWeight={700} fontSize="18px">
+              Record
+            </Text>
+            {data?.score.splice(0, 5).map((item) => (
+              <Text key={item}>{item}</Text>
+            ))}
+          </VStack>
+        )}
       </VStack>
     </CustomContainer>
   );

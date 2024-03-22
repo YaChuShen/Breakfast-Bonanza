@@ -6,7 +6,12 @@ const Page = async ({ params }) => {
   const profieSnaps = await db.collection('users').doc(params.id).get();
   const data = profieSnaps.data();
 
-  return <Profile data={JSON.parse(JSON.stringify(data))} />;
+  return (
+    <Profile
+      data={JSON.parse(JSON.stringify(data ?? {}) ?? {})}
+      profileId={params.id}
+    />
+  );
 };
 
 export default Page;

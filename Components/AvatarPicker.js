@@ -5,43 +5,37 @@ import React, { useEffect, useMemo, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { BiCamera } from 'react-icons/bi';
 import { storage } from '../firebase.config';
-import { getStorage, ref } from 'firebase/storage';
+import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
+import postMethod from 'helpers/postMethod';
 
-const AvatarPicker = () => {
+const AvatarPicker = ({ profileId, avatar }) => {
+  console.log(avatar);
   const prevUrl = useRef();
   const { register, handleSubmit, watch } = useForm({});
   const file = watch('avatar');
-  const imagesRef = ref(storage, 'images');
+
+  useEffect(() => {
+    const handleUpload = async () => {
+      if (file instanceof FileList && file[0]) {
+        const imagesRef = ref(storage, `${profileId}/avatar`);
+        const upload = await uploadBytes(imagesRef, file[0]);
+        const publicURL = await getDownloadURL(upload.ref);
+        await postMethod({
+          path: '/api/postAvatar',
+          data: {
+            profileId,
+            publicURL,
+          },
+        });
+      }
+    };
+    handleUpload();
+  }, [file?.[0]]);
 
   const avatarURL = useMemo(() => {
     if (file instanceof FileList && file[0]) {
       return URL.createObjectURL(file[0]);
     }
-  }, [file]);
-
-  useEffect(() => {}, [file]);
-
-  const previewUrl = useMemo(() => {
-    // let f = file;
-    // if (file instanceof FileList && file[0]) {
-    //   f = file[0];
-    // }
-    // if (f instanceof File || f instanceof Blob) {
-    //   if (prevUrl.current) {
-    //     console.log(URL.revokeObjectURL(prevUrl.current));
-    //     URL.revokeObjectURL(prevUrl.current);
-    //   }
-    //   const url = URL.createObjectURL(f);
-    //   prevUrl.current = url;
-    //   return url;
-    // }
-    // if (typeof f === 'string' && f?.startsWith('https')) {
-    //   return f;
-    // }
-    //上傳圖片按取消
-    // if (f instanceof FileList && !file[0]) {
-    //   return '';
-    // }
   }, [file]);
 
   return (
@@ -53,7 +47,7 @@ const AvatarPicker = () => {
       size="6em"
       overflow="hidden"
       role="button"
-      bgImage={`url(${avatarURL})`}
+      bgImage={`url(${avatar ?? avatarURL})`}
       bgSize="cover"
       bgPosition="center"
       bgRepeat="no-repeat"
