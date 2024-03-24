@@ -44,7 +44,15 @@ const CustomerImg = ({ src }) => {
   );
 };
 
-const CustomerTemplate = ({ wishFood, status, overtime, id, src, start }) => {
+const CustomerTemplate = ({
+  wishFood,
+  status,
+  overtime,
+  id,
+  src,
+  start,
+  className,
+}) => {
   const { setValue, watch } = useFormContext();
   const data = watch();
   const isCoffee = wishFood === 'coffee';
@@ -146,6 +154,7 @@ const CustomerTemplate = ({ wishFood, status, overtime, id, src, start }) => {
         e.preventDefault();
       }}
       pos="relative"
+      className={className}
     >
       <Box pos="absolute" bottom="70%" left="-30%">
         {getScoreAni && (

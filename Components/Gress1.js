@@ -1,7 +1,7 @@
-import React from "react";
-import Media from "./Media";
-import { Image, Text } from "@chakra-ui/react";
-import { BigTree } from "helpers/rwd";
+import React from 'react';
+import Media from './Media';
+import { Image, Text } from '@chakra-ui/react';
+import { BigTree } from 'helpers/rwd';
 
 const Gress1 = () => {
   return (

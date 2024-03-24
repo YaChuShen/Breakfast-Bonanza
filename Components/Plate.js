@@ -49,7 +49,7 @@ const shadow = {
   hotDog: <ShadowTelplate bottom={4} left={9} w="4em" rotate={-20} blur={3} />,
 };
 
-const Plate = ({ data, setValue, index }) => {
+const Plate = ({ data, setValue, index, className }) => {
   const dispatch = useDispatch();
   const key = `plateContent${index + 1}`;
   const food = data[key];
@@ -110,7 +110,7 @@ const Plate = ({ data, setValue, index }) => {
         setValue('targetPlate', null);
       }}
     >
-      <Image src="plate.svg" w="8em" />
+      <Image src="plate.svg" w="8em" className={className} />
       {showUp && (
         <>
           <FoodTemplate

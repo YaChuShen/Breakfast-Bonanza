@@ -8,7 +8,13 @@ const FoodPlateSection = () => {
       <Box pos="absolute" w="10em" left={-5} bottom={-10}>
         <Image src="/foodPlate.svg" alt="" />
       </Box>
-      <FoodTemplate value={'egg'} src={'egg'} w="3em" zIndex={1} />
+      <FoodTemplate
+        value={'egg'}
+        src={'egg'}
+        w="3em"
+        zIndex={1}
+        className=".first-step"
+      />
       <FoodTemplate value={'hotDog0'} src={'hotDog0'} w="4.5em" zIndex={1} />
     </HStack>
   );

@@ -18,7 +18,13 @@ const PlateSection = ({ data, methods }) => {
       bottom={plate}
     >
       {range(data?.plate).map((e, i) => (
-        <Plate data={plateData} setValue={methods.setValue} index={e} key={i} />
+        <Plate
+          data={plateData}
+          setValue={methods.setValue}
+          index={e}
+          key={i}
+          className={e === 0 ? 'two-step' : ''}
+        />
       ))}
     </HStack>
   );

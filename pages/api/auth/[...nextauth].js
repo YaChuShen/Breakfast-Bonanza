@@ -7,7 +7,7 @@ import * as firestoreFunctions from 'firebase/firestore';
 import admin from '../../../functions/admin';
 import bcrypt from 'bcrypt';
 
-const authHandler = NextAuth({
+export const NextAuthOptions = NextAuth({
   session: {
     strategy: 'jwt',
   },
@@ -75,8 +75,7 @@ const authHandler = NextAuth({
       return { ...token, ...user };
     },
     session: async ({ session, token }) => {
-      session.user = token;
-      return session;
+      return { ...session, ...token };
     },
     async signIn({ user }) {
       if (user?.error === 'password error') {
@@ -95,5 +94,5 @@ const authHandler = NextAuth({
 });
 
 export default async function handler(...params) {
-  await authHandler(...params);
+  await NextAuthOptions(...params);
 }

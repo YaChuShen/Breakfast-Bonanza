@@ -9,7 +9,7 @@ const size = {
   'blueberry-toast': '8em',
 };
 
-const FoodTemplate = ({ value, src, w = '5em', ...props }) => {
+const FoodTemplate = ({ value, src, w = '5em', className, ...props }) => {
   const dispatch = useDispatch();
 
   return (
@@ -21,7 +21,13 @@ const FoodTemplate = ({ value, src, w = '5em', ...props }) => {
         dispatch(setTargetItem({ target: value }));
       }}
     >
-      <Image src={`/${src}.svg`} w={size[value] ?? w} maxW="8em"></Image>
+      <Image
+        src={`/${src}.svg`}
+        alt=""
+        w={size[value] ?? w}
+        maxW="8em"
+        className={className}
+      ></Image>
     </Center>
   );
 };

@@ -1,0 +1,123 @@
+'use client';
+
+import { Box, Center, HStack, Image, VStack } from '@chakra-ui/react';
+import { FormProvider, useForm } from 'react-hook-form';
+import values from 'helpers/customerForm';
+import FoodTemplate from 'Components/FoodTemplate';
+import dynamic from 'next/dynamic';
+import CookTemplate from 'Components/CookTemplate';
+import Toaster from 'Components/Toaster';
+import { range } from 'lodash';
+import Jam from 'Components/Jam';
+import TrashCan from 'Components/TrashCan';
+import Table from 'Components/Table';
+import FoodPlateSection from 'Components/FoodPlateSection';
+import PlateSection from 'Components/PlateSection';
+import { tool } from 'helpers/rwd';
+import { useSession } from 'next-auth/react';
+import React, { useEffect, useMemo, useState } from 'react';
+import Media from 'Components/Media';
+import Gress1 from 'Components/Gress1';
+import TimerBoard from 'Components/TimerBoard';
+import LittleTree from 'Components/LittleTree';
+import { useSelector } from 'react-redux';
+import { selectCustomer } from 'store/features/customerSlice';
+import defaultConfig from 'contents/rootConfig';
+import Navbar from 'Components/Navbar';
+import Tour from 'Components/Tour';
+
+const CustomerTemplate = dynamic(() => import('Components/CustomerTemplate'), {
+  ssr: false,
+});
+
+function HomePage({ dbData, profileId }) {
+  const methods = useForm({ defaultValues: values });
+  const data = methods.watch();
+  const { data: session } = useSession();
+  const [start, setStart] = useState(false);
+  const currentData = useSelector(selectCustomer);
+
+  const toasterSection = (
+    <HStack spacing={0}>
+      <Toaster w="10em" tool={undefined} />
+      <VStack>
+        <Jam />
+        <FoodTemplate value={'toast0'} src={'toast0'} w="6em" />
+      </VStack>
+    </HStack>
+  );
+
+  const materialSection = (
+    <HStack spacing={0} className="first-step">
+      <CookTemplate tool={'pan'} w="13em" zIndex={1} />
+      <FoodPlateSection />
+      <Box pl="4">
+        <FoodTemplate value={'coffee'} src={'coffee'} />
+      </Box>
+    </HStack>
+  );
+
+  return (
+    <Media greaterThanOrEqual="md">
+      <FormProvider {...methods}>
+        <Tour profileId={profileId}>
+          <Box as="form">
+            {session && <Navbar profileId={profileId} />}
+            <TimerBoard
+              setStart={setStart}
+              start={start}
+              session={session}
+              data={data}
+              isTour={dbData.isTour}
+            />
+            {useMemo(() => {
+              return (
+                <>
+                  <Center pt="3em" pos="relative">
+                    <Image src="./window.svg" w="70em" minW="70em" alt="game" />
+                    <HStack
+                      pos="absolute"
+                      zIndex={10}
+                      spacing={20}
+                      alignItems="center"
+                      justifyContent="center"
+                      py="20"
+                    >
+                      {range(defaultConfig.customers).map((e, i) => (
+                        <CustomerTemplate
+                          wishFood={currentData[`customer${i + 1}`].order}
+                          status={currentData[`customer${i + 1}`].status}
+                          overtime={currentData[`customer${i + 1}`].overtime}
+                          id={`customer${i + 1}`}
+                          src={`customer${i + 1}`}
+                          key={e}
+                          start={start}
+                          className={i === 0 ? 'three-step' : ''}
+                        />
+                      ))}
+                    </HStack>
+                  </Center>
+                  <Box pos="relative" userSelect="none">
+                    <Gress1 />
+                    <Table />
+                    <Center>
+                      <PlateSection data={data} methods={methods} />
+                      <HStack pos="absolute" bottom={tool} spacing={10}>
+                        <LittleTree />
+                        {toasterSection}
+                        {materialSection}
+                        <TrashCan />
+                      </HStack>
+                    </Center>
+                  </Box>
+                </>
+              );
+            }, [data])}
+          </Box>
+        </Tour>
+      </FormProvider>
+    </Media>
+  );
+}
+
+export default HomePage;

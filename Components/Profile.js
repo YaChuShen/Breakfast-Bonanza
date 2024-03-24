@@ -1,15 +1,19 @@
 'use client';
 
-import { Link, Text, VStack } from '@chakra-ui/react';
+import { HStack, Icon, Link, Text, VStack } from '@chakra-ui/react';
 import React from 'react';
 import AvatarPicker from 'Components/AvatarPicker';
 import CustomContainer from 'Components/CustomContainer';
+import { FaArrowLeftLong } from 'react-icons/fa6';
 
 const Profile = ({ data, profileId }) => {
   return (
     <CustomContainer>
       <Link href="/">
-        <Text>Back</Text>
+        <HStack>
+          <Icon as={FaArrowLeftLong} />
+          <Text>Back</Text>
+        </HStack>
       </Link>
       <VStack>
         <Text>{data.name}</Text>
