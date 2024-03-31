@@ -1,6 +1,6 @@
 'use client';
 
-import { Box, Center, HStack, Image, VStack } from '@chakra-ui/react';
+import { Box, Center, HStack, Image, Stack, VStack } from '@chakra-ui/react';
 import { FormProvider, useForm } from 'react-hook-form';
 import values from 'helpers/customerForm';
 import FoodTemplate from 'Components/FoodTemplate';
@@ -15,7 +15,7 @@ import FoodPlateSection from 'Components/FoodPlateSection';
 import PlateSection from 'Components/PlateSection';
 import { tool } from 'helpers/rwd';
 import { useSession } from 'next-auth/react';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { createElement, useEffect, useMemo, useState } from 'react';
 import Media from 'Components/Media';
 import Gress1 from 'Components/Gress1';
 import TimerBoard from 'Components/TimerBoard';
@@ -25,6 +25,7 @@ import { selectCustomer } from 'store/features/customerSlice';
 import defaultConfig from 'contents/rootConfig';
 import Navbar from 'Components/Navbar';
 import Tour from 'Components/Tour';
+import RosemarryBowl from 'Components/RosemarryBowl';
 
 const CustomerTemplate = dynamic(() => import('Components/CustomerTemplate'), {
   ssr: false,
@@ -39,19 +40,26 @@ function HomePage({ dbData, profileId }) {
   const level2 = true;
 
   const toasterSection = (
-    <HStack spacing={0}>
-      <Toaster w="10em" tool={undefined} />
-      <VStack>
+    <Stack
+      spacing={0}
+      direction={{ base: 'column', lg: 'row' }}
+      alignItems="center"
+    >
+      <HStack>
+        <Toaster w="7em" tool={undefined} />
+        {level2 && <Toaster w="7em" tool={undefined} />}
+      </HStack>
+      <Stack direction={{ base: 'row', lg: 'column' }}>
         <Jam />
-        <FoodTemplate value={'toast0'} src={'toast0'} w="6em" />
-      </VStack>
-    </HStack>
+        <FoodTemplate value={'toast0'} src={'toast0'} w="5.5em" />
+      </Stack>
+    </Stack>
   );
 
   const materialSection = (
     <HStack spacing={0} className="first-step">
       <CookTemplate tool={'pan'} w="11em" zIndex={1} />
-      <CookTemplate tool={'pan'} w="11em" zIndex={1} />
+      {level2 && <CookTemplate tool={'pan'} w="11em" zIndex={1} />}
       <FoodPlateSection level2={level2} />
       <Box pl="4">
         <FoodTemplate value={'coffee'} src={'coffee'} />
@@ -108,6 +116,7 @@ function HomePage({ dbData, profileId }) {
                         <LittleTree />
                         {toasterSection}
                         {materialSection}
+                        <RosemarryBowl />
                         <TrashCan />
                       </HStack>
                     </Center>

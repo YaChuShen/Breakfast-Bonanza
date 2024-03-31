@@ -45,7 +45,8 @@ const TrashCan = ({ ...props }) => {
   return (
     <Box
       pos="absolute"
-      left="-7em"
+      right="-7"
+      top="-4em"
       userSelect="none"
       onDragLeave={() => {
         setOpen(false);
@@ -57,15 +58,16 @@ const TrashCan = ({ ...props }) => {
       }}
       {...props}
       onDrop={onDrop}
+      w="6em"
     >
       {open ? (
-        <Image src="/trashCan_open.svg" w="7em" pointerEvents="none" />
+        <Image src="/trashCan_open.svg" pointerEvents="none" alt="" />
       ) : (
         <Image
           src="/trashCan.svg"
-          w="7em"
-          cursor={'pointer'}
+          cursor="pointer"
           pointerEvents="none"
+          alt=""
         />
       )}
     </Box>

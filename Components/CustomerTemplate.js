@@ -55,13 +55,13 @@ const CustomerTemplate = ({
 }) => {
   const { setValue, watch } = useFormContext();
   const data = watch();
+  const dispatch = useDispatch();
   const isCoffee = wishFood === 'coffee';
   const [getScoreAni, setGetScoreAni] = useState();
   const plateData = useSelector(selectPlate);
 
   const targetScore =
-    scoreList[splitCategories(plateData.targetItem).sort().join('&')];
-  const dispatch = useDispatch();
+    scoreList[[...splitCategories(plateData.targetItem)].sort().join('&')];
 
   const getScore = () => {
     setValue('score', (data.score += targetScore));
@@ -99,11 +99,6 @@ const CustomerTemplate = ({
       return () => clearTimeout(t);
     }
   }, [overtime, start, status]);
-
-  // console.log(wishFood);
-
-  // console.log(checkContent(plateData.targetItem).sort());
-  // console.log('wishFood', checkContent(wishFood).sort());
 
   const handleValidateFood = () => {
     if (wishFood.includes('&')) {

@@ -126,14 +126,13 @@ const Toaster = ({ tool, w = '14em', ...props }) => {
             time={MUTURITYTIME / 20}
             pos="absolute"
             size="30px"
-            top={5}
-            left={5}
+            top={0}
+            left={0}
           />
         )}
         {dragItem}
         {status ? (
           <Box
-            h="12em"
             pos="relative"
             onClick={() =>
               passToPlate(
@@ -161,7 +160,7 @@ const Toaster = ({ tool, w = '14em', ...props }) => {
             />
           </Box>
         ) : (
-          <Box w={w} h="12em">
+          <Box w={w}>
             <Image
               src={`/toaster.svg`}
               pointerEvents={'none'}
@@ -170,15 +169,14 @@ const Toaster = ({ tool, w = '14em', ...props }) => {
             />
           </Box>
         )}
-
         <Box
           onClick={turnOn}
           w="3em"
           h="3em"
           cursor="pointer"
           pos="absolute"
-          bottom={'3em'}
-          right={2}
+          bottom={'2em'}
+          right={-4}
         />
       </Box>
     </Box>

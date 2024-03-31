@@ -5,7 +5,13 @@ import FoodTemplate from './FoodTemplate';
 const FoodPlateSection = ({ level2 }) => {
   return (
     <HStack pos="relative" spacing={1}>
-      <Box pos="absolute" w="10em" left={-5} bottom={level2 ? -14 : -10}>
+      <Box
+        pos="absolute"
+        w="10em"
+        left={-5}
+        bottom={level2 ? -14 : -10}
+        pointerEvents="none"
+      >
         <Image src="/foodPlate.svg" alt="" />
       </Box>
       <FoodTemplate

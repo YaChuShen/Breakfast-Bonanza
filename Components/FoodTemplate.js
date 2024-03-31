@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import { setTargetItem } from 'store/features/plateSlice';
 
 const size = {
-  coffee: '3.5em',
+  coffee: '2.5em',
   toast: '8em',
   'blueberry-toast': '8em',
 };

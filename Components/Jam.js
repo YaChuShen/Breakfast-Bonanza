@@ -1,9 +1,10 @@
-import { Box, HStack, Image } from '@chakra-ui/react';
+import { Box, HStack } from '@chakra-ui/react';
 import React from 'react';
 import autoJamSystem from '../helpers/autoJamSystem';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { selectPlate } from 'store/features/plateSlice';
+import Image from 'next/image';
 
 const jamArr = [
   { init: 'blueberry-can', done: 'blueberry' },
@@ -27,7 +28,8 @@ const Jam = () => {
         >
           <Image
             src={`/${e.init}.svg`}
-            w="3.5em"
+            width={50}
+            height={60}
             pointerEvents="none"
             alt="jam"
           />

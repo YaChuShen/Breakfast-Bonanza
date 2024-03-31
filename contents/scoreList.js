@@ -1,10 +1,10 @@
 const scoreList = {
   'hotDog&sunnyEgg': 200,
-  'toast&hotDog': 150,
+  'hotDog&toast': 150,
   coffee: 50,
-  'toast&sunnyEgg': 150,
-  'toast&blueberry': 100,
-  'toast&butter': 100,
+  'sunnyEgg&toast': 150,
+  'blueberry&toast': 100,
+  'butter&toast': 100,
   'bacon&hotDog&sunnyEgg': 300,
 };
 
