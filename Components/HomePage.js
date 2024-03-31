@@ -39,6 +39,8 @@ function HomePage({ dbData, profileId }) {
   const currentData = useSelector(selectCustomer);
   const level2 = true;
 
+  console.log(currentData);
+
   const toasterSection = (
     <Stack
       spacing={0}

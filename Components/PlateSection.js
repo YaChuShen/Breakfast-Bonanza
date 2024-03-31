@@ -8,7 +8,6 @@ import { useSelector } from 'react-redux';
 
 const PlateSection = ({ data, methods }) => {
   const plateData = useSelector(selectPlate);
-  console.log(plateData);
 
   return (
     <HStack

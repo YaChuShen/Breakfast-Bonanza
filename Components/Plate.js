@@ -9,6 +9,8 @@ import {
   setTargetItem,
   setTargetPlate,
 } from 'store/features/plateSlice';
+import menuList from 'contents/menuList';
+import { isEqual } from 'lodash';
 
 const foodList = {
   sunnyEgg: { left: '0', bottom: 2, index: 0 },
@@ -74,6 +76,14 @@ const Plate = ({ data, setValue, index, className }) => {
 
   const showUp = isValide && food.length > 0 && displayRules(food[0]);
 
+  const sortList = menuList.map((e) => {
+    return e.split('&').sort();
+  });
+
+  const checkIsPlateFull = sortList.some((e) => {
+    return isEqual(e, [...data[key]]?.sort());
+  });
+
   return (
     <Center
       pos="relative"
@@ -107,28 +117,39 @@ const Plate = ({ data, setValue, index, className }) => {
         setValue('targetPlate', null);
       }}
     >
-      <Image src="plate.svg" w="8em" className={className} />
-      {showUp && (
-        <>
-          {food.map((item, i) => {
-            const foodDisplayRule = displayRules(food[i]);
-            const rules = i > 0 ? food.length > i && foodDisplayRule : true;
-            return (
-              rules && (
-                <FoodTemplate
-                  value={food[i]}
-                  src={food[i]}
-                  pos="absolute"
-                  bottom={foodDisplayRule.bottom}
-                  left={foodDisplayRule.left}
-                  zIndex={foodDisplayRule.index}
-                  w={jam ? '10em' : '5em'}
-                  key={i}
-                />
-              )
-            );
-          })}
-        </>
+      <Image src="plate.svg" w="8em" alt="plate" className={className} />
+      {checkIsPlateFull ? (
+        <Image
+          src={`${[...data[key]]?.sort().join('&')}.svg`}
+          w={jam ? '6.5em' : '8em'}
+          left={jam ? 3 : 0}
+          alt="food"
+          position="absolute"
+          zIndex={1}
+        />
+      ) : (
+        showUp && (
+          <>
+            {food.map((item, i) => {
+              const foodDisplayRule = displayRules(food[i]);
+              const rules = i > 0 ? food.length > i && foodDisplayRule : true;
+              return (
+                rules && (
+                  <FoodTemplate
+                    value={food[i]}
+                    src={food[i]}
+                    pos="absolute"
+                    bottom={foodDisplayRule.bottom}
+                    left={foodDisplayRule.left}
+                    zIndex={foodDisplayRule.index}
+                    w={jam ? '5em' : '5em'}
+                    key={i}
+                  />
+                )
+              );
+            })}
+          </>
+        )
       )}
       {/* {isValide && shadow[food]} */}
     </Center>

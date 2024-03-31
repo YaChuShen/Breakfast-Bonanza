@@ -5,12 +5,13 @@ import { setTargetItem } from 'store/features/plateSlice';
 
 const size = {
   coffee: '2.5em',
-  toast: '8em',
-  'blueberry-toast': '8em',
+  toast: '6.5em',
+  'blueberry-toast': '6.5em',
 };
 
 const FoodTemplate = ({ value, src, w = '5em', className, ...props }) => {
   const dispatch = useDispatch();
+  console.log(value);
 
   return (
     <Center

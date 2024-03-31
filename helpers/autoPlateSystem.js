@@ -1,6 +1,5 @@
 import settingPlateRules from './settingPlateRules';
 import { addFood } from 'store/features/plateSlice';
-import splitCategories from 'helpers/splitCategories';
 import menuList from 'contents/menuList';
 import { isEqual } from 'lodash';
 
