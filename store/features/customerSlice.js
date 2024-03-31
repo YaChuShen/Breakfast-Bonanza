@@ -1,12 +1,12 @@
 'use client';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { range, sample } from 'lodash';
-import foodList from 'contents/foodList';
+import menuList from 'contents/menuList';
 import defaultConfig from 'contents/rootConfig';
 
 const defaultSetting = range(defaultConfig.customers).reduce((all, curr, i) => {
   all[`customer${i + 1}`] = {
-    order: sample(foodList),
+    order: sample(menuList),
     status: 'waiting',
   };
   return all;
@@ -34,7 +34,7 @@ export const customerSlice = createSlice({
     getNextOrder: (state, action) => {
       const { id } = action.payload;
       const key = state[id];
-      key.order = sample(foodList);
+      key.order = sample(menuList);
     },
   },
 });

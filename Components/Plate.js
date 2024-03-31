@@ -10,22 +10,19 @@ import {
   setTargetPlate,
 } from 'store/features/plateSlice';
 
-const foodPosition = {
-  sunnyEgg: '0',
-  hotDog: '3em',
+const foodList = {
+  sunnyEgg: { left: '0', bottom: 2, index: 0 },
+  hotDog: { left: '3em', bottom: 2, index: 1 },
+  bacon: { left: '2', bottom: 7, index: 2 },
 };
 
-const foodIndex = {
-  sunnyEgg: 0,
-  hotDog: 1,
-};
-
-const list1 = {
+const toastFirstPosition = {
   sunnyEgg: { bottom: 5, index: 2, left: 6 },
   hotDog: { bottom: 5, index: 2, left: 6 },
   toast: { bottom: 0, index: 1, left: 2 },
   blueberry: { bottom: 0, index: 1, left: 3 },
   butter: { bottom: 0, index: 1, left: 3 },
+  bacon: { bottom: 9, index: 3, left: 12 },
 };
 
 const ShadowTelplate = ({ bottom, left, w, rotate, blur }) => {
@@ -60,21 +57,21 @@ const Plate = ({ data, setValue, index, className }) => {
 
   const displayRules = (category) => {
     const isToast = category === 'toast';
-    const okFood = category === 'sunnyEgg' || category === 'hotDog';
-
+    //主要是控制css的位置擺放，分為吐司在下面與其他主食的位置
     if (toastFirst) {
-      return list1[category];
+      return toastFirstPosition[category];
     } else {
       if (isToast) return null;
-      if (okFood)
+      if (Object.keys(foodList).includes(category))
         return {
-          left: foodPosition[category],
-          index: foodIndex[category],
-          bottom: 3,
+          left: foodList[category].left,
+          index: foodList[category].index,
+          bottom: foodList[category].bottom,
         };
     }
     return null;
   };
+
   const showUp = isValide && food.length > 0 && displayRules(food[0]);
 
   return (
@@ -113,26 +110,24 @@ const Plate = ({ data, setValue, index, className }) => {
       <Image src="plate.svg" w="8em" className={className} />
       {showUp && (
         <>
-          <FoodTemplate
-            value={food[0]}
-            src={food[0]}
-            pos="absolute"
-            bottom={displayRules(food[0]).bottom}
-            left={displayRules(food[0]).left}
-            zIndex={displayRules(food[0]).index}
-          />
-          {/* /** displayRules(food[1]) => 吐司不能放第二層*/}
-          {food.length > 1 && displayRules(food[1]) && (
-            <FoodTemplate
-              value={food[1]}
-              src={food[1]}
-              pos="absolute"
-              bottom={displayRules(food[1]).bottom}
-              left={displayRules(food[1]).left}
-              zIndex={displayRules(food[1]).index}
-              w={jam ? '10em' : '5em'}
-            />
-          )}
+          {food.map((item, i) => {
+            const foodDisplayRule = displayRules(food[i]);
+            const rules = i > 0 ? food.length > i && foodDisplayRule : true;
+            return (
+              rules && (
+                <FoodTemplate
+                  value={food[i]}
+                  src={food[i]}
+                  pos="absolute"
+                  bottom={foodDisplayRule.bottom}
+                  left={foodDisplayRule.left}
+                  zIndex={foodDisplayRule.index}
+                  w={jam ? '10em' : '5em'}
+                  key={i}
+                />
+              )
+            );
+          })}
         </>
       )}
       {/* {isValide && shadow[food]} */}

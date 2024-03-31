@@ -1,7 +1,6 @@
 import { Box, Center, Circle, Image, Text } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
-import foodList from 'contents/foodList';
 import { isEqual, over, sample } from 'lodash';
 import { CUSTOMERNEXTORDER, CUSTOMEROVERTIME } from 'contents/rulse';
 import scoreList from 'contents/scoreList';
@@ -19,6 +18,7 @@ import {
 } from 'store/features/plateSlice';
 import { selectPlate } from 'store/features/plateSlice';
 import { useSelector } from 'react-redux';
+import splitCategories from 'helpers/splitCategories';
 
 const MotionComponent = motion(Box);
 
@@ -58,7 +58,9 @@ const CustomerTemplate = ({
   const isCoffee = wishFood === 'coffee';
   const [getScoreAni, setGetScoreAni] = useState();
   const plateData = useSelector(selectPlate);
-  const targetScore = scoreList[plateData.targetItem];
+
+  const targetScore =
+    scoreList[splitCategories(plateData.targetItem).sort().join('&')];
   const dispatch = useDispatch();
 
   const getScore = () => {
@@ -98,14 +100,16 @@ const CustomerTemplate = ({
     }
   }, [overtime, start, status]);
 
+  // console.log(wishFood);
+
+  // console.log(checkContent(plateData.targetItem).sort());
+  // console.log('wishFood', checkContent(wishFood).sort());
+
   const handleValidateFood = () => {
     if (wishFood.includes('&')) {
-      const checkContent = (s) => {
-        return s?.split('&');
-      };
       return isEqual(
-        checkContent(plateData.targetItem)?.sort(),
-        checkContent(wishFood)?.sort()
+        splitCategories(plateData.targetItem)?.sort(),
+        splitCategories(wishFood)?.sort()
       );
     } else {
       return wishFood === plateData.targetItem;

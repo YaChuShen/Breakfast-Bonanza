@@ -25,7 +25,12 @@ const Jam = () => {
             autoJamSystem(plateData, e.done, dispatch);
           }}
         >
-          <Image src={`/${e.init}.svg`} w="4em" pointerEvents="none" />
+          <Image
+            src={`/${e.init}.svg`}
+            w="3.5em"
+            pointerEvents="none"
+            alt="jam"
+          />
         </Box>
       ))}
     </HStack>

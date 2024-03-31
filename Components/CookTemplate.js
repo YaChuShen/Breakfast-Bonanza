@@ -20,7 +20,6 @@ const statusList = {
 
 const CookTemplate = ({ tool, w = '14em', ...props }) => {
   const dispatch = useDispatch();
-  const { setValue } = useFormContext();
   const [cookedGroup, setCookedGroup] = useState();
   const [status, setStatus] = useState();
   const isCooking = status === 'cooking';
@@ -92,8 +91,8 @@ const CookTemplate = ({ tool, w = '14em', ...props }) => {
         {status && (
           <Center
             pos="absolute"
-            top={7}
-            left={'4.3em'}
+            top={6}
+            left={'3.6em'}
             userSelect="none"
             pointerEvents={isCooking && 'none'}
             draggable="true"

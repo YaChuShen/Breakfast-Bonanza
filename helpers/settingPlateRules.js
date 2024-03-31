@@ -1,4 +1,4 @@
-const toastNotValidArr = ["hotDog", "sunnyEgg"];
+const toastNotValidArr = ['hotDog', 'sunnyEgg'];
 
 const rules = (plateContent) => {
   return { toast: toastNotValidArr.includes(plateContent?.[0]) };

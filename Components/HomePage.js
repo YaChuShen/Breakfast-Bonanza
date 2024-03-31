@@ -36,6 +36,7 @@ function HomePage({ dbData, profileId }) {
   const { data: session } = useSession();
   const [start, setStart] = useState(false);
   const currentData = useSelector(selectCustomer);
+  const level2 = true;
 
   const toasterSection = (
     <HStack spacing={0}>
@@ -49,8 +50,9 @@ function HomePage({ dbData, profileId }) {
 
   const materialSection = (
     <HStack spacing={0} className="first-step">
-      <CookTemplate tool={'pan'} w="13em" zIndex={1} />
-      <FoodPlateSection />
+      <CookTemplate tool={'pan'} w="11em" zIndex={1} />
+      <CookTemplate tool={'pan'} w="11em" zIndex={1} />
+      <FoodPlateSection level2={level2} />
       <Box pl="4">
         <FoodTemplate value={'coffee'} src={'coffee'} />
       </Box>
@@ -63,13 +65,13 @@ function HomePage({ dbData, profileId }) {
         <Tour profileId={profileId}>
           <Box as="form">
             {session && <Navbar profileId={profileId} />}
-            <TimerBoard
+            {/* <TimerBoard
               setStart={setStart}
               start={start}
               session={session}
               data={data}
               isTour={dbData.isTour}
-            />
+            /> */}
             {useMemo(() => {
               return (
                 <>
@@ -102,7 +104,7 @@ function HomePage({ dbData, profileId }) {
                     <Table />
                     <Center>
                       <PlateSection data={data} methods={methods} />
-                      <HStack pos="absolute" bottom={tool} spacing={10}>
+                      <HStack pos="absolute" bottom={tool} spacing={0}>
                         <LittleTree />
                         {toasterSection}
                         {materialSection}

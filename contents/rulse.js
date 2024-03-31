@@ -1,10 +1,11 @@
-export const trashCanNoList = ["coffee"];
+export const trashCanNoList = ['coffee'];
 export const plateToDropFood = [
-  "sunnyEgg",
-  "hotDog",
-  "toast",
-  "blueberry",
-  "butter",
+  'sunnyEgg',
+  'hotDog',
+  'toast',
+  'blueberry',
+  'butter',
+  'bacon',
 ];
 export const MUTURITYTIME = 2000;
 export const OVERTIME = 5000;
