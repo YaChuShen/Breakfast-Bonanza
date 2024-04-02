@@ -2,7 +2,7 @@ import { Box, Center, HStack, Image } from '@chakra-ui/react';
 import React from 'react';
 import FoodTemplate from './FoodTemplate';
 import { plateToDropFood } from 'contents/rulse';
-import materialList from 'contents/materialList';
+import { materialList } from 'contents/rulse';
 import { useDispatch } from 'react-redux';
 import {
   addFood,
@@ -16,6 +16,7 @@ const foodList = {
   sunnyEgg: { left: '0', bottom: 2, index: 0 },
   hotDog: { left: '3em', bottom: 2, index: 1 },
   bacon: { left: '2', bottom: 7, index: 2 },
+  rosemarry: { left: '2', bottom: 7, index: 2 },
 };
 
 const toastFirstPosition = {
@@ -48,7 +49,7 @@ const shadow = {
   hotDog: <ShadowTelplate bottom={4} left={9} w="4em" rotate={-20} blur={3} />,
 };
 
-const Plate = ({ data, setValue, index, className }) => {
+const Plate = ({ data, index, className }) => {
   const dispatch = useDispatch();
   const key = `plateContent${index + 1}`;
   const food = data[key];
@@ -97,9 +98,6 @@ const Plate = ({ data, setValue, index, className }) => {
         ) {
           dispatch(addFood({ id: index + 1, targetItem }));
           dispatch(setTargetItem({ target: null }));
-
-          setValue(key, [...food, targetItem]);
-          setValue('targetItem', null);
         }
       }}
       onDragOver={(e) => {
@@ -107,8 +105,6 @@ const Plate = ({ data, setValue, index, className }) => {
         e.stopPropagation();
       }}
       onDragStart={() => {
-        setValue('targetItem', food.join('&'));
-        setValue('targetPlate', index + 1);
         dispatch(setTargetItem({ target: food.join('&') }));
         dispatch(setTargetPlate({ index: index + 1 }));
       }}
@@ -142,7 +138,7 @@ const Plate = ({ data, setValue, index, className }) => {
                     bottom={foodDisplayRule.bottom}
                     left={foodDisplayRule.left}
                     zIndex={foodDisplayRule.index}
-                    w={jam ? '5em' : '5em'}
+                    w="5em"
                     key={i}
                   />
                 )

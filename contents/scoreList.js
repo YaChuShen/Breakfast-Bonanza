@@ -6,6 +6,7 @@ const scoreList = {
   'blueberry&toast': 100,
   'butter&toast': 100,
   'bacon&hotDog&sunnyEgg': 300,
+  'bacon&hotDog&rosemarry&sunnyEgg': 320,
 };
 
 export default scoreList;

@@ -3,8 +3,9 @@ const menuList = [
   // 'hotDog&toast',
   // 'coffee',
   // 'sunnyEgg&toast',
-  'blueberry&toast',
-  'butter&toast',
-  // 'bacon&hotDog&sunnyEgg',
+  // 'blueberry&toast',
+  // 'butter&toast',
+  'bacon&hotDog&sunnyEgg',
+  'bacon&hotDog&rosemarry&sunnyEgg',
 ];
 export default menuList;

@@ -1,7 +1,11 @@
 import { Box, Image } from '@chakra-ui/react';
 import React from 'react';
+import { useDispatch } from 'react-redux';
+import { setTargetItem } from 'store/features/plateSlice';
 
 const RosemarryBowl = () => {
+  const dispatch = useDispatch();
+
   return (
     <Box position="absolute" top={{ base: '1em', lg: '-1em' }} right="5em">
       <Image
@@ -17,7 +21,11 @@ const RosemarryBowl = () => {
         position="absolute"
         top="0em"
         right="1em"
-        cursor="pointer"
+        draggable="true"
+        cursor="grab"
+        onDragStart={() => {
+          dispatch(setTargetItem({ target: 'rosemarry' }));
+        }}
       />
     </Box>
   );

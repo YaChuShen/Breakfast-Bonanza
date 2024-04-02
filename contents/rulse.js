@@ -6,7 +6,10 @@ export const plateToDropFood = [
   'blueberry',
   'butter',
   'bacon',
+  'rosemarry',
 ];
+export const materialList = ['egg', 'coffee', 'hotDog0', 'toast0'];
+
 export const MUTURITYTIME = 2000;
 export const OVERTIME = 5000;
 export const CUSTOMERNEXTORDER = 5000;

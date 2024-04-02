@@ -6,8 +6,9 @@ import { plate } from '../helpers/rwd';
 import { selectPlate } from 'store/features/plateSlice';
 import { useSelector } from 'react-redux';
 
-const PlateSection = ({ data, methods }) => {
+const PlateSection = ({ data }) => {
   const plateData = useSelector(selectPlate);
+  console.log(plateData);
 
   return (
     <HStack
@@ -20,7 +21,6 @@ const PlateSection = ({ data, methods }) => {
       {range(data?.plate).map((e, i) => (
         <Plate
           data={plateData}
-          setValue={methods.setValue}
           index={e}
           key={i}
           className={e === 0 ? 'two-step' : ''}

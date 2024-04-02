@@ -130,7 +130,7 @@ function HomePage({ dbData, profileId }) {
                     <Gress1 />
                     <Table />
                     <Center>
-                      <PlateSection data={data} methods={methods} />
+                      <PlateSection data={data} />
                       <HStack pos="absolute" bottom={tool} spacing={0}>
                         <LittleTree />
                         {toasterSection}
