@@ -26,6 +26,7 @@ import defaultConfig from 'contents/rootConfig';
 import Navbar from 'Components/Navbar';
 import Tour from 'Components/Tour';
 import RosemarryBowl from 'Components/RosemarryBowl';
+import smartSize from 'helpers/smartSize';
 
 const CustomerTemplate = dynamic(() => import('Components/CustomerTemplate'), {
   ssr: false,
@@ -39,29 +40,45 @@ function HomePage({ dbData, profileId }) {
   const currentData = useSelector(selectCustomer);
   const level2 = true;
 
-  console.log(currentData);
-
   const toasterSection = (
     <Stack
       spacing={0}
-      direction={{ base: 'column', lg: 'row' }}
+      direction={{ base: level2 ? 'column' : 'row', lg: 'row' }}
       alignItems="center"
     >
       <HStack>
-        <Toaster w="7em" tool={undefined} />
-        {level2 && <Toaster w="7em" tool={undefined} />}
+        <Toaster w={smartSize('5em', '7em', level2)} tool={undefined} />
+        {level2 && (
+          <Toaster w={smartSize('5em', '7em', level2)} tool={undefined} />
+        )}
       </HStack>
-      <Stack direction={{ base: 'row', lg: 'column' }}>
+      <Stack direction={{ base: level2 ? 'row' : 'column', lg: 'column' }}>
         <Jam />
-        <FoodTemplate value={'toast0'} src={'toast0'} w="5.5em" />
+        <FoodTemplate
+          value={'toast0'}
+          src={'toast0'}
+          w={{ base: '4.5em', lg: '5.5em' }}
+        />
       </Stack>
     </Stack>
   );
 
   const materialSection = (
     <HStack spacing={0} className="first-step">
-      <CookTemplate tool={'pan'} w="11em" zIndex={1} />
-      {level2 && <CookTemplate tool={'pan'} w="11em" zIndex={1} />}
+      <CookTemplate
+        tool={'pan'}
+        w={smartSize('9em', '11em', level2)}
+        zIndex={1}
+        isLevel2={level2}
+      />
+      {level2 && (
+        <CookTemplate
+          tool={'pan'}
+          w={smartSize('9em', '11em', level2)}
+          zIndex={1}
+          isLevel2={level2}
+        />
+      )}
       <FoodPlateSection level2={level2} />
       <Box pl="4">
         <FoodTemplate value={'coffee'} src={'coffee'} />

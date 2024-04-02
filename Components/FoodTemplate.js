@@ -11,7 +11,6 @@ const size = {
 
 const FoodTemplate = ({ value, src, w = '5em', className, ...props }) => {
   const dispatch = useDispatch();
-  console.log(value);
 
   return (
     <Center

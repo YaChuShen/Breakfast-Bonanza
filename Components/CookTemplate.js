@@ -11,6 +11,7 @@ import { useDispatch } from 'react-redux';
 import { setTargetItem } from 'store/features/plateSlice';
 import { useSelector } from 'react-redux';
 import { selectPlate } from 'store/features/plateSlice';
+import smartSize from 'helpers/smartSize';
 
 const statusList = {
   cooking: 'init',
@@ -18,7 +19,7 @@ const statusList = {
   over: 'over',
 };
 
-const CookTemplate = ({ tool, w = '14em', ...props }) => {
+const CookTemplate = ({ tool, w = '14em', isLevel2, ...props }) => {
   const dispatch = useDispatch();
   const [cookedGroup, setCookedGroup] = useState();
   const [status, setStatus] = useState();
@@ -91,8 +92,8 @@ const CookTemplate = ({ tool, w = '14em', ...props }) => {
         {status && (
           <Center
             pos="absolute"
-            top={6}
-            left={'3.6em'}
+            top={smartSize('5', '6', isLevel2)}
+            left={smartSize('3em', '3.6em', isLevel2)}
             userSelect="none"
             pointerEvents={isCooking && 'none'}
             draggable="true"
@@ -111,7 +112,11 @@ const CookTemplate = ({ tool, w = '14em', ...props }) => {
             cursor="grab"
             borderRadius="50%"
           >
-            <Image src={`/${cookedGroup?.[key].src}.svg`} w="4.5em" />
+            <Image
+              src={`/${cookedGroup?.[key].src}.svg`}
+              w={smartSize('3.5em', '4.5em', isLevel2)}
+              alt="food"
+            />
           </Center>
         )}
       </Box>

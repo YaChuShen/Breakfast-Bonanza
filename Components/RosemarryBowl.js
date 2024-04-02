@@ -3,7 +3,7 @@ import React from 'react';
 
 const RosemarryBowl = () => {
   return (
-    <Box position="absolute" top="-1em" right="5em">
+    <Box position="absolute" top={{ base: '1em', lg: '-1em' }} right="5em">
       <Image
         src="./rosemaryBowl.svg"
         w="5.5em"
