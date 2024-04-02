@@ -11,7 +11,7 @@ const Page = async () => {
   let profileId;
   const profieQuery = await db
     .collection('users')
-    .where('email', '==', userSession?.user?.email)
+    .where('email', '==', userSession?.user?.email ?? '')
     .get();
   if (profieQuery.size) {
     data = profieQuery.docs[0].data();
