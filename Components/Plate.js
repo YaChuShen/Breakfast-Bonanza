@@ -13,19 +13,20 @@ import menuList from 'contents/menuList';
 import { isEqual } from 'lodash';
 
 const foodList = {
-  sunnyEgg: { left: '0', bottom: 2, index: 0 },
-  hotDog: { left: '3em', bottom: 2, index: 1 },
-  bacon: { left: '2', bottom: 7, index: 2 },
-  rosemarry: { left: '2', bottom: 7, index: 2 },
+  sunnyEgg: { left: '0', bottom: 2, index: 0, w: '5em' },
+  hotDog: { left: '3.2em', bottom: 3, index: 1, w: '4.5em' },
+  bacon: { left: '2', bottom: 7, index: 2, w: '5em' },
+  rosemarry: { left: '3em', bottom: 5, index: 3, w: '2.7em' },
 };
 
 const toastFirstPosition = {
   sunnyEgg: { bottom: 5, index: 2, left: 6 },
-  hotDog: { bottom: 5, index: 2, left: 6 },
+  hotDog: { bottom: 5, index: 2, left: 6, w: '4.5em' },
   toast: { bottom: 0, index: 1, left: 2 },
   blueberry: { bottom: 0, index: 1, left: 3 },
   butter: { bottom: 0, index: 1, left: 3 },
-  bacon: { bottom: 9, index: 3, left: 12 },
+  bacon: { bottom: 2, index: 1, left: 3 },
+  rosemarry: { bottom: 4, index: 4, left: '4.5em', w: '2.7em' },
 };
 
 const ShadowTelplate = ({ bottom, left, w, rotate, blur }) => {
@@ -65,12 +66,7 @@ const Plate = ({ data, index, className }) => {
       return toastFirstPosition[category];
     } else {
       if (isToast) return null;
-      if (Object.keys(foodList).includes(category))
-        return {
-          left: foodList[category].left,
-          index: foodList[category].index,
-          bottom: foodList[category].bottom,
-        };
+      if (Object.keys(foodList).includes(category)) return foodList[category];
     }
     return null;
   };
@@ -110,7 +106,6 @@ const Plate = ({ data, index, className }) => {
       }}
       onDragEnd={(e) => {
         dispatch(setTargetPlate({ index: null }));
-        setValue('targetPlate', null);
       }}
     >
       <Image src="plate.svg" w="8em" alt="plate" className={className} />
@@ -138,7 +133,7 @@ const Plate = ({ data, index, className }) => {
                     bottom={foodDisplayRule.bottom}
                     left={foodDisplayRule.left}
                     zIndex={foodDisplayRule.index}
-                    w="5em"
+                    w={foodDisplayRule.w}
                     key={i}
                   />
                 )

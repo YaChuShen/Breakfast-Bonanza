@@ -9,13 +9,13 @@ const RosemarryBowl = () => {
   return (
     <Box position="absolute" top={{ base: '1em', lg: '-1em' }} right="5em">
       <Image
-        src="./rosemaryBowl.svg"
+        src="./rosemarryBowl.svg"
         w="5.5em"
         alt="rosemarryBowl"
         pointerEvents="none"
       />
       <Image
-        src="./rosemary.svg"
+        src="./rosemarry.svg"
         w="3em"
         alt="rosemarryBowl"
         position="absolute"
