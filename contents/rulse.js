@@ -1,3 +1,4 @@
+export const timer = 30;
 export const trashCanNoList = ['coffee'];
 export const plateToDropFood = [
   'sunnyEgg',
@@ -9,7 +10,7 @@ export const plateToDropFood = [
   'rosemarry',
 ];
 export const materialList = ['egg', 'coffee', 'hotDog0', 'toast0', 'bacon0'];
-
+export const LEVEL2_SCORE = 150;
 export const MUTURITYTIME = 2000;
 export const OVERTIME = 5000;
 export const CUSTOMERNEXTORDER = 5000;

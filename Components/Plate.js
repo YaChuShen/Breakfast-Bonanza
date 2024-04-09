@@ -9,8 +9,7 @@ import {
   setTargetItem,
   setTargetPlate,
 } from 'store/features/plateSlice';
-import menuList from 'contents/menuList';
-import { isEqual } from 'lodash';
+import checkIsPlateFull from 'helpers/checkIsPlateFull';
 
 const foodList = {
   sunnyEgg: { left: '0', bottom: 2, index: 0, w: '5em' },
@@ -73,14 +72,6 @@ const Plate = ({ data, index, className }) => {
 
   const showUp = isValide && food.length > 0 && displayRules(food[0]);
 
-  const sortList = menuList.map((e) => {
-    return e.split('&').sort();
-  });
-
-  const checkIsPlateFull = sortList.some((e) => {
-    return isEqual(e, [...data[key]]?.sort());
-  });
-
   return (
     <Center
       pos="relative"
@@ -108,15 +99,16 @@ const Plate = ({ data, index, className }) => {
         dispatch(setTargetPlate({ index: null }));
       }}
     >
-      <Image src="plate.svg" w="8em" alt="plate" className={className} />
-      {checkIsPlateFull ? (
+      <Image src="plate.svg" w="8.3em" alt="plate" className={className} />
+      {checkIsPlateFull(data[key]) ? (
         <Image
           src={`${[...data[key]]?.sort().join('&')}.svg`}
           w={jam ? '6.5em' : '8em'}
-          left={jam ? 3 : 0}
+          left={jam ? 3 : 1}
           alt="food"
           position="absolute"
           zIndex={1}
+          cursor="pointer"
         />
       ) : (
         showUp && (

@@ -12,3 +12,17 @@ const menuList = [
   'bacon&hotDog&rosemarry&sunnyEgg',
 ];
 export default menuList;
+
+export const menuInfo = [
+  { ingredient: 'hotDog&sunnyEgg', score: 300 },
+  { ingredient: 'hotDog&toast', score: 300 },
+  { ingredient: 'coffee', score: 300 },
+  { ingredient: 'sunnyEgg&toast', score: 300 },
+  { ingredient: 'blueberry&toast', score: 300 },
+  { ingredient: 'butter&toast', score: 300 },
+  { ingredient: 'hotDog&rosemarry&sunnyEgg', score: 300 },
+  { ingredient: 'bacon&hotDog&rosemarry&toast', score: 300 },
+  { ingredient: 'bacon&rosemarry&sunnyEgg&toast', score: 300 },
+  { ingredient: 'bacon&hotDog&sunnyEgg', score: 300 },
+  { ingredient: 'bacon&hotDog&rosemarry&sunnyEgg', score: 300 },
+];

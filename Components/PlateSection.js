@@ -6,9 +6,8 @@ import { plate } from '../helpers/rwd';
 import { selectPlate } from 'store/features/plateSlice';
 import { useSelector } from 'react-redux';
 
-const PlateSection = ({ data }) => {
+const PlateSection = () => {
   const plateData = useSelector(selectPlate);
-  console.log(plateData);
 
   return (
     <HStack
@@ -18,7 +17,7 @@ const PlateSection = ({ data }) => {
       pos="absolute"
       bottom={plate}
     >
-      {range(data?.plate).map((e, i) => (
+      {range(plateData?.plate).map((e, i) => (
         <Plate
           data={plateData}
           index={e}

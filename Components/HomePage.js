@@ -2,7 +2,6 @@
 
 import { Box, Center, HStack, Image, Stack, VStack } from '@chakra-ui/react';
 import { FormProvider, useForm } from 'react-hook-form';
-import values from 'helpers/customerForm';
 import FoodTemplate from 'Components/FoodTemplate';
 import dynamic from 'next/dynamic';
 import CookTemplate from 'Components/CookTemplate';
@@ -33,12 +32,12 @@ const CustomerTemplate = dynamic(() => import('Components/CustomerTemplate'), {
 });
 
 function HomePage({ dbData, profileId }) {
-  const methods = useForm({ defaultValues: values });
+  const methods = useForm();
   const data = methods.watch();
   const { data: session } = useSession();
   const [start, setStart] = useState(false);
   const currentData = useSelector(selectCustomer);
-  const level2 = true;
+  const level2 = dbData.isLevel2;
 
   const toasterSection = (
     <Stack
@@ -92,57 +91,52 @@ function HomePage({ dbData, profileId }) {
         <Tour profileId={profileId}>
           <Box as="form">
             {session && <Navbar profileId={profileId} />}
-            {/* <TimerBoard
+            <TimerBoard
               setStart={setStart}
               start={start}
               session={session}
               data={data}
               isTour={dbData.isTour}
-            /> */}
-            {useMemo(() => {
-              return (
-                <>
-                  <Center pt="3em" pos="relative">
-                    <Image src="./window.svg" w="70em" minW="70em" alt="game" />
-                    <HStack
-                      pos="absolute"
-                      zIndex={10}
-                      spacing={20}
-                      alignItems="center"
-                      justifyContent="center"
-                      py="20"
-                    >
-                      {range(defaultConfig.customers).map((e, i) => (
-                        <CustomerTemplate
-                          wishFood={currentData[`customer${i + 1}`].order}
-                          status={currentData[`customer${i + 1}`].status}
-                          overtime={currentData[`customer${i + 1}`].overtime}
-                          id={`customer${i + 1}`}
-                          src={`customer${i + 1}`}
-                          key={e}
-                          start={start}
-                          className={i === 0 ? 'three-step' : ''}
-                        />
-                      ))}
-                    </HStack>
-                  </Center>
-                  <Box pos="relative" userSelect="none">
-                    <Gress1 />
-                    <Table />
-                    <Center>
-                      <PlateSection data={data} />
-                      <HStack pos="absolute" bottom={tool} spacing={0}>
-                        <LittleTree />
-                        {toasterSection}
-                        {materialSection}
-                        <RosemarryBowl />
-                        <TrashCan />
-                      </HStack>
-                    </Center>
-                  </Box>
-                </>
-              );
-            }, [data])}
+            />
+            <Center pt="3em" pos="relative">
+              <Image src="./window.svg" w="70em" minW="70em" alt="game" />
+
+              <HStack
+                pos="absolute"
+                zIndex={10}
+                spacing={20}
+                alignItems="center"
+                justifyContent="center"
+                py="20"
+              >
+                {range(defaultConfig.customers).map((e, i) => (
+                  <CustomerTemplate
+                    wishFood={currentData[`customer${i + 1}`].order}
+                    status={currentData[`customer${i + 1}`].status}
+                    overtime={currentData[`customer${i + 1}`].overtime}
+                    id={`customer${i + 1}`}
+                    src={`customer${i + 1}`}
+                    key={e}
+                    start={start}
+                    className={i === 0 ? 'three-step' : ''}
+                  />
+                ))}
+              </HStack>
+            </Center>
+            <Box pos="relative" userSelect="none">
+              <Gress1 />
+              <Table />
+              <Center>
+                <PlateSection />
+                <HStack pos="absolute" bottom={tool} spacing={0}>
+                  <LittleTree />
+                  {toasterSection}
+                  {materialSection}
+                  <RosemarryBowl />
+                  <TrashCan />
+                </HStack>
+              </Center>
+            </Box>
           </Box>
         </Tour>
       </FormProvider>

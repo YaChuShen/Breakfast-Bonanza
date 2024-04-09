@@ -3,10 +3,15 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { range, sample } from 'lodash';
 import menuList from 'contents/menuList';
 import defaultConfig from 'contents/rootConfig';
+import { menuInfo } from 'contents/menuList';
+
+const list = menuInfo.map((e) => {
+  return e.ingredient;
+});
 
 const defaultSetting = range(defaultConfig.customers).reduce((all, curr, i) => {
   all[`customer${i + 1}`] = {
-    order: sample(menuList),
+    order: sample(list),
     status: 'waiting',
   };
   return all;
@@ -34,7 +39,7 @@ export const customerSlice = createSlice({
     getNextOrder: (state, action) => {
       const { id } = action.payload;
       const key = state[id];
-      key.order = sample(menuList);
+      key.order = sample(list);
     },
   },
 });

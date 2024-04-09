@@ -40,7 +40,6 @@ const TimerBoard = ({ setStart, start, session, data, isTour }) => {
           )}
         </AnimatePresence>
       )}
-
       <ScoreSection data={data} minutes={minutes} seconds={seconds} />
     </div>
   );

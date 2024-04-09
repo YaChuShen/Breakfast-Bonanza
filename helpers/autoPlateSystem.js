@@ -1,22 +1,16 @@
 import settingPlateRules from './settingPlateRules';
 import { addFood } from 'store/features/plateSlice';
-import menuList from 'contents/menuList';
-import { isEqual } from 'lodash';
-
-const sortList = menuList.map((e) => {
-  return e.split('&').sort();
-});
+import checkIsPlateFull from 'helpers/checkIsPlateFull';
 
 const autoPlateSystem = (data, target, isDone, dispatch) => {
   let i = 1;
   while (i < data.plate + 1) {
     const key = `plateContent${i}`;
-
-    const checkIsPlateFull = sortList.some((e) => {
-      return isEqual(e, [...data[key]]?.sort());
-    });
-
-    if (isDone && settingPlateRules(data[key], target) && !checkIsPlateFull) {
+    if (
+      isDone &&
+      settingPlateRules(data[key], target) &&
+      !checkIsPlateFull(data[key])
+    ) {
       dispatch(addFood({ id: i, targetItem: target }));
       break;
     }

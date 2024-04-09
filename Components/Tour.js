@@ -3,7 +3,7 @@
 import React, { useEffect } from 'react';
 import { TourProvider, useTour, components } from '@reactour/tour';
 import { RxCross2 } from 'react-icons/rx';
-import { Icon, Button, Text, useEditable } from '@chakra-ui/react';
+import { Icon, Button, Text, useEditable, Box, VStack } from '@chakra-ui/react';
 import { HiArrowSmRight, HiArrowSmLeft } from 'react-icons/hi';
 import postMethod from 'helpers/postMethod';
 
@@ -21,10 +21,21 @@ function Close({ onClick }) {
   return (
     <button
       onClick={onClick}
-      style={{ position: 'absolute', right: 15, top: 5 }}
+      style={{ position: 'absolute', right: 15, top: 10 }}
     >
       <Icon as={RxCross2}></Icon>
     </button>
+  );
+}
+
+function Content({ content }) {
+  return (
+    <VStack spacing={6} pt="4">
+      <Text>{content}</Text>
+      <video autoPlay muted playsInline loop width={180}>
+        <source src="/1.mp4" type="video/mp4" />
+      </video>
+    </VStack>
   );
 }
 
@@ -64,10 +75,10 @@ const Tour = ({ children, profileId }) => {
         maskArea: (base) => ({ ...base, rx: '20px' }),
       }}
       padding={{
-        popover: [0, 25],
+        popover: [0, 20],
       }}
       showDots={false}
-      components={{ Badge, Close }}
+      components={{ Badge, Close, Content }}
       disableDotsNavigation={false}
       prevButton={({ currentStep, setCurrentStep }) => {
         const first = currentStep === 0;
@@ -94,6 +105,7 @@ const Tour = ({ children, profileId }) => {
         const last = currentStep === stepsLength - 1;
         return (
           <Button
+            mt="0"
             variant="ghost"
             isDisabled={false}
             onClick={async () => {
