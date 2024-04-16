@@ -119,6 +119,7 @@ const Toaster = ({ tool, w = '14em', ...props }) => {
         e.stopPropagation();
       }}
       {...props}
+      className="four-step"
     >
       <Box pos="relative" cursor={(isDone || isOverDone) && 'pointer'}>
         {(isCooking || isMaturity) && (

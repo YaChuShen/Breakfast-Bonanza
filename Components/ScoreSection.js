@@ -2,7 +2,7 @@ import { Box, Divider, Text, VStack } from '@chakra-ui/react';
 import React, { useEffect } from 'react';
 import Timer from 'Components/Timer';
 
-const ScoreSection = ({ data, seconds, minutes }) => {
+const ScoreSection = ({ score, seconds, minutes }) => {
   return (
     <Box
       zIndex={1}
@@ -21,7 +21,7 @@ const ScoreSection = ({ data, seconds, minutes }) => {
         <Timer seconds={seconds} minutes={minutes} />
         <Divider borderWidth="1px" />
         <Text fontSize="24px" fontWeight={700} color="gray.600">
-          {data.score ?? 0}
+          {score ?? 0}
         </Text>
       </VStack>
     </Box>

@@ -19,7 +19,7 @@ const defaultSetting = range(defaultConfig.customers).reduce((all, curr, i) => {
 
 const initialState = {
   ...defaultSetting,
-  status: 'customer',
+  score: 0,
 };
 
 export const customerSlice = createSlice({
@@ -41,11 +41,23 @@ export const customerSlice = createSlice({
       const key = state[id];
       key.order = sample(list);
     },
+    getScore: (state, action) => {
+      const { score } = action.payload;
+      state.score = state.score + score;
+    },
+    minusScore: (state) => {
+      state.score = state.score - 30;
+    },
   },
 });
 
 export const selectCustomer = (state) => state.customer;
-export const { handleOvertime, handleCustomStatus, getNextOrder } =
-  customerSlice.actions;
+export const {
+  handleOvertime,
+  handleCustomStatus,
+  getNextOrder,
+  getScore,
+  minusScore,
+} = customerSlice.actions;
 
 export default customerSlice.reducer;

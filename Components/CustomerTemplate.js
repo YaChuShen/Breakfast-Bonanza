@@ -10,6 +10,8 @@ import {
   handleOvertime,
   handleCustomStatus,
   getNextOrder,
+  getScore,
+  minusScore,
 } from 'store/features/customerSlice';
 import {
   addFood,
@@ -63,13 +65,7 @@ const CustomerTemplate = ({
   const targetScore =
     scoreList[[...splitCategories(plateData.targetItem)].sort().join('&')];
 
-  const getScore = () => {
-    setValue('score', (data.score += targetScore));
-  };
-
-  const minusScore = () => {
-    setValue('score', (data.score -= 30));
-  };
+  console.log(targetScore);
 
   useEffect(() => {
     const controlTime = (s, time) => {
@@ -89,7 +85,8 @@ const CustomerTemplate = ({
     if (!overtime && start) {
       const t = setTimeout(() => {
         dispatch(handleOvertime({ id, status: true }));
-        minusScore();
+        dispatch(minusScore());
+
         setGetScoreAni(true);
         dispatch(handleCustomStatus({ id, status: 'errors' }));
       }, [CUSTOMEROVERTIME]);
@@ -125,7 +122,7 @@ const CustomerTemplate = ({
     setTimeout(() => {
       dispatch(getNextOrder({ id }));
     }, [CUSTOMERNEXTORDER]);
-    getScore();
+    dispatch(getScore({ score: targetScore }));
     setGetScoreAni(true);
   };
 

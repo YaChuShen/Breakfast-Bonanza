@@ -59,6 +59,7 @@ const TrashCan = ({ ...props }) => {
       {...props}
       onDrop={onDrop}
       w="6em"
+      className="fifth-step"
     >
       {open ? (
         <Image src="/trashCan_open.svg" pointerEvents="none" alt="" />

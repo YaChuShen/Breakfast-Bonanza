@@ -28,12 +28,12 @@ function Close({ onClick }) {
   );
 }
 
-function Content({ content }) {
+function Content({ content, currentStep }) {
   return (
-    <VStack spacing={6} pt="4">
-      <Text>{content}</Text>
-      <video autoPlay muted playsInline loop width={180}>
-        <source src="/1.mp4" type="video/mp4" />
+    <VStack spacing={4} pt="4" key={currentStep}>
+      <Text fontSize="14px">{content}</Text>
+      <video autoPlay muted playsInline loop width={130}>
+        <source src={`${currentStep + 1}.mp4`} type="video/mp4" />
       </video>
     </VStack>
   );
@@ -51,6 +51,14 @@ const steps = [
   {
     selector: '.three-step',
     content: 'If your meal is done, drag to the customer! Finish!',
+  },
+  {
+    selector: '.four-step',
+    content: `When the toast is done, click the toaster's button and then click again to the customer`,
+  },
+  {
+    selector: '.fifth-step',
+    content: '5',
   },
 ];
 
@@ -75,7 +83,7 @@ const Tour = ({ children, profileId }) => {
         maskArea: (base) => ({ ...base, rx: '20px' }),
       }}
       padding={{
-        popover: [0, 20],
+        popover: [20, 100],
       }}
       showDots={false}
       components={{ Badge, Close, Content }}
@@ -108,6 +116,7 @@ const Tour = ({ children, profileId }) => {
             mt="0"
             variant="ghost"
             isDisabled={false}
+            size="sm"
             onClick={async () => {
               if (last) {
                 await postMethod({
@@ -124,7 +133,7 @@ const Tour = ({ children, profileId }) => {
             }}
           >
             {last ? (
-              <Text color="red.500">Start Game</Text>
+              <Text color="gray.500">Start Game</Text>
             ) : (
               <Icon as={HiArrowSmRight} w="1.5em" h="1.5em" color="gray.500" />
             )}

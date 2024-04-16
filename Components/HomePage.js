@@ -33,11 +33,12 @@ const CustomerTemplate = dynamic(() => import('Components/CustomerTemplate'), {
 
 function HomePage({ dbData, profileId }) {
   const methods = useForm();
-  const data = methods.watch();
   const { data: session } = useSession();
   const [start, setStart] = useState(false);
   const currentData = useSelector(selectCustomer);
   const level2 = dbData.isLevel2;
+
+  console.log(currentData);
 
   const toasterSection = (
     <Stack
@@ -95,8 +96,8 @@ function HomePage({ dbData, profileId }) {
               setStart={setStart}
               start={start}
               session={session}
-              data={data}
               isTour={dbData.isTour}
+              score={currentData.score}
             />
             <Center pt="3em" pos="relative">
               <Image src="./window.svg" w="70em" minW="70em" alt="game" />
