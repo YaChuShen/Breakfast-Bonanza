@@ -1,11 +1,10 @@
 import { Box, Button, Image, Text, VStack } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
-import { method } from 'lodash';
 import React, { useEffect } from 'react';
 
 const MotionComponent = motion(Box);
 
-const EndBoard = ({ score, isRunning, session }, ...props) => {
+const EndBoard = ({ score, isRunning, session, ...props }) => {
   useEffect(() => {
     const fetchData = async () => {
       await fetch('/api/pointsTable', {
@@ -15,10 +14,8 @@ const EndBoard = ({ score, isRunning, session }, ...props) => {
         },
         body: JSON.stringify({
           score: score ?? 0,
-          profileId: session?.user?.id,
+          profileId: session?.profileId,
         }),
-      }).then((res) => {
-        // console.log(res);
       });
     };
     fetchData();

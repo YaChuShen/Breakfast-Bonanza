@@ -15,9 +15,19 @@ const Profile = ({ data, profileId }) => {
           <Text>Back</Text>
         </HStack>
       </Link>
-      <VStack>
-        <Text>{data.name}</Text>
-        <AvatarPicker profileId={profileId} avatar={data?.avatar} />
+      <HStack
+        w="100%"
+        justifyContent="space-around"
+        py="3em"
+        bg="white"
+        borderRadius="80px"
+        mt="1em"
+        border="10px solid #db542c"
+      >
+        <VStack>
+          <Text>{data.name}</Text>
+          <AvatarPicker profileId={profileId} avatar={data?.avatar} />
+        </VStack>
         {data?.score?.length > 0 && (
           <VStack>
             <Text fontWeight={700} fontSize="18px">
@@ -28,7 +38,7 @@ const Profile = ({ data, profileId }) => {
             ))}
           </VStack>
         )}
-      </VStack>
+      </HStack>
     </CustomContainer>
   );
 };

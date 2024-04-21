@@ -9,7 +9,7 @@ const FoodPlateSection = ({ level2 }) => {
         pos="absolute"
         w="10em"
         left={-5}
-        bottom={level2 ? -14 : -10}
+        bottom={level2 ? -14 : -9}
         pointerEvents="none"
       >
         <Image src="/foodPlate.svg" alt="" />
@@ -22,15 +22,17 @@ const FoodPlateSection = ({ level2 }) => {
         className=".first-step"
       />
       <FoodTemplate value="hotDog0" src="hotDog0" w="4.5em" zIndex={1} />
-      <FoodTemplate
-        value="bacon0"
-        src="bacon0"
-        w="4.5em"
-        zIndex={1}
-        pos="absolute"
-        left={4}
-        bottom={-9}
-      />
+      {level2 && (
+        <FoodTemplate
+          value="bacon0"
+          src="bacon0"
+          w="4.5em"
+          zIndex={1}
+          pos="absolute"
+          left={4}
+          bottom={-9}
+        />
+      )}
     </HStack>
   );
 };

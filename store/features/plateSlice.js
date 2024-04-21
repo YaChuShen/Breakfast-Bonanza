@@ -1,10 +1,9 @@
 'use client';
-
 import { createSlice } from '@reduxjs/toolkit';
-import { range, sample } from 'lodash';
-import defaultConfig from 'contents/rootConfig';
+import { range } from 'lodash';
+import { plate } from 'contents/rulse';
 
-const p = range(defaultConfig.plate).reduce((all, curr, i) => {
+const p = range(plate).reduce((all, curr, i) => {
   all[`plateContent${i + 1}`] = [];
   return all;
 }, {});
@@ -14,7 +13,7 @@ const initialState = {
   status: 'idle',
   targetItem: '',
   targetPlate: '',
-  plate: defaultConfig.plate,
+  plate: plate,
 };
 
 export const plateSlice = createSlice({

@@ -65,8 +65,6 @@ const CustomerTemplate = ({
   const targetScore =
     scoreList[[...splitCategories(plateData.targetItem)].sort().join('&')];
 
-  console.log(targetScore);
-
   useEffect(() => {
     const controlTime = (s, time) => {
       if (status === s && !overtime) {

@@ -1,7 +1,7 @@
 'use client';
 
-import { Circle, Image } from '@chakra-ui/react';
-import React, { useEffect, useMemo, useRef } from 'react';
+import { Circle, Image, Spinner } from '@chakra-ui/react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { BiCamera } from 'react-icons/bi';
 import { storage } from '../firebase.config';
@@ -9,14 +9,15 @@ import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
 import postMethod from 'helpers/postMethod';
 
 const AvatarPicker = ({ profileId, avatar }) => {
-  console.log(avatar);
   const prevUrl = useRef();
   const { register, handleSubmit, watch } = useForm({});
+  const [isLoading, setIsLoading] = useState(false);
   const file = watch('avatar');
 
   useEffect(() => {
     const handleUpload = async () => {
       if (file instanceof FileList && file[0]) {
+        setIsLoading(true);
         const imagesRef = ref(storage, `${profileId}/avatar`);
         const upload = await uploadBytes(imagesRef, file[0]);
         const publicURL = await getDownloadURL(upload.ref);
@@ -27,6 +28,7 @@ const AvatarPicker = ({ profileId, avatar }) => {
             publicURL,
           },
         });
+        setIsLoading(false);
       }
     };
     handleUpload();
@@ -47,12 +49,13 @@ const AvatarPicker = ({ profileId, avatar }) => {
       size="6em"
       overflow="hidden"
       role="button"
-      bgImage={`url(${avatar ?? avatarURL})`}
+      bgImage={!isLoading && `url(${avatarURL ?? avatar})`}
       bgSize="cover"
       bgPosition="center"
       bgRepeat="no-repeat"
     >
-      {!avatarURL && <BiCamera size="1.375em" color="gray" />}
+      {!avatarURL && !avatar && <BiCamera size="1.375em" color="gray" />}
+      {isLoading && <Spinner />}
       <input
         type="file"
         accept="image/*"
