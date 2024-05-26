@@ -3,9 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { range, sample } from 'lodash';
 import menuList from 'contents/menuList';
 import { menuInfo } from 'contents/menuList';
-import { customers } from 'contents/rulse';
-
-console.log(menuInfo);
+import { customers } from 'contents/rules';
 
 const initialState = {
   score: 0,
@@ -26,9 +24,14 @@ export const customerSlice = createSlice({
       key.status = status;
     },
     getNextOrder: (state, action) => {
-      const { id } = action.payload;
+      const { id, isLevel2 } = action.payload;
+
+      const basicList = menuInfo
+        .filter((e) => !e.level2)
+        .map((e) => e.ingredient);
+
       const key = state[id];
-      key.order = sample(menuList);
+      key.order = isLevel2 ? sample(menuList) : sample(basicList);
     },
     getScore: (state, action) => {
       const { score } = action.payload;
@@ -38,20 +41,20 @@ export const customerSlice = createSlice({
       state.score = state.score - 30;
     },
     getInitCustonersState: (state, action) => {
-      const { level2 } = action.payload;
+      const { isLevel2 } = action.payload;
       const basicList = menuInfo
         .filter((e) => !e.level2)
         .map((e) => e.ingredient);
+
       const defaultSetting = range(customers).reduce((all, curr, i) => {
         all[`customer${i + 1}`] = {
-          order: level2 ? sample(menuList) : sample(basicList),
+          order: isLevel2 ? sample(menuList) : sample(basicList),
           status: 'waiting',
         };
         return all;
       }, {});
 
-      console.log(defaultSetting);
-      state = { ...state, ...defaultSetting };
+      state = { ...state, ...defaultSetting, isLevel2 };
       return state;
     },
   },

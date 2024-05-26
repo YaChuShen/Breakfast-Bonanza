@@ -1,7 +1,7 @@
 import { Center, HStack, Image } from '@chakra-ui/react';
 import { range } from 'lodash';
 import React from 'react';
-import { customers } from 'contents/rulse';
+import { customers } from 'contents/rules';
 import dynamic from 'next/dynamic';
 
 const CustomerTemplate = dynamic(() => import('Components/CustomerTemplate'), {
@@ -22,6 +22,7 @@ const Customers = ({ currentData, start }) => {
       >
         {range(customers).map((e, i) => (
           <CustomerTemplate
+            isLevel2={currentData?.isLevel2}
             wishFood={currentData[`customer${i + 1}`]?.order}
             status={currentData[`customer${i + 1}`]?.status}
             overtime={currentData[`customer${i + 1}`]?.overtime}

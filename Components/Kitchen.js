@@ -7,13 +7,13 @@ import RosemarryBowl from 'Components/RosemarryBowl';
 import TrashCan from 'Components/TrashCan';
 import { tool } from 'helpers/rwd';
 
-const Kitchen = ({ level2 }) => {
+const Kitchen = ({ isLevel2 }) => {
   return (
     <HStack pos="absolute" bottom={tool} spacing={0}>
       <LittleTree />
-      <ToasterSection level2={level2} />
-      <MaterialSection />
-      {level2 && <RosemarryBowl />}
+      <ToasterSection isLevel2={isLevel2} />
+      <MaterialSection isLevel2={isLevel2} />
+      {isLevel2 && <RosemarryBowl />}
       <TrashCan />
     </HStack>
   );

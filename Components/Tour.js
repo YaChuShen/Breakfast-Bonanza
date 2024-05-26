@@ -1,11 +1,22 @@
 'use-client';
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { TourProvider, useTour, components } from '@reactour/tour';
 import { RxCross2 } from 'react-icons/rx';
 import { Icon, Button, Text, useEditable, Box, VStack } from '@chakra-ui/react';
 import { HiArrowSmRight, HiArrowSmLeft } from 'react-icons/hi';
 import postMethod from 'helpers/postMethod';
+
+const CheckAlreadyRead = () => {
+  const { setIsOpen } = useTour();
+  const [alreadyRead, setAlreadyRead] = useState();
+
+  useEffect(() => {
+    if (window && sessionStorage.getItem('isTour')) {
+      setIsOpen(false);
+    }
+  }, []);
+};
 
 function Badge({ children }) {
   return (
@@ -125,8 +136,8 @@ const Tour = ({ children, profileId }) => {
                     profileId,
                   },
                 });
-
                 setIsOpen(false);
+                window.sessionStorage.setItem('isTour', true);
               } else {
                 setCurrentStep((s) => (s === steps?.length - 1 ? 0 : s + 1));
               }
@@ -142,6 +153,7 @@ const Tour = ({ children, profileId }) => {
       }}
     >
       {children}
+      <CheckAlreadyRead />
     </TourProvider>
   );
 };

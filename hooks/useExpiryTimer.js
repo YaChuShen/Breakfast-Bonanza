@@ -1,5 +1,5 @@
 import { useTimer } from 'react-timer-hook';
-import { timer } from 'contents/rulse';
+import { timer } from 'contents/rules';
 
 const useExpiryTimer = () => {
   const time = new Date();

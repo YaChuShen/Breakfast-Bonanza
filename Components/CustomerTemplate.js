@@ -1,8 +1,7 @@
 import { Box, Center, Circle, Image, Text } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
-import { useFormContext } from 'react-hook-form';
 import { isEqual, over, sample } from 'lodash';
-import { CUSTOMERNEXTORDER, CUSTOMEROVERTIME } from 'contents/rulse';
+import { CUSTOMERNEXTORDER, CUSTOMEROVERTIME } from 'contents/rules';
 import scoreList from 'contents/scoreList';
 import { motion } from 'framer-motion';
 import { useDispatch } from 'react-redux';
@@ -13,11 +12,7 @@ import {
   getScore,
   minusScore,
 } from 'store/features/customerSlice';
-import {
-  addFood,
-  setTargetItem,
-  setTargetPlate,
-} from 'store/features/plateSlice';
+import { addFood, setTargetPlate } from 'store/features/plateSlice';
 import { selectPlate } from 'store/features/plateSlice';
 import { useSelector } from 'react-redux';
 import splitCategories from 'helpers/splitCategories';
@@ -54,9 +49,8 @@ const CustomerTemplate = ({
   src,
   start,
   className,
+  isLevel2,
 }) => {
-  const { setValue, watch } = useFormContext();
-  const data = watch();
   const dispatch = useDispatch();
   const isCoffee = wishFood === 'coffee';
   const [getScoreAni, setGetScoreAni] = useState();
@@ -70,7 +64,6 @@ const CustomerTemplate = ({
       if (status === s && !overtime) {
         const t = setTimeout(() => {
           dispatch(handleCustomStatus({ id, status: 'waiting' }));
-          // setValue(`${id}.status`, 'waiting');
         }, [time]);
         return () => clearTimeout(t);
       }
@@ -118,7 +111,7 @@ const CustomerTemplate = ({
     dispatch(handleOvertime({ id, status: false }));
     dispatch(handleCustomStatus({ id, status: 'eating' }));
     setTimeout(() => {
-      dispatch(getNextOrder({ id }));
+      dispatch(getNextOrder({ id, isLevel2 }));
     }, [CUSTOMERNEXTORDER]);
     dispatch(getScore({ score: targetScore }));
     setGetScoreAni(true);

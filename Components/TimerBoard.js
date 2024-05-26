@@ -8,7 +8,7 @@ import useExpiryTimer from 'hooks/useExpiryTimer';
 import ScoreSection from './ScoreSection';
 import { useTour } from '@reactour/tour';
 
-const TimerBoard = ({ setStart, start, session, isTour, score }) => {
+const TimerBoard = ({ setStart, start, session, isTour, score, isLevel2 }) => {
   const { seconds, minutes, isRunning, timerStart, restart } = useExpiryTimer();
   const { setIsOpen, isOpen } = useTour();
 
@@ -36,6 +36,7 @@ const TimerBoard = ({ setStart, start, session, isTour, score }) => {
               session={session}
               setStart={setStart}
               restart={restart}
+              isLevel2={isLevel2}
             />
           )}
         </AnimatePresence>

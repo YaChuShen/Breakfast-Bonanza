@@ -22,11 +22,11 @@ function HomePage({ dbData, profileId }) {
   const { data: session } = useSession();
   const [start, setStart] = useState(false);
   const currentData = useSelector(selectCustomer);
-  const level2 = dbData.isLevel2;
+  const isLevel2 = dbData.isLevel2;
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getInitCustonersState({ level2 }));
+    dispatch(getInitCustonersState({ isLevel2 }));
   }, []);
 
   return (
@@ -41,6 +41,7 @@ function HomePage({ dbData, profileId }) {
               session={session}
               isTour={dbData.isTour}
               score={currentData.score}
+              isLevel2={isLevel2}
             />
             <Customers currentData={currentData} start={start} />
             <Box pos="relative" userSelect="none">
@@ -48,7 +49,7 @@ function HomePage({ dbData, profileId }) {
               <Table />
               <Center>
                 <PlateSection />
-                <Kitchen level2={level2} />
+                <Kitchen isLevel2={isLevel2} />
               </Center>
             </Box>
           </Box>

@@ -1,6 +1,6 @@
 import admin from 'functions/admin';
 import { NextResponse } from 'next/server';
-import { LEVEL2_SCORE } from 'contents/rulse';
+import { LEVEL2_SCORE } from 'contents/rules';
 
 export async function POST(request) {
   const { profileId, score } = await request?.json();

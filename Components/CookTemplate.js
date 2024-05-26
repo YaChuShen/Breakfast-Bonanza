@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import stoveList from '../contents/cookedList';
 import Progress from './Progress';
-import { MUTURITYTIME, OVERTIME } from '../contents/rulse';
+import { MUTURITYTIME, OVERTIME } from '../contents/rules';
 import onDragEnter from '../helpers/cook/onDragEnter';
 import onDrop from '../helpers/cook/onDrop';
 import passToPlate from '../helpers/cook/passToPlate';

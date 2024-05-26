@@ -2,14 +2,14 @@ import { Box, HStack, Image } from '@chakra-ui/react';
 import React from 'react';
 import FoodTemplate from './FoodTemplate';
 
-const FoodPlateSection = ({ level2 }) => {
+const FoodPlateSection = ({ isLevel2 }) => {
   return (
     <HStack pos="relative" spacing={1}>
       <Box
         pos="absolute"
         w="10em"
         left={-5}
-        bottom={level2 ? -14 : -9}
+        bottom={isLevel2 ? -14 : -9}
         pointerEvents="none"
       >
         <Image src="/foodPlate.svg" alt="" />
@@ -22,7 +22,7 @@ const FoodPlateSection = ({ level2 }) => {
         className=".first-step"
       />
       <FoodTemplate value="hotDog0" src="hotDog0" w="4.5em" zIndex={1} />
-      {level2 && (
+      {isLevel2 && (
         <FoodTemplate
           value="bacon0"
           src="bacon0"

@@ -1,6 +1,6 @@
 import { Box, Image } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
-import { trashCanNoList } from '../contents/rulse';
+import { trashCanNoList } from '../contents/rules';
 import {
   selectGameConfig,
   handleTrashCan,

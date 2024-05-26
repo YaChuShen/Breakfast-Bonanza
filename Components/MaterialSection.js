@@ -5,24 +5,24 @@ import smartSize from 'helpers/smartSize';
 import FoodPlateSection from 'Components/FoodPlateSection';
 import FoodTemplate from 'Components/FoodTemplate';
 
-const MaterialSection = ({ level2 }) => {
+const MaterialSection = ({ isLevel2 }) => {
   return (
     <HStack spacing={0} className="first-step">
       <CookTemplate
         tool={'pan'}
-        w={smartSize('9em', '11em', level2)}
+        w={smartSize('9em', '11em', isLevel2)}
         zIndex={1}
-        isLevel2={level2}
+        isLevel2={isLevel2}
       />
-      {level2 && (
+      {isLevel2 && (
         <CookTemplate
           tool={'pan'}
-          w={smartSize('9em', '11em', level2)}
+          w={smartSize('9em', '11em', isLevel2)}
           zIndex={1}
-          isLevel2={level2}
+          isLevel2={isLevel2}
         />
       )}
-      <FoodPlateSection level2={level2} />
+      <FoodPlateSection isLevel2={isLevel2} />
       <Box pl="4">
         <FoodTemplate value={'coffee'} src={'coffee'} />
       </Box>

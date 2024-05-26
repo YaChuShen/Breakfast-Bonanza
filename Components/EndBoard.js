@@ -1,10 +1,11 @@
-import { Box, Button, Image, Text, VStack } from '@chakra-ui/react';
+import { Box, Button, Image, Text, VStack, HStack } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 import React, { useEffect } from 'react';
+import { LEVEL2_SCORE } from 'contents/rules';
 
 const MotionComponent = motion(Box);
 
-const EndBoard = ({ score, isRunning, session, ...props }) => {
+const EndBoard = ({ score, isRunning, session, isLevel2, ...props }) => {
   useEffect(() => {
     const fetchData = async () => {
       await fetch('/api/pointsTable', {
@@ -14,12 +15,14 @@ const EndBoard = ({ score, isRunning, session, ...props }) => {
         },
         body: JSON.stringify({
           score: score ?? 0,
-          profileId: session?.profileId,
+          profileId: session?.id,
         }),
       });
     };
     fetchData();
   }, []);
+
+  const showLevelUpMessege = score > LEVEL2_SCORE && !isLevel2;
 
   return (
     <MotionComponent
@@ -46,15 +49,14 @@ const EndBoard = ({ score, isRunning, session, ...props }) => {
       {!isRunning && (
         <VStack w="100%" spacing={10}>
           <VStack w="100%" color="red.500">
-            <Image
+            {/* <Image
               src="/breakfast_bonanza_logo.svg"
               w="30%"
               alt="breakfast_bonanza_logo"
-            />
-            <br />
-            <br />
+            /> */}
+
             <Text fontSize="50px" fontWeight={700}>
-              Game over
+              {showLevelUpMessege ? 'Level up !!' : 'Game over'}
             </Text>
             <Text fontSize="20px" fontWeight={700} color="gray.700">
               your total scroe is
@@ -62,6 +64,18 @@ const EndBoard = ({ score, isRunning, session, ...props }) => {
                 {score}
               </Text>
             </Text>
+            <br />
+            {showLevelUpMessege && (
+              <Box>
+                <Text fontSize="20px" fontWeight={700} color="gray.700">
+                  Unlock new ingredients
+                </Text>
+                <HStack>
+                  <Image src={'/bacon.svg'} w="5em" />
+                  <Image src={'/rosemarry.svg'} w="5em" />
+                </HStack>
+              </Box>
+            )}
           </VStack>
           <Button
             type="submit"

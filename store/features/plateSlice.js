@@ -1,7 +1,7 @@
 'use client';
 import { createSlice } from '@reduxjs/toolkit';
 import { range } from 'lodash';
-import { plate } from 'contents/rulse';
+import { plate } from 'contents/rules';
 
 const p = range(plate).reduce((all, curr, i) => {
   all[`plateContent${i + 1}`] = [];

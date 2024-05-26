@@ -1,8 +1,8 @@
 import { Box, Center, HStack, Image } from '@chakra-ui/react';
 import React from 'react';
 import FoodTemplate from './FoodTemplate';
-import { plateToDropFood } from 'contents/rulse';
-import { materialList } from 'contents/rulse';
+import { plateToDropFood } from 'contents/rules';
+import { materialList } from 'contents/rules';
 import { useDispatch } from 'react-redux';
 import {
   addFood,

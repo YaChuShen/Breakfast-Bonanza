@@ -6,7 +6,7 @@ import FoodTemplate from './FoodTemplate';
 import onDragEnter from '../helpers/cook/onDragEnter';
 import onDrop from '../helpers/cook/onDrop';
 import passToPlate from '../helpers/cook/passToPlate';
-import { MUTURITYTIME, OVERTIME } from 'contents/rulse';
+import { MUTURITYTIME, OVERTIME } from 'contents/rules';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { selectPlate } from 'store/features/plateSlice';
