@@ -1,5 +1,3 @@
-'use-client';
-
 import React, { useEffect, useState } from 'react';
 import { TourProvider, useTour, components } from '@reactour/tour';
 import { RxCross2 } from 'react-icons/rx';
@@ -9,7 +7,6 @@ import postMethod from 'helpers/postMethod';
 
 const CheckAlreadyRead = () => {
   const { setIsOpen } = useTour();
-  const [alreadyRead, setAlreadyRead] = useState();
 
   useEffect(() => {
     if (window && sessionStorage.getItem('isTour')) {
@@ -41,7 +38,7 @@ function Close({ onClick }) {
 
 function Content({ content, currentStep }) {
   return (
-    <VStack spacing={4} pt="4" key={currentStep}>
+    <VStack spacing={4} pt="4" key={currentStep} maxW="12em">
       <Text fontSize="14px">{content}</Text>
       <video autoPlay muted playsInline loop width={130}>
         <source src={`${currentStep + 1}.mp4`} type="video/mp4" />
@@ -69,7 +66,7 @@ const steps = [
   },
   {
     selector: '.fifth-step',
-    content: '5',
+    content: 'If the food gets burnt, please drag to the trash can',
   },
 ];
 

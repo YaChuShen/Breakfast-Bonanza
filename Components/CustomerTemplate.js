@@ -16,6 +16,7 @@ import { addFood, setTargetPlate } from 'store/features/plateSlice';
 import { selectPlate } from 'store/features/plateSlice';
 import { useSelector } from 'react-redux';
 import splitCategories from 'helpers/splitCategories';
+import { selectGameConfig } from 'store/features/gameConfigSlice';
 
 const MotionComponent = motion(Box);
 
@@ -47,7 +48,6 @@ const CustomerTemplate = ({
   overtime,
   id,
   src,
-  start,
   className,
   isLevel2,
 }) => {
@@ -55,6 +55,7 @@ const CustomerTemplate = ({
   const isCoffee = wishFood === 'coffee';
   const [getScoreAni, setGetScoreAni] = useState();
   const plateData = useSelector(selectPlate);
+  const { timerStatus } = useSelector(selectGameConfig);
 
   const targetScore =
     scoreList[[...splitCategories(plateData.targetItem)].sort().join('&')];
@@ -73,11 +74,12 @@ const CustomerTemplate = ({
   }, [status]);
 
   useEffect(() => {
-    if (!overtime && start) {
+    //timerStatus：The game must be in progress.
+
+    if (!overtime && timerStatus) {
       const t = setTimeout(() => {
         dispatch(handleOvertime({ id, status: true }));
         dispatch(minusScore());
-
         setGetScoreAni(true);
         dispatch(handleCustomStatus({ id, status: 'errors' }));
       }, [CUSTOMEROVERTIME]);
@@ -86,7 +88,7 @@ const CustomerTemplate = ({
 
       return () => clearTimeout(t);
     }
-  }, [overtime, start, status]);
+  }, [overtime, timerStatus, status]);
 
   const handleValidateFood = () => {
     if (wishFood.includes('&')) {

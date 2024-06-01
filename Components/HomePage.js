@@ -5,7 +5,7 @@ import { useSession } from 'next-auth/react';
 import { useSelector } from 'react-redux';
 import { selectCustomer } from 'store/features/customerSlice';
 import { useDispatch } from 'react-redux';
-import { getInitCustonersState } from 'store/features/customerSlice';
+import { getInitCustomersState } from 'store/features/customerSlice';
 import Table from 'Components/Table';
 import PlateSection from 'Components/PlateSection';
 import React, { useEffect, useState } from 'react';
@@ -20,13 +20,12 @@ import Kitchen from './Kitchen';
 function HomePage({ dbData, profileId }) {
   const methods = useForm();
   const { data: session } = useSession();
-  const [start, setStart] = useState(false);
   const currentData = useSelector(selectCustomer);
   const isLevel2 = dbData.isLevel2;
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getInitCustonersState({ isLevel2 }));
+    dispatch(getInitCustomersState({ isLevel2 }));
   }, []);
 
   return (
@@ -36,14 +35,12 @@ function HomePage({ dbData, profileId }) {
           <Box as="form">
             {session && <Navbar profileId={profileId} />}
             <TimerBoard
-              setStart={setStart}
-              start={start}
               session={session}
               isTour={dbData.isTour}
               score={currentData.score}
               isLevel2={isLevel2}
             />
-            <Customers currentData={currentData} start={start} />
+            <Customers currentData={currentData} />
             <Box pos="relative" userSelect="none">
               <Gress1 />
               <Table />

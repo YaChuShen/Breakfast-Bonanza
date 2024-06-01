@@ -40,7 +40,7 @@ export const customerSlice = createSlice({
     minusScore: (state) => {
       state.score = state.score - 30;
     },
-    getInitCustonersState: (state, action) => {
+    getInitCustomersState: (state, action) => {
       const { isLevel2 } = action.payload;
       const basicList = menuInfo
         .filter((e) => !e.level2)
@@ -67,7 +67,7 @@ export const {
   getNextOrder,
   getScore,
   minusScore,
-  getInitCustonersState,
+  getInitCustomersState,
 } = customerSlice.actions;
 
 export default customerSlice.reducer;

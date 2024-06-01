@@ -13,11 +13,14 @@ import { motion } from 'framer-motion';
 import React from 'react';
 import { signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import { useDispatch } from 'react-redux';
+import { timerStatus } from 'store/features/gameConfigSlice';
 
 const MotionComponent = motion(Box);
 
-const StartBoard = ({ setStart, session, timerStart }, ...props) => {
+const StartBoard = ({ session, timerStart }) => {
   const router = useRouter();
+  const dispatch = useDispatch();
 
   return (
     <MotionComponent
@@ -39,7 +42,6 @@ const StartBoard = ({ setStart, session, timerStart }, ...props) => {
       transition={{ duration: 0.5, type: 'spring', stiffness: 200 }}
       borderRadius="80px"
       border="10px solid #db542c"
-      {...props}
     >
       <VStack w="100%" spacing={10}>
         <VStack w="100%">
@@ -55,7 +57,7 @@ const StartBoard = ({ setStart, session, timerStart }, ...props) => {
         )}
         <Button
           onClick={() => {
-            setStart(true);
+            dispatch(timerStatus({ status: true }));
             timerStart();
           }}
           bg="red.500"

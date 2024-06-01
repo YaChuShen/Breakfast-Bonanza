@@ -8,7 +8,7 @@ const CustomerTemplate = dynamic(() => import('Components/CustomerTemplate'), {
   ssr: false,
 });
 
-const Customers = ({ currentData, start }) => {
+const Customers = ({ currentData }) => {
   return (
     <Center pt="3em" pos="relative">
       <Image src="./window.svg" w="70em" minW="70em" alt="game" />
@@ -29,7 +29,6 @@ const Customers = ({ currentData, start }) => {
             id={`customer${i + 1}`}
             src={`customer${i + 1}`}
             key={e}
-            start={start}
             className={i === 0 ? 'three-step' : ''}
           />
         ))}
