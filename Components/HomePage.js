@@ -12,7 +12,6 @@ import React, { useEffect, useState } from 'react';
 import Media from 'Components/Media';
 import Gress1 from 'Components/Gress1';
 import TimerBoard from 'Components/TimerBoard';
-import Navbar from 'Components/Navbar';
 import Tour from 'Components/Tour';
 import Customers from './Customers';
 import Kitchen from './Kitchen';
@@ -33,13 +32,13 @@ function HomePage({ dbData, profileId }) {
       <FormProvider {...methods}>
         <Tour profileId={profileId}>
           <Box as="form">
-            {session && <Navbar profileId={profileId} />}
             <TimerBoard
               session={session}
               isTour={dbData.isTour}
               score={currentData.score}
               isLevel2={isLevel2}
             />
+
             <Customers currentData={currentData} />
             <Box pos="relative" userSelect="none">
               <Gress1 />

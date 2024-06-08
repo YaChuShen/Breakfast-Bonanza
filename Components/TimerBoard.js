@@ -41,7 +41,12 @@ const TimerBoard = ({ session, isTour, score, isLevel2 }) => {
           )}
         </AnimatePresence>
       )}
-      <ScoreSection score={score} minutes={minutes} seconds={seconds} />
+      <ScoreSection
+        score={score}
+        minutes={minutes}
+        seconds={seconds}
+        session={session}
+      />
     </div>
   );
 };
