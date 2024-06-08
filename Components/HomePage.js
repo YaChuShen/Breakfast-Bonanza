@@ -38,7 +38,6 @@ function HomePage({ dbData, profileId }) {
               score={currentData.score}
               isLevel2={isLevel2}
             />
-
             <Customers currentData={currentData} />
             <Box pos="relative" userSelect="none">
               <Gress1 />

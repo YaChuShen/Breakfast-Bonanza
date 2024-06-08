@@ -6,6 +6,9 @@
       "esnext"
     ],
     "baseUrl": ".",
+    "paths": {
+      "*": ["node_modules/*"]
+    },
     "allowJs": true,
     "skipLibCheck": true,
     "strict": false,

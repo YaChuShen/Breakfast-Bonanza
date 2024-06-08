@@ -43,7 +43,7 @@ const AvatarPicker = ({ profileId, avatar }) => {
   return (
     <Circle
       as="label"
-      border="1px solid"
+      border={!avatarURL && !avatar && '1px solid'}
       borderColor="gray.500"
       borderRadius="50%"
       size="6em"

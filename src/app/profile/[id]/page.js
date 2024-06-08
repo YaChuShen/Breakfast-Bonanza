@@ -5,6 +5,9 @@ const Page = async ({ params }) => {
   const db = admin.firestore();
   const profieSnaps = await db.collection('users').doc(params.id).get();
   const data = profieSnaps.data();
+  if (data) {
+    delete data.password;
+  }
 
   return (
     <Profile
