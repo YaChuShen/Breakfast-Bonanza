@@ -79,7 +79,7 @@ const ScoreSection = ({ score, seconds, minutes, session }) => {
               borderRadius="13px"
             >
               <MenuItem justifyContent="center">
-                <Link href={`/profile/${session.profileId}`}>
+                <Link href={`/profile/${session.id}`}>
                   <Text>Profile</Text>
                 </Link>
               </MenuItem>

@@ -6,6 +6,11 @@ import { db } from '../../../firebase.config';
 import * as firestoreFunctions from 'firebase/firestore';
 import admin from '../../../functions/admin';
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+
+const generateAccessToken = (user) => {
+  return jwt.sign(user, process.env.NEXTAUTH_SECRET, { expiresIn: '1h' });
+};
 
 export const NextAuthOptions = NextAuth({
   session: {
@@ -27,7 +32,7 @@ export const NextAuthOptions = NextAuth({
         },
         password: { label: 'Password', type: 'password' },
       },
-      async authorize(credentials, req, res) {
+      async authorize(credentials) {
         const db = admin.firestore();
         const { password, email } = credentials;
 
@@ -49,7 +54,7 @@ export const NextAuthOptions = NextAuth({
 
         return {
           ...user,
-          profileId: userRef.docs[0]?.id,
+          id: userRef.docs[0]?.id,
         };
       },
     }),
@@ -71,11 +76,19 @@ export const NextAuthOptions = NextAuth({
   adapter: FirestoreAdapter({ db: db, ...firestoreFunctions }),
   secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
-    jwt: async ({ token, user }) => {
-      return { ...token, ...user };
+    jwt: async ({ token, user, account }) => {
+      if (account) {
+        token.accessToken = account.access_token;
+      }
+      if (user) {
+        token.user = user;
+        // For credentials, generate a dummy access token or set a static one
+        token.accessToken = generateAccessToken(user);
+      }
+      return token;
     },
     session: async ({ session, token }) => {
-      return { ...session, ...token };
+      return { ...session, ...token, accessToken: '1234567' };
     },
     async signIn({ user }) {
       if (user?.error === 'password error') {

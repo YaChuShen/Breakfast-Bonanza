@@ -8,22 +8,15 @@ const Page = async () => {
 
   const db = admin.firestore();
   let data;
-  let profileId;
   const profieQuery = await db
     .collection('users')
     .where('email', '==', userSession?.user?.email ?? '')
     .get();
   if (profieQuery.size) {
     data = profieQuery.docs[0].data();
-    profileId = profieQuery.docs[0].id;
   }
 
-  return (
-    <HomePage
-      dbData={JSON.parse(JSON.stringify(data ?? {}) ?? {})}
-      profileId={profileId}
-    />
-  );
+  return <HomePage dbData={JSON.parse(JSON.stringify(data ?? {}) ?? {})} />;
 };
 
 export default Page;

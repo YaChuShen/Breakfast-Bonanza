@@ -25,6 +25,7 @@
     "firebase": "^10.3.0",
     "firebase-admin": "^11.10.1",
     "framer-motion": "^10.18.0",
+    "jsonwebtoken": "^9.0.2",
     "lodash": "^4.17.21",
     "next": "13.4.7",
     "next-auth": "^0.0.0-pr.6777.7f1745f6",

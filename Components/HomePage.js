@@ -16,12 +16,14 @@ import Tour from 'Components/Tour';
 import Customers from './Customers';
 import Kitchen from './Kitchen';
 
-function HomePage({ dbData, profileId }) {
+function HomePage({ dbData }) {
   const methods = useForm();
   const { data: session } = useSession();
   const currentData = useSelector(selectCustomer);
   const isLevel2 = dbData.isLevel2;
   const dispatch = useDispatch();
+
+  console.log(session);
 
   useEffect(() => {
     dispatch(getInitCustomersState({ isLevel2 }));
@@ -30,7 +32,7 @@ function HomePage({ dbData, profileId }) {
   return (
     <Media greaterThanOrEqual="md">
       <FormProvider {...methods}>
-        <Tour profileId={profileId}>
+        <Tour profileId={session?.id}>
           <Box as="form">
             <TimerBoard
               session={session}
