@@ -28,6 +28,22 @@ function HomePage({ dbData, profileId }) {
     dispatch(getInitCustomersState({ isLevel2 }));
   }, []);
 
+  useEffect(() => {
+    if (session) {
+      const tokenExpiry = session.expjwt * 1000; // token expiry time in milliseconds
+      const currentTime = Date.now();
+      if (tokenExpiry <= currentTime) {
+        console.log('過期了拉');
+        // signOut();
+      } else {
+        const timeUntilExpiry = tokenExpiry - currentTime;
+        setTimeout(() => {
+          console.log('過期了拉');
+        }, timeUntilExpiry);
+      }
+    }
+  }, [session]);
+
   return (
     <Media greaterThanOrEqual="md">
       <FormProvider {...methods}>

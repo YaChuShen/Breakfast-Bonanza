@@ -16,7 +16,7 @@ const AvatarPicker = ({ profileId, avatar }) => {
 
   useEffect(() => {
     const handleUpload = async () => {
-      if (file instanceof FileList && file[0]) {
+      if (file?.[0] && file instanceof FileList) {
         setIsLoading(true);
         const imagesRef = ref(storage, `${profileId}/avatar`);
         const upload = await uploadBytes(imagesRef, file[0]);

@@ -6,6 +6,7 @@ import { db } from '../../../firebase.config';
 import * as firestoreFunctions from 'firebase/firestore';
 import admin from '../../../functions/admin';
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 
 export const NextAuthOptions = NextAuth({
   session: {
@@ -37,7 +38,7 @@ export const NextAuthOptions = NextAuth({
           .get();
 
         if (!userRef.docs.length) return { error: 'no user' };
-
+        // added JET token here
         const user = userRef.docs[0].data();
         const isValid = await bcrypt.compare(password, user?.password);
         if (!isValid) {
@@ -47,9 +48,19 @@ export const NextAuthOptions = NextAuth({
         console.log('Successful login');
         delete user.password;
 
+        const token = jwt.sign(
+          {
+            email: user.email,
+            profileId: userRef.docs[0]?.id,
+          },
+          process.env.NEXTAUTH_SECRET,
+          { expiresIn: '1d' }
+        );
+
         return {
           ...user,
           profileId: userRef.docs[0]?.id,
+          accessToken: token,
         };
       },
     }),
@@ -65,14 +76,21 @@ export const NextAuthOptions = NextAuth({
       },
     }),
   ],
-  jwt: {
-    maxAge: 60 * 60 * 24 * 1, // 1 day
-  },
+
   adapter: FirestoreAdapter({ db: db, ...firestoreFunctions }),
   secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
     jwt: async ({ token, user }) => {
-      return { ...token, ...user };
+      const now = Math.floor(Date.now() / 1000);
+      if (user) {
+        token = {
+          ...token,
+          ...user,
+          iat: now,
+          expjwt: now + 60 * 60 * 24 * 1,
+        };
+      }
+      return token;
     },
     session: async ({ session, token }) => {
       return { ...session, ...token };
