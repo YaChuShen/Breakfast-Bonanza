@@ -12,6 +12,9 @@ export async function POST(request) {
       .collection('users')
       .doc(profileId)
       .get();
+
+    console.log('userDocumentSnapshot', userDocumentSnapshot);
+    console.log('LEVEL2_SCORE', LEVEL2_SCORE);
     if (userDocumentSnapshot.exists) {
       const userData = userDocumentSnapshot.data();
       isLevel2 = userData.isLevel2 || score >= LEVEL2_SCORE;

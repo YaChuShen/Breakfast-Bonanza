@@ -1,4 +1,13 @@
-import { Box, Button, Image, Text, VStack, HStack } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  Image,
+  Text,
+  VStack,
+  HStack,
+  Stack,
+  Flex,
+} from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 import React, { useEffect } from 'react';
 import { LEVEL2_SCORE } from 'contents/rules';
@@ -10,6 +19,8 @@ const MotionComponent = motion(Box);
 const EndBoard = ({ score, isRunning, session, isLevel2, ...props }) => {
   const dispatch = useDispatch();
 
+  console.log(session, props);
+
   useEffect(() => {
     const fetchData = async () => {
       await fetch('/api/pointsTable', {
@@ -19,7 +30,7 @@ const EndBoard = ({ score, isRunning, session, isLevel2, ...props }) => {
         },
         body: JSON.stringify({
           score: score ?? 0,
-          profileId: session?.id,
+          profileId: session?.profileId,
         }),
       });
     };
@@ -31,12 +42,12 @@ const EndBoard = ({ score, isRunning, session, isLevel2, ...props }) => {
 
   return (
     <MotionComponent
-      w="80%"
       py={{ md: '5em', xl: '7em' }}
       bg="rgba(255, 255, 255, 0.9)"
+      w="60%"
       pos="fixed"
       top="10%"
-      left="10%"
+      left="18.5%"
       zIndex={20}
       initial={{ opacity: 0.2, x: 0, y: -600, scale: 0.8 }}
       animate={{ opacity: 1, x: 0, y: 0, scale: 1 }}
@@ -52,34 +63,29 @@ const EndBoard = ({ score, isRunning, session, isLevel2, ...props }) => {
       {...props}
     >
       {!isRunning && (
-        <VStack w="100%" spacing={10}>
+        <VStack w="100%" spacing={10} fontWeight={700}>
           <VStack w="100%" color="red.500">
-            {/* <Image
-              src="/breakfast_bonanza_logo.svg"
-              w="30%"
-              alt="breakfast_bonanza_logo"
-            /> */}
-
-            <Text fontSize="50px" fontWeight={700}>
+            <Text fontSize="50px">
               {showLevelUpMessege ? 'Level up !!' : 'Game over'}
             </Text>
-            <Text fontSize="20px" fontWeight={700} color="gray.700">
-              your total scroe is
-              <Text color="red.500" fontSize="40px" textAlign="center">
+            <Text fontSize="20px" color="gray.700">
+              Your total scroe is
+              <Text color="red.500" fontSize="4em" textAlign="center">
                 {score}
               </Text>
             </Text>
-            <br />
             {showLevelUpMessege && (
-              <Box>
-                <Text fontSize="20px" fontWeight={700} color="gray.700">
-                  Unlock new ingredients
+              <Stack alignItems="center" color="gray.700">
+                <Text fontSize="20px">Unlock new ingredients!</Text>
+                <Text>
+                  Next, there are various combinations waiting for you to
+                  complete.
                 </Text>
                 <HStack>
                   <Image src={'/bacon.svg'} w="5em" />
                   <Image src={'/rosemarry.svg'} w="5em" />
                 </HStack>
-              </Box>
+              </Stack>
             )}
           </VStack>
           <Button
