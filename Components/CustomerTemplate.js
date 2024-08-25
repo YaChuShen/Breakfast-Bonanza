@@ -56,6 +56,7 @@ const CustomerTemplate = ({
   const [getScoreAni, setGetScoreAni] = useState();
   const plateData = useSelector(selectPlate);
   const { timerStatus } = useSelector(selectGameConfig);
+  const isGameRunning = timerStatus === 'gameRunning';
 
   const targetScore =
     scoreList[[...splitCategories(plateData.targetItem)].sort().join('&')];
@@ -74,9 +75,8 @@ const CustomerTemplate = ({
   }, [status]);
 
   useEffect(() => {
-    //timerStatus：The game must be in progress.
-
-    if (!overtime && timerStatus) {
+    //isGameRunning：The game must be in progress.
+    if (!overtime && isGameRunning) {
       const t = setTimeout(() => {
         dispatch(handleOvertime({ id, status: true }));
         dispatch(minusScore());
@@ -88,7 +88,7 @@ const CustomerTemplate = ({
 
       return () => clearTimeout(t);
     }
-  }, [overtime, timerStatus, status]);
+  }, [overtime, isGameRunning, status]);
 
   const handleValidateFood = () => {
     if (wishFood.includes('&')) {

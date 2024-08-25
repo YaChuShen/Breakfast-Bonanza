@@ -1,9 +1,13 @@
 import { useTimer } from 'react-timer-hook';
 import { timer } from 'contents/rules';
+import { useDispatch } from 'react-redux';
+import { timerStatus } from 'store/features/gameConfigSlice';
 
 const useExpiryTimer = () => {
   const time = new Date();
   time.setSeconds(time.getSeconds() + timer);
+  const dispatch = useDispatch();
+
   const {
     seconds,
     minutes,
@@ -12,7 +16,7 @@ const useExpiryTimer = () => {
     start: timerStart,
   } = useTimer({
     expiryTimestamp: time,
-    onExpire: () => console.log('onExpire called'),
+    onExpire: () => dispatch(timerStatus({ status: 'end' })),
     autoStart: false,
   });
 

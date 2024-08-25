@@ -1,4 +1,4 @@
-'use client';
+import React from 'react';
 
 import {
   Box,
@@ -10,18 +10,18 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
-import React from 'react';
-import { signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useDispatch } from 'react-redux';
+import { useTour } from '@reactour/tour';
 import { timerStatus } from 'store/features/gameConfigSlice';
 
 const MotionComponent = motion(Box);
 
-const StartBoard = ({ session, timerStart }) => {
+const ReadyBeginBoard = ({ session, timerStart }) => {
+  const { setIsOpen, isOpen } = useTour();
+
   const router = useRouter();
   const dispatch = useDispatch();
-
   return (
     <MotionComponent
       w="80%"
@@ -47,8 +47,9 @@ const StartBoard = ({ session, timerStart }) => {
         <VStack w="100%">
           <Image src="/breakfast_bonanza_logo.svg" w="60%" />
           <Text color="red.500" fontSize="24px" fontWeight={700}>
-            Make Maximum Breakfasts in Limited Time
+            Are you ready to start?
           </Text>
+          <Text>Press Start to begin the timer</Text>
         </VStack>
         {session && (
           <Text color="gray.700" fontWeight={700}>
@@ -57,8 +58,8 @@ const StartBoard = ({ session, timerStart }) => {
         )}
         <Button
           onClick={() => {
-            dispatch(timerStatus({ status: true }));
             timerStart();
+            dispatch(timerStatus({ status: 'gameRunning' }));
           }}
           bg="red.500"
           color="white"
@@ -71,39 +72,11 @@ const StartBoard = ({ session, timerStart }) => {
           _hover={{ bg: 'red.400', color: 'white' }}
           fontWeight={900}
         >
-          START
+          Start
         </Button>
-        <VStack spacing={0}>
-          {session ? (
-            <Text onClick={signOut} textDecoration="underline" cursor="pointer">
-              logout
-            </Text>
-          ) : (
-            <HStack>
-              <Button
-                borderRadius="12px"
-                border=" 2px solid #d67558"
-                flex={1}
-                variant="outline"
-                onClick={() => router.push('auth/signin')}
-              >
-                LogIn
-              </Button>
-              <Button
-                borderRadius="12px"
-                border=" 2px solid #978e8b"
-                flex={1}
-                onClick={() => router.push('/register')}
-                variant="outline"
-              >
-                Sign Up
-              </Button>
-            </HStack>
-          )}
-        </VStack>
       </VStack>
     </MotionComponent>
   );
 };
 
-export default StartBoard;
+export default ReadyBeginBoard;

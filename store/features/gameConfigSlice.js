@@ -5,7 +5,7 @@ export const gameConfigSlice = createSlice({
   name: 'gameConfig',
   initialState: {
     trashCanOpen: false,
-    timerStatus: undefined,
+    timerStatus: 'initial',
     score: 0,
   },
   reducers: {
@@ -15,6 +15,7 @@ export const gameConfigSlice = createSlice({
     },
     timerStatus: (state, action) => {
       const { status } = action.payload;
+      console.log('timerStatus', status);
       state.timerStatus = status;
     },
   },

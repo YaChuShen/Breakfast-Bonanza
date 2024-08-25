@@ -4,6 +4,8 @@ import { RxCross2 } from 'react-icons/rx';
 import { Icon, Button, Text, useEditable, Box, VStack } from '@chakra-ui/react';
 import { HiArrowSmRight, HiArrowSmLeft } from 'react-icons/hi';
 import postMethod from 'helpers/postMethod';
+import { useDispatch } from 'react-redux';
+import { timerStatus } from 'store/features/gameConfigSlice';
 
 const CheckAlreadyRead = () => {
   const { setIsOpen } = useTour();
@@ -71,6 +73,8 @@ const steps = [
 ];
 
 const Tour = ({ children, profileId }) => {
+  const dispatch = useDispatch();
+
   return (
     <TourProvider
       steps={steps}
@@ -135,6 +139,7 @@ const Tour = ({ children, profileId }) => {
                 });
                 setIsOpen(false);
                 window.sessionStorage.setItem('isTour', true);
+                dispatch(timerStatus({ status: 'readyStarting' }));
               } else {
                 setCurrentStep((s) => (s === steps?.length - 1 ? 0 : s + 1));
               }

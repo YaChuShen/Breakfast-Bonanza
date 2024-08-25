@@ -19,8 +19,6 @@ const MotionComponent = motion(Box);
 const EndBoard = ({ score, isRunning, session, isLevel2, ...props }) => {
   const dispatch = useDispatch();
 
-  console.log(session, props);
-
   useEffect(() => {
     const fetchData = async () => {
       await fetch('/api/pointsTable', {
@@ -35,7 +33,7 @@ const EndBoard = ({ score, isRunning, session, isLevel2, ...props }) => {
       });
     };
     fetchData();
-    dispatch(timerStatus({ status: isRunning }));
+    // dispatch(timerStatus({ status: isRunning }));
   }, []);
 
   const showLevelUpMessege = score > LEVEL2_SCORE && !isLevel2;
