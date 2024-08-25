@@ -11,7 +11,7 @@ import PlateSection from 'Components/PlateSection';
 import React, { useEffect, useState } from 'react';
 import Media from 'Components/Media';
 import Gress1 from 'Components/Gress1';
-import TimerBoard from 'Components/TimerBoard';
+import GameStageBoard from 'Components/GameStageBoard';
 import Navbar from 'Components/Navbar';
 import Tour from 'Components/Tour';
 import Customers from './Customers';
@@ -50,7 +50,7 @@ function HomePage({ dbData, profileId }) {
         <Tour profileId={profileId}>
           <Box as="form">
             {session && <Navbar profileId={profileId} />}
-            <TimerBoard
+            <GameStageBoard
               session={session}
               isTour={dbData.isTour}
               score={currentData.score}

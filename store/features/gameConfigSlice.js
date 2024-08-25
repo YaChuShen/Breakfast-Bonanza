@@ -1,6 +1,5 @@
 'use client';
 import { createSlice } from '@reduxjs/toolkit';
-
 export const gameConfigSlice = createSlice({
   name: 'gameConfig',
   initialState: {
@@ -15,7 +14,6 @@ export const gameConfigSlice = createSlice({
     },
     timerStatus: (state, action) => {
       const { status } = action.payload;
-      console.log('timerStatus', status);
       state.timerStatus = status;
     },
   },

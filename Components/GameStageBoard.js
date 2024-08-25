@@ -1,19 +1,29 @@
 'use client';
 
 import { AnimatePresence } from 'framer-motion';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import BeginBoard from 'Components/BeginBoard';
 import EndBoard from 'Components/EndBoard';
 import useExpiryTimer from 'hooks/useExpiryTimer';
 import ScoreSection from './ScoreSection';
-import { useTour } from '@reactour/tour';
 import { selectGameConfig } from 'store/features/gameConfigSlice';
 import { useSelector } from 'react-redux';
 import ReadyStartBoard from './ReadyStartBoard';
+import { dispatchAction } from '../helpers/dispatchAction';
 
-const TimerBoard = ({ session, isTour, score, isLevel2 }) => {
+const GameStageBoard = ({ session, isTour, score, isLevel2 }) => {
   const { seconds, minutes, isRunning, timerStart, restart } = useExpiryTimer();
   const { timerStatus } = useSelector(selectGameConfig);
+
+  useEffect(() => {
+    const initialTimerStatus = sessionStorage.getItem('isTour')
+      ? 'readyStarting'
+      : 'initial';
+    dispatchAction({
+      action: 'timerStatus',
+      payload: { status: initialTimerStatus },
+    });
+  }, []);
 
   const boardList = {
     initial: <BeginBoard session={session} />,
@@ -30,8 +40,6 @@ const TimerBoard = ({ session, isTour, score, isLevel2 }) => {
     ),
   };
 
-  console.log(timerStatus);
-
   return (
     <>
       <AnimatePresence>{boardList[timerStatus]}</AnimatePresence>
@@ -40,4 +48,4 @@ const TimerBoard = ({ session, isTour, score, isLevel2 }) => {
   );
 };
 
-export default TimerBoard;
+export default GameStageBoard;

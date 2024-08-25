@@ -18,9 +18,6 @@ import { timerStatus } from 'store/features/gameConfigSlice';
 const MotionComponent = motion(Box);
 
 const ReadyBeginBoard = ({ session, timerStart }) => {
-  const { setIsOpen, isOpen } = useTour();
-
-  const router = useRouter();
   const dispatch = useDispatch();
   return (
     <MotionComponent
