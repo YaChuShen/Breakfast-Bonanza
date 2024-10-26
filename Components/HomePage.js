@@ -1,16 +1,16 @@
 'use client';
 import { Box, Center } from '@chakra-ui/react';
 import { FormProvider, useForm } from 'react-hook-form';
-import { useSession } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
 import { useSelector } from 'react-redux';
 import { selectCustomer } from 'store/features/customerSlice';
 import { useDispatch } from 'react-redux';
 import { getInitCustomersState } from 'store/features/customerSlice';
 import Table from 'Components/Table';
 import PlateSection from 'Components/PlateSection';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import Media from 'Components/Media';
-import Gress1 from 'Components/Gress1';
+import Grass1 from 'Components/Grass1';
 import GameStageBoard from 'Components/GameStageBoard';
 import Navbar from 'Components/Navbar';
 import Tour from 'Components/Tour';
@@ -30,12 +30,14 @@ function HomePage({ dbData, profileId }) {
 
   useEffect(() => {
     if (session) {
-      const tokenExpiry = session.expjwt * 1000; // token expiry time in milliseconds
+      const tokenExpiry = session.expjwt * 1000;
       const currentTime = Date.now();
+
       if (tokenExpiry <= currentTime) {
         console.log('過期了拉');
-        // signOut();
+        signOut();
       } else {
+        //確保在 token 還未過期的情況下，讓 setTimeout 延遲登出，直到 token 到期為止。
         const timeUntilExpiry = tokenExpiry - currentTime;
         setTimeout(() => {
           console.log('過期了拉');
@@ -58,7 +60,7 @@ function HomePage({ dbData, profileId }) {
             />
             <Customers currentData={currentData} />
             <Box pos="relative" userSelect="none">
-              <Gress1 />
+              <Grass1 />
               <Table />
               <Center>
                 <PlateSection />

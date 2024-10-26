@@ -1,9 +1,9 @@
 import React from 'react';
 import Media from './Media';
-import { Image, Text } from '@chakra-ui/react';
+import { Image } from '@chakra-ui/react';
 import { BigTree } from 'helpers/rwd';
 
-const Gress1 = () => {
+const Grass1 = () => {
   return (
     <Media greaterThanOrEqual="xl">
       <Image
@@ -19,4 +19,4 @@ const Gress1 = () => {
   );
 };
 
-export default Gress1;
+export default Grass1;
