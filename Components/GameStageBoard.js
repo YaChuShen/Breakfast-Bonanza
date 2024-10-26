@@ -1,7 +1,7 @@
 'use client';
 
 import { AnimatePresence } from 'framer-motion';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import BeginBoard from 'Components/BeginBoard';
 import EndBoard from 'Components/EndBoard';
 import useExpiryTimer from 'hooks/useExpiryTimer';
@@ -11,7 +11,7 @@ import { useSelector } from 'react-redux';
 import ReadyStartBoard from './ReadyStartBoard';
 import { dispatchAction } from '../helpers/dispatchAction';
 
-const GameStageBoard = ({ session, isTour, score, isLevel2 }) => {
+const GameStageBoard = ({ session, score, isLevel2 }) => {
   const { seconds, minutes, isRunning, timerStart, restart } = useExpiryTimer();
   const { timerStatus } = useSelector(selectGameConfig);
 
@@ -45,7 +45,12 @@ const GameStageBoard = ({ session, isTour, score, isLevel2 }) => {
   return (
     <>
       <AnimatePresence>{boardList[timerStatus]}</AnimatePresence>
-      <ScoreSection score={score} minutes={minutes} seconds={seconds} />
+      <ScoreSection
+        score={score}
+        minutes={minutes}
+        seconds={seconds}
+        profileId={session?.profileId ?? session?.id}
+      />
     </>
   );
 };

@@ -11,14 +11,10 @@ import {
 import { motion } from 'framer-motion';
 import React, { useEffect } from 'react';
 import { LEVEL2_SCORE } from 'contents/rules';
-import { useDispatch } from 'react-redux';
-import { timerStatus } from 'store/features/gameConfigSlice';
 
 const MotionComponent = motion(Box);
 
 const EndBoard = ({ score, isRunning, session, isLevel2, ...props }) => {
-  const dispatch = useDispatch();
-
   useEffect(() => {
     const fetchData = async () => {
       await fetch('/api/pointsTable', {
@@ -33,7 +29,6 @@ const EndBoard = ({ score, isRunning, session, isLevel2, ...props }) => {
       });
     };
     fetchData();
-    // dispatch(timerStatus({ status: isRunning }));
   }, []);
 
   const showLevelUpMessege = score > LEVEL2_SCORE && !isLevel2;

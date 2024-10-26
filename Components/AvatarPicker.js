@@ -1,16 +1,16 @@
 'use client';
 
-import { Circle, Image, Spinner } from '@chakra-ui/react';
+import { Circle, Spinner } from '@chakra-ui/react';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { BiCamera } from 'react-icons/bi';
 import { storage } from '../firebase.config';
-import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import postMethod from 'helpers/postMethod';
 
 const AvatarPicker = ({ profileId, avatar }) => {
   const prevUrl = useRef();
-  const { register, handleSubmit, watch } = useForm({});
+  const { register, watch } = useForm({});
   const [isLoading, setIsLoading] = useState(false);
   const file = watch('avatar');
 
@@ -35,8 +35,10 @@ const AvatarPicker = ({ profileId, avatar }) => {
   }, [file?.[0]]);
 
   const avatarURL = useMemo(() => {
-    if (file instanceof FileList && file[0]) {
-      return URL.createObjectURL(file[0]);
+    if (file?.[0]) {
+      if (file instanceof FileList) {
+        return URL.createObjectURL(file[0]);
+      }
     }
   }, [file]);
 

@@ -1,21 +1,34 @@
-import { Box, Divider, Text, VStack } from '@chakra-ui/react';
-import React, { useEffect } from 'react';
+import {
+  Box,
+  Center,
+  Divider,
+  IconButton,
+  SlideFade,
+  Text,
+  VStack,
+  useDisclosure,
+} from '@chakra-ui/react';
+import React from 'react';
 import Timer from 'Components/Timer';
+import { MdArrowDropDown } from 'react-icons/md';
+import Link from 'next/link';
 
-const ScoreSection = ({ score, seconds, minutes }) => {
+const ScoreSection = ({ score, seconds, minutes, profileId }) => {
+  const { isOpen, onToggle } = useDisclosure();
+
   return (
     <Box
       zIndex={1}
       boxShadow="md"
       bg="gray.50"
-      py="2"
+      pt="2"
       pos="fixed"
       right={10}
       top={10}
       w="100%"
       maxW="8em"
-      px="2"
       borderRadius="13px"
+      onMouseLeave={onToggle}
     >
       <VStack>
         <Timer seconds={seconds} minutes={minutes} />
@@ -24,6 +37,54 @@ const ScoreSection = ({ score, seconds, minutes }) => {
           {score ?? 0}
         </Text>
       </VStack>
+      <Center borderRadius="13px" flexDirection="column" pt="2" w="full">
+        <IconButton
+          as={MdArrowDropDown}
+          w="full"
+          size="xs"
+          onClick={onToggle}
+          cursor="pointer"
+          borderRadius="none"
+          borderBottomRadius="xl"
+          onMouseEnter={onToggle}
+        />
+        {isOpen && (
+          <Box w="full">
+            <SlideFade
+              in={isOpen}
+              transition={{ enter: { duration: 0.5 }, exit: { duration: 0.5 } }}
+            >
+              <VStack
+                w="full"
+                textAlign="center"
+                cursor="pointer"
+                userSelect="none"
+                py="2"
+                fontWeight={500}
+              >
+                <Link href={`/profile/${profileId}`}>
+                  <Text
+                    _hover={{
+                      color: 'gray.400',
+                    }}
+                  >
+                    Profile
+                  </Text>
+                </Link>
+
+                <Divider />
+                <Text
+                  _hover={{
+                    color: 'gray.400',
+                  }}
+                >
+                  Logout
+                </Text>
+              </VStack>
+            </SlideFade>
+          </Box>
+        )}
+      </Center>
     </Box>
   );
 };

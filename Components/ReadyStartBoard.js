@@ -12,16 +12,14 @@ const MotionComponent = motion(Box);
 const ReadyStartBoard = ({ session, timerStart }) => {
   const dispatch = useDispatch();
 
-  console.log('session_ready', session);
-
   return (
     <MotionComponent
-      w="80%"
+      w="60%"
       py={{ md: '5em', xl: '7em' }}
       bg="rgba(255, 255, 255, 0.9)"
       pos="fixed"
       top="20%"
-      left="10%"
+      left="20%"
       zIndex={20}
       initial={{ opacity: 0.2, x: 0, y: -600, scale: 0.8 }}
       animate={{ opacity: 1, x: 0, y: 0, scale: 1 }}

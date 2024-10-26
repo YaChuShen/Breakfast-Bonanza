@@ -12,7 +12,6 @@ import React, { useEffect } from 'react';
 import Media from 'Components/Media';
 import Grass1 from 'Components/Grass1';
 import GameStageBoard from 'Components/GameStageBoard';
-import Navbar from 'Components/Navbar';
 import Tour from 'Components/Tour';
 import Customers from './Customers';
 import Kitchen from './Kitchen';
@@ -51,7 +50,6 @@ function HomePage({ dbData, profileId }) {
       <FormProvider {...methods}>
         <Tour profileId={profileId}>
           <Box as="form">
-            {session && <Navbar profileId={profileId} />}
             <GameStageBoard
               session={session}
               isTour={dbData.isTour}
