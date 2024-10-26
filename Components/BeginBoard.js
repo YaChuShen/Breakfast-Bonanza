@@ -22,7 +22,7 @@ const MotionComponent = motion(Box);
 const BeginBoard = ({ session }) => {
   const router = useRouter();
   const dispatch = useDispatch();
-  const { setIsOpen, isOpen } = useTour();
+  const { setIsOpen } = useTour();
 
   return (
     <MotionComponent
@@ -53,9 +53,15 @@ const BeginBoard = ({ session }) => {
           </Text>
         </VStack>
         {session && (
-          <Text color="gray.700" fontWeight={700}>
-            {`Hi ${session?.user?.name} Let's to start the game!`}
-          </Text>
+          <VStack fontWeight={500}>
+            <Text color="gray.700">
+              Hi,{' '}
+              <Text as="span" fontWeight={900} fontSize="2xl">
+                {session?.user?.name}
+              </Text>
+            </Text>
+            <Text>{`Let's start the game!`}</Text>
+          </VStack>
         )}
         <Button
           onClick={() => {

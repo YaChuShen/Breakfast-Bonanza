@@ -1,24 +1,19 @@
 import React from 'react';
 
-import {
-  Box,
-  Button,
-  Center,
-  HStack,
-  Image,
-  Text,
-  VStack,
-} from '@chakra-ui/react';
+import { Box, Button, Image, Text, VStack } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
-import { useRouter } from 'next/navigation';
 import { useDispatch } from 'react-redux';
-import { useTour } from '@reactour/tour';
 import { timerStatus } from 'store/features/gameConfigSlice';
+import { signOut } from 'next-auth/react';
+import Link from 'next/link';
 
 const MotionComponent = motion(Box);
 
-const ReadyBeginBoard = ({ session, timerStart }) => {
+const ReadyStartBoard = ({ session, timerStart }) => {
   const dispatch = useDispatch();
+
+  console.log('session_ready', session);
+
   return (
     <MotionComponent
       w="80%"
@@ -43,15 +38,29 @@ const ReadyBeginBoard = ({ session, timerStart }) => {
       <VStack w="100%" spacing={10}>
         <VStack w="100%">
           <Image src="/breakfast_bonanza_logo.svg" w="60%" />
-          <Text color="red.500" fontSize="24px" fontWeight={700}>
+          {/* <Text color="red.500" fontSize="24px" fontWeight={700}>
             Are you ready to start?
-          </Text>
-          <Text>Press Start to begin the timer</Text>
+          </Text> */}
+          {/* <Text>Press Start to begin the timer</Text> */}
         </VStack>
-        {session && (
-          <Text color="gray.700" fontWeight={700}>
-            {`Hi ${session?.user?.name} Let's to start the game!`}
-          </Text>
+        {session ? (
+          <VStack fontWeight={500}>
+            <Text color="gray.700">
+              Hi,{' '}
+              <Text as="span" fontWeight={900} fontSize="2xl">
+                {session?.user?.name}
+              </Text>
+            </Text>
+            <Text>Press Start to begin the timer!</Text>
+          </VStack>
+        ) : (
+          <VStack>
+            <Text>You are not logged in yet.</Text>
+            <Text>
+              Log in or sign up now to record your game score and enter the
+              leaderboard!
+            </Text>
+          </VStack>
         )}
         <Button
           onClick={() => {
@@ -71,9 +80,25 @@ const ReadyBeginBoard = ({ session, timerStart }) => {
         >
           Start
         </Button>
+        {session ? (
+          <Text onClick={signOut} textDecoration="underline" cursor="pointer">
+            logout
+          </Text>
+        ) : (
+          <Link href="/auth/signin">
+            <Text
+              cursor="pointer"
+              textDecoration="underline"
+              color="red.500"
+              onClick={() => window.open('auth/signin', '_self')}
+            >
+              Go to login
+            </Text>
+          </Link>
+        )}
       </VStack>
     </MotionComponent>
   );
 };
 
-export default ReadyBeginBoard;
+export default ReadyStartBoard;

@@ -1,6 +1,6 @@
 import { Box, Center, Circle, Image, Text } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
-import { isEqual, over, sample } from 'lodash';
+import { isEqual } from 'lodash';
 import { CUSTOMERNEXTORDER, CUSTOMEROVERTIME } from 'contents/rules';
 import scoreList from 'contents/scoreList';
 import { motion } from 'framer-motion';
@@ -12,7 +12,11 @@ import {
   getScore,
   minusScore,
 } from 'store/features/customerSlice';
-import { addFood, setTargetPlate } from 'store/features/plateSlice';
+import {
+  addFood,
+  setTargetItem,
+  setTargetPlate,
+} from 'store/features/plateSlice';
 import { selectPlate } from 'store/features/plateSlice';
 import { useSelector } from 'react-redux';
 import splitCategories from 'helpers/splitCategories';
@@ -122,7 +126,8 @@ const CustomerTemplate = ({
   const failureSubmit = () => {
     if (status === 'eating') return;
     dispatch(handleCustomStatus({ id, status: 'errors' }));
-    minusScore();
+    dispatch(setTargetItem({ target: null }));
+    dispatch(minusScore());
     setGetScoreAni(true);
   };
 

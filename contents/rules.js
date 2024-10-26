@@ -1,4 +1,4 @@
-export const timer = 20;
+export const timer = 2000;
 export const trashCanNoList = ['coffee'];
 export const plateToDropFood = [
   'sunnyEgg',

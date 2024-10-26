@@ -28,7 +28,9 @@ const GameStageBoard = ({ session, isTour, score, isLevel2 }) => {
   const boardList = {
     initial: <BeginBoard session={session} />,
     touring: '',
-    readyStarting: <ReadyStartBoard timerStart={timerStart} />,
+    readyStarting: (
+      <ReadyStartBoard timerStart={timerStart} session={session} />
+    ),
     end: (
       <EndBoard
         score={score}
