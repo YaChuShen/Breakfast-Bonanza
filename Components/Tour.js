@@ -1,13 +1,15 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { TourProvider, useTour, components } from '@reactour/tour';
 import { RxCross2 } from 'react-icons/rx';
-import { Icon, Button, Text, VStack } from '@chakra-ui/react';
+import { Icon, Button, Text, useEditable, Box, VStack } from '@chakra-ui/react';
 import { HiArrowSmRight, HiArrowSmLeft } from 'react-icons/hi';
 import postMethod from 'helpers/postMethod';
 import { useDispatch } from 'react-redux';
 import { timerStatus } from 'store/features/gameConfigSlice';
 
-const CheckAlreadyRead = ({ setIsOpen }) => {
+const CheckAlreadyRead = () => {
+  const { setIsOpen } = useTour();
+
   useEffect(() => {
     if (window && sessionStorage.getItem('isTour')) {
       setIsOpen(false);
@@ -25,12 +27,12 @@ function Badge({ children }) {
   );
 }
 
-function Close({ onClick, startGame }) {
+function Close({ onClick, onClickStartGame }) {
   return (
     <button
       onClick={() => {
         onClick();
-        startGame();
+        onClickStartGame();
       }}
       style={{ position: 'absolute', right: 15, top: 10 }}
     >
@@ -41,7 +43,7 @@ function Close({ onClick, startGame }) {
 
 function Content({ content, currentStep }) {
   return (
-    <VStack spacing={4} pt="4" key={currentStep} maxW="12em">
+    <VStack spacing={4} pt="4" key={currentStep} maxW="12em" h="13em">
       <Text fontSize="14px">{content}</Text>
       <video autoPlay muted playsInline loop width={130}>
         <source src={`${currentStep + 1}.mp4`} type="video/mp4" />
@@ -50,44 +52,42 @@ function Content({ content, currentStep }) {
   );
 }
 
-const steps = [
-  {
-    selector: '.first-step',
-    content: 'Drag the egg into the pen.',
-  },
-  {
-    selector: '.two-step',
-    content: 'And drag or click the cooked food on the plate.',
-  },
-  {
-    selector: '.three-step',
-    content: 'If your meal is done, drag to the customer! Get the point!',
-  },
-  {
-    selector: '.four-step',
-    content: `When the toast is done, click the toaster's button and then click again to the plate.`,
-  },
-  {
-    selector: '.fifth-step',
-    content: 'If the food gets burnt, please drag to the trash can.',
-  },
-];
-
 const Tour = ({ children, profileId }) => {
   const dispatch = useDispatch();
-  const { setIsOpen } = useTour();
 
-  const startGame = async () => {
+  const onClickStartGame = async () => {
     await postMethod({
       path: '/api/tour',
       data: {
         profileId,
       },
     });
-    setIsOpen(false);
     window.sessionStorage.setItem('isTour', true);
     dispatch(timerStatus({ status: 'readyStarting' }));
   };
+
+  const steps = [
+    {
+      selector: '.first-step',
+      content: 'Drag the egg into the pen',
+    },
+    {
+      selector: '.two-step',
+      content: 'And drag the cooked food on the plate',
+    },
+    {
+      selector: '.three-step',
+      content: 'If your meal is done, drag to the customer! Finish!',
+    },
+    {
+      selector: '.four-step',
+      content: `When the toast is done, click the toaster's button and then click again to the customer`,
+    },
+    {
+      selector: '.fifth-step',
+      content: 'If the food gets burnt, please drag to the trash can',
+    },
+  ];
 
   return (
     <TourProvider
@@ -109,12 +109,14 @@ const Tour = ({ children, profileId }) => {
         maskArea: (base) => ({ ...base, rx: '20px' }),
       }}
       padding={{
-        popover: [20, 100],
+        popover: [20, 20],
       }}
       showDots={false}
       components={{
         Badge,
-        Close: (props) => <Close {...props} startGame={startGame} />,
+        Close: ({ onClickStartGame }) => (
+          <Close onClickStartGame={onClickStartGame} />
+        ),
         Content,
       }}
       disableDotsNavigation={false}
@@ -149,7 +151,8 @@ const Tour = ({ children, profileId }) => {
             size="sm"
             onClick={async () => {
               if (last) {
-                startGame();
+                setIsOpen(false);
+                onClickStartGame();
               } else {
                 setCurrentStep((s) => (s === steps?.length - 1 ? 0 : s + 1));
               }
@@ -163,10 +166,11 @@ const Tour = ({ children, profileId }) => {
           </Button>
         );
       }}
-      startGame={startGame}
+      onClickStartGame={onClickStartGame}
+      position="top"
     >
       {children}
-      <CheckAlreadyRead setIsOpen={setIsOpen} />
+      <CheckAlreadyRead />
     </TourProvider>
   );
 };

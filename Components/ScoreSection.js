@@ -14,8 +14,7 @@ import { MdArrowDropDown } from 'react-icons/md';
 import Link from 'next/link';
 
 const ScoreSection = ({ score, seconds, minutes, profileId }) => {
-  const { isOpen, onToggle } = useDisclosure();
-
+  const { isOpen, onToggle, onOpen } = useDisclosure();
   return (
     <Box
       zIndex={1}
@@ -28,7 +27,6 @@ const ScoreSection = ({ score, seconds, minutes, profileId }) => {
       w="100%"
       maxW="8em"
       borderRadius="13px"
-      onMouseLeave={onToggle}
     >
       <VStack>
         <Timer seconds={seconds} minutes={minutes} />
@@ -46,7 +44,7 @@ const ScoreSection = ({ score, seconds, minutes, profileId }) => {
           cursor="pointer"
           borderRadius="none"
           borderBottomRadius="xl"
-          onMouseEnter={onToggle}
+          onMouseEnter={() => onOpen()}
         />
         {isOpen && (
           <Box w="full">
@@ -71,7 +69,6 @@ const ScoreSection = ({ score, seconds, minutes, profileId }) => {
                     Profile
                   </Text>
                 </Link>
-
                 <Divider />
                 <Text
                   _hover={{

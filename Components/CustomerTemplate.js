@@ -178,8 +178,9 @@ const CustomerTemplate = ({
         visibility={status !== 'eating' ? 'visible' : 'hidden'}
         w={isCoffee ? '3em' : '7em'}
         h="4em"
+        userSelect="none"
       >
-        <Image src={`/${wishFood}.svg`} w="100%" zIndex={2} />
+        <Image src={`/${wishFood}.svg`} w="100%" zIndex={2} draggable={false} />
       </Center>
       <Circle
         bg={statusColor[status]}

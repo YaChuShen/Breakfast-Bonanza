@@ -4,7 +4,7 @@ import FoodTemplate from './FoodTemplate';
 
 const FoodPlateSection = ({ isLevel2 }) => {
   return (
-    <HStack pos="relative" spacing={1}>
+    <HStack pos="relative" spacing={1} className="first-step">
       <Box
         pos="absolute"
         w="10em"
@@ -14,13 +14,7 @@ const FoodPlateSection = ({ isLevel2 }) => {
       >
         <Image src="/foodPlate.svg" alt="" />
       </Box>
-      <FoodTemplate
-        value={'egg'}
-        src={'egg'}
-        w="3em"
-        zIndex={1}
-        className=".first-step"
-      />
+      <FoodTemplate value={'egg'} src={'egg'} w="3em" zIndex={1} />
       <FoodTemplate value="hotDog0" src="hotDog0" w="4.5em" zIndex={1} />
       {isLevel2 && (
         <FoodTemplate

@@ -27,7 +27,7 @@ const FoodTemplate = ({ value, src, w = '5em', className, ...props }) => {
         w={size[value] ?? w}
         maxW="8em"
         className={className}
-      ></Image>
+      />
     </Center>
   );
 };

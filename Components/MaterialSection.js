@@ -7,7 +7,7 @@ import FoodTemplate from 'Components/FoodTemplate';
 
 const MaterialSection = ({ isLevel2 }) => {
   return (
-    <HStack spacing={0} className="first-step">
+    <HStack spacing={0}>
       <CookTemplate
         tool={'pan'}
         w={smartSize('9em', '11em', isLevel2)}

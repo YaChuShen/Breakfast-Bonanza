@@ -28,7 +28,7 @@ export const NextAuthOptions = NextAuth({
         },
         password: { label: 'Password', type: 'password' },
       },
-      async authorize(credentials, req, res) {
+      async authorize(credentials) {
         const db = admin.firestore();
         const { password, email } = credentials;
 
@@ -54,7 +54,7 @@ export const NextAuthOptions = NextAuth({
             profileId: userRef.docs[0]?.id,
           },
           process.env.NEXTAUTH_SECRET,
-          { expiresIn: '1d' }
+          { expiresIn: '3d' }
         );
 
         return {
@@ -89,6 +89,8 @@ export const NextAuthOptions = NextAuth({
           iat: now,
           expjwt: now + 60 * 60 * 24 * 1,
         };
+        token.profileId = user.id ?? user?.profileId;
+        delete token.id;
       }
       return token;
     },
