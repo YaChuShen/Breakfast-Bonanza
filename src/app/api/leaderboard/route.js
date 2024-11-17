@@ -1,21 +1,21 @@
 import admin from 'functions/admin';
 import { NextResponse } from 'next/server';
 
+const TOP_RANKINGS = 5;
+
 export async function POST(request) {
   try {
     const body = await request.json().catch(() => ({}));
-    const { profileId, score } = body;
+    const { profileId, score, name } = body;
     const realtimeDb = admin.database();
     const db = admin.firestore();
 
     const rankingsSnapshot = await realtimeDb.ref('rankings').once('value');
     const currentRankings = rankingsSnapshot.val() || [];
 
-    console.log('profileID', profileId);
-
-    // 取得當前第10名的分數
+    // 取得當前第5名的分數
     const lowestTopScore =
-      currentRankings.length >= 10
+      currentRankings.length >= TOP_RANKINGS
         ? currentRankings[currentRankings.length - 1].score
         : 0;
 
@@ -24,10 +24,11 @@ export async function POST(request) {
         score,
         updatedAt: admin.firestore.FieldValue.serverTimestamp(),
         profileId,
+        name,
       });
 
-      // 只有當分數可能進入前10名時才更新排行榜
-      if (score > lowestTopScore || currentRankings.length < 10) {
+      // 只有當分數可能進入前5名時才更新排行榜
+      if (score > lowestTopScore || currentRankings.length < TOP_RANKINGS) {
         // 找到玩家目前是否在排行榜中
         const playerRankIndex = currentRankings.findIndex(
           (r) => r.profileId === profileId
@@ -40,40 +41,45 @@ export async function POST(request) {
           newRankings.splice(playerRankIndex, 1);
         }
 
-        newRankings.push({ profileId, score });
+        newRankings.push({ profileId, score, name });
 
         newRankings = newRankings
           .sort((a, b) => b.score - a.score)
-          .slice(0, 10)
+          .slice(0, TOP_RANKINGS)
           .map((rank, index) => ({
             ...rank,
             rank: index + 1,
           }));
+
+        const newRank =
+          newRankings.find((r) => r.profileId === profileId)?.rank || null;
 
         await realtimeDb.ref('rankings').set(newRankings);
 
         return NextResponse.json({
           status: 200,
           rankings: newRankings,
+          newRank,
         });
       }
 
       return NextResponse.json({
         status: 200,
-        message: 'Score updated but not in top 10',
+        message: 'Score updated but not in top 5',
       });
     }
     // for not login user
     else {
-      const isTopTen = score > lowestTopScore || currentRankings.length < 10;
+      const isTopTen =
+        score > lowestTopScore || currentRankings.length < TOP_RANKINGS;
 
       return NextResponse.json({
         status: 200,
         rankings: currentRankings,
         isTopTen,
         message: isTopTen
-          ? 'Score qualifies for top 10! Please login to save.'
-          : 'Score not in top 10',
+          ? 'Score qualifies for top 5! Please login to save.'
+          : 'Score not in top 5',
       });
     }
   } catch (error) {

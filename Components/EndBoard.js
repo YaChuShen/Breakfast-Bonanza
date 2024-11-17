@@ -1,24 +1,28 @@
 'use client';
 
-import {
-  Box,
-  Button,
-  Image,
-  Text,
-  VStack,
-  HStack,
-  Stack,
-} from '@chakra-ui/react';
+import { Box, Button, VStack, HStack } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 import React, { useEffect, useState } from 'react';
 import { LEVEL2_SCORE } from 'contents/rules';
-import { useRouter } from 'next/navigation';
+
+import TotalScore from './endBoard/TotalScore';
+import LevelUp from './endBoard/LevelUp';
+import GuestLeaderboard from './endBoard/GuestLeaderboard';
+import Leaderboard from './endBoard/Leaderboard';
 
 const MotionComponent = motion(Box);
 
+const endBoardVariants = {
+  borderRadius: '3xl',
+  p: '5',
+  flex: 1,
+  boxShadow: '0px 2px 20px 1px rgba(0, 0, 0, 0.15)',
+};
+
 const EndBoard = ({ score, isRunning, session, isLevel2, ...props }) => {
   const [isEnterLeaderboard, setIsEnterLeaderboard] = useState(false);
-  const router = useRouter();
+  const [newRankBoard, setNewRankBoard] = useState(null);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -41,6 +45,7 @@ const EndBoard = ({ score, isRunning, session, isLevel2, ...props }) => {
             body: JSON.stringify({
               score: score ?? 0,
               profileId: session?.profileId,
+              name: session?.name,
             }),
           }),
         ]);
@@ -53,6 +58,7 @@ const EndBoard = ({ score, isRunning, session, isLevel2, ...props }) => {
           const data = await leaderboardResult.value.json();
           console.log('排行榜結果:', data);
           setIsEnterLeaderboard(data.isTopTen);
+          setNewRankBoard(data.rankings);
           return data;
         } else {
           console.error('Leaderboard API failed:', leaderboardResult.reason);
@@ -68,7 +74,7 @@ const EndBoard = ({ score, isRunning, session, isLevel2, ...props }) => {
 
   return (
     <MotionComponent
-      py={{ md: '5em', xl: '2.5em' }}
+      py={{ md: '2em', xl: '2.5em' }}
       bg="rgba(255, 255, 255, 0.9)"
       w="60%"
       pos="fixed"
@@ -90,65 +96,22 @@ const EndBoard = ({ score, isRunning, session, isLevel2, ...props }) => {
     >
       {!isRunning && (
         <VStack w="100%" spacing="2em" fontWeight={700}>
-          <VStack w="100%" color="red.500" spacing={0}>
-            <Text fontSize="50px">
-              {showLevelUpMessege ? 'Level up !!' : 'Game over'}
-            </Text>
-            <Text fontSize="20px" color="gray.700">
-              Your total scroe is
-              <Text color="red.500" fontSize="3em" textAlign="center">
-                {score}
-              </Text>
-            </Text>
-          </VStack>
+          <TotalScore showLevelUpMessege={showLevelUpMessege} score={score} />
           <HStack alignItems="stretch" px="2em" spacing={5}>
             {showLevelUpMessege && (
-              <Stack
-                alignItems="center"
-                color="gray.700"
-                bg="white"
-                borderRadius="3xl"
-                p="5"
-                flex={1}
-              >
-                <Text fontSize="20px">Unlock new ingredients!</Text>
-                <Text textAlign="center" fontWeight={500}>
-                  Next, there are various combinations waiting for you to
-                  complete.
-                </Text>
-                <HStack>
-                  <Image src={'/bacon.svg'} w="5em" alt="bacon" />
-                  <Image src={'/rosemarry.svg'} w="5em" alt="rosemarry" />
-                </HStack>
-              </Stack>
+              <LevelUp endBoardVariants={endBoardVariants} />
             )}
             {isEnterLeaderboard && (
-              <VStack
-                color="gray.700"
-                spacing={1}
-                bg="gray.100"
-                borderRadius="3xl"
-                p="5"
-                flex={1}
-              >
-                <Text fontSize="20px">Congratulations!</Text>
-                <Text textAlign="center" fontWeight={500}>
-                  {isEnterLeaderboard
-                    ? ` You've made it to the top 10 of the leaderboard! Sign Up now to secure your impressive record.`
-                    : ` 'Want to track your scores? Go ahead and register now!'`}
-                </Text>
-                <Box mt="0.5em">
-                  <Button
-                    size="sm"
-                    borderRadius="xl"
-                    colorScheme="red"
-                    variant="outline"
-                    onClick={() => router.push('/register')}
-                  >
-                    Sign Up
-                  </Button>
-                </Box>
-              </VStack>
+              <GuestLeaderboard
+                isEnterLeaderboard={isEnterLeaderboard}
+                endBoardVariants={endBoardVariants}
+              />
+            )}
+            {newRankBoard && (
+              <Leaderboard
+                newRankBoard={newRankBoard}
+                endBoardVariants={endBoardVariants}
+              />
             )}
           </HStack>
           <Button
