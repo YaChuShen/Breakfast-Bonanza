@@ -35,11 +35,7 @@ const ReadyStartBoard = ({ session, timerStart }) => {
     >
       <VStack w="100%" spacing={10}>
         <VStack w="100%">
-          <Image src="/breakfast_bonanza_logo.svg" w="60%" />
-          {/* <Text color="red.500" fontSize="24px" fontWeight={700}>
-            Are you ready to start?
-          </Text> */}
-          {/* <Text>Press Start to begin the timer</Text> */}
+          <Image src="/breakfast_bonanza_logo.svg" w="60%" alt="sereneShen" />
         </VStack>
         {session ? (
           <VStack fontWeight={500}>
@@ -78,11 +74,7 @@ const ReadyStartBoard = ({ session, timerStart }) => {
         >
           Start
         </Button>
-        {session ? (
-          <Text onClick={signOut} textDecoration="underline" cursor="pointer">
-            logout
-          </Text>
-        ) : (
+        {!session && (
           <Link href="/auth/signin">
             <Text
               cursor="pointer"

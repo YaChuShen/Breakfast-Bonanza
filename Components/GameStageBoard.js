@@ -50,6 +50,7 @@ const GameStageBoard = ({ session, score, isLevel2 }) => {
         minutes={minutes}
         seconds={seconds}
         profileId={session?.profileId ?? session?.id}
+        isSingin={session}
       />
     </>
   );

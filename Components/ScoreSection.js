@@ -12,9 +12,11 @@ import React from 'react';
 import Timer from 'Components/Timer';
 import { MdArrowDropDown } from 'react-icons/md';
 import Link from 'next/link';
+import { signOut } from 'next-auth/react';
 
-const ScoreSection = ({ score, seconds, minutes, profileId }) => {
+const ScoreSection = ({ score, seconds, minutes, profileId, isSingin }) => {
   const { isOpen, onToggle, onOpen } = useDisclosure();
+
   return (
     <Box
       zIndex={1}
@@ -35,53 +37,59 @@ const ScoreSection = ({ score, seconds, minutes, profileId }) => {
           {score ?? 0}
         </Text>
       </VStack>
-      <Center borderRadius="13px" flexDirection="column" pt="2" w="full">
-        <IconButton
-          as={MdArrowDropDown}
-          w="full"
-          size="xs"
-          onClick={onToggle}
-          cursor="pointer"
-          borderRadius="none"
-          borderBottomRadius="xl"
-          onMouseEnter={() => onOpen()}
-        />
-        {isOpen && (
-          <Box w="full">
-            <SlideFade
-              in={isOpen}
-              transition={{ enter: { duration: 0.5 }, exit: { duration: 0.5 } }}
-            >
-              <VStack
-                w="full"
-                textAlign="center"
-                cursor="pointer"
-                userSelect="none"
-                py="2"
-                fontWeight={500}
+      {isSingin && (
+        <Center borderRadius="13px" flexDirection="column" pt="2" w="full">
+          <IconButton
+            as={MdArrowDropDown}
+            w="full"
+            size="xs"
+            onClick={onToggle}
+            cursor="pointer"
+            borderRadius="none"
+            borderBottomRadius="xl"
+            onMouseEnter={() => onOpen()}
+          />
+          {isOpen && (
+            <Box w="full">
+              <SlideFade
+                in={isOpen}
+                transition={{
+                  enter: { duration: 0.5 },
+                  exit: { duration: 0.5 },
+                }}
               >
-                <Link href={`/profile/${profileId}`}>
+                <VStack
+                  w="full"
+                  textAlign="center"
+                  cursor="pointer"
+                  userSelect="none"
+                  py="2"
+                  fontWeight={500}
+                >
+                  <Link href={`/profile/${profileId}`}>
+                    <Text
+                      _hover={{
+                        color: 'gray.400',
+                      }}
+                    >
+                      Profile
+                    </Text>
+                  </Link>
+                  <Divider />
                   <Text
                     _hover={{
                       color: 'gray.400',
                     }}
+                    onClick={() => signOut()}
                   >
-                    Profile
+                    Logout
                   </Text>
-                </Link>
-                <Divider />
-                <Text
-                  _hover={{
-                    color: 'gray.400',
-                  }}
-                >
-                  Logout
-                </Text>
-              </VStack>
-            </SlideFade>
-          </Box>
-        )}
-      </Center>
+                </VStack>
+              </SlideFade>
+            </Box>
+          )}
+        </Center>
+      )}
     </Box>
   );
 };
