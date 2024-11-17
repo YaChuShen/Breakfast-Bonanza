@@ -1,3 +1,5 @@
+'use client';
+
 import {
   Box,
   Button,
@@ -6,27 +8,58 @@ import {
   VStack,
   HStack,
   Stack,
-  Flex,
 } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { LEVEL2_SCORE } from 'contents/rules';
+import { useRouter } from 'next/navigation';
 
 const MotionComponent = motion(Box);
 
 const EndBoard = ({ score, isRunning, session, isLevel2, ...props }) => {
+  const [isEnterLeaderboard, setIsEnterLeaderboard] = useState(false);
+  const router = useRouter();
   useEffect(() => {
     const fetchData = async () => {
-      await fetch('/api/pointsTable', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          score: score ?? 0,
-          profileId: session?.profileId,
-        }),
-      });
+      try {
+        const [pointsResult, leaderboardResult] = await Promise.allSettled([
+          fetch('/api/pointsTable', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              score: score ?? 0,
+              profileId: session?.profileId,
+            }),
+          }),
+          fetch('/api/leaderboard', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              score: score ?? 0,
+              profileId: session?.profileId,
+            }),
+          }),
+        ]);
+
+        if (pointsResult.status === 'rejected') {
+          console.error('Points API failed:', pointsResult.reason);
+        }
+
+        if (leaderboardResult.status === 'fulfilled') {
+          const data = await leaderboardResult.value.json();
+          console.log('排行榜結果:', data);
+          setIsEnterLeaderboard(data.isTopTen);
+          return data;
+        } else {
+          console.error('Leaderboard API failed:', leaderboardResult.reason);
+        }
+      } catch (error) {
+        console.error('Error in fetchData:', error);
+      }
     };
     fetchData();
   }, []);
@@ -35,7 +68,7 @@ const EndBoard = ({ score, isRunning, session, isLevel2, ...props }) => {
 
   return (
     <MotionComponent
-      py={{ md: '5em', xl: '7em' }}
+      py={{ md: '5em', xl: '2.5em' }}
       bg="rgba(255, 255, 255, 0.9)"
       w="60%"
       pos="fixed"
@@ -56,31 +89,68 @@ const EndBoard = ({ score, isRunning, session, isLevel2, ...props }) => {
       {...props}
     >
       {!isRunning && (
-        <VStack w="100%" spacing={10} fontWeight={700}>
-          <VStack w="100%" color="red.500">
+        <VStack w="100%" spacing="2em" fontWeight={700}>
+          <VStack w="100%" color="red.500" spacing={0}>
             <Text fontSize="50px">
               {showLevelUpMessege ? 'Level up !!' : 'Game over'}
             </Text>
             <Text fontSize="20px" color="gray.700">
               Your total scroe is
-              <Text color="red.500" fontSize="4em" textAlign="center">
+              <Text color="red.500" fontSize="3em" textAlign="center">
                 {score}
               </Text>
             </Text>
+          </VStack>
+          <HStack alignItems="stretch" px="2em" spacing={5}>
             {showLevelUpMessege && (
-              <Stack alignItems="center" color="gray.700">
+              <Stack
+                alignItems="center"
+                color="gray.700"
+                bg="white"
+                borderRadius="3xl"
+                p="5"
+                flex={1}
+              >
                 <Text fontSize="20px">Unlock new ingredients!</Text>
-                <Text>
+                <Text textAlign="center" fontWeight={500}>
                   Next, there are various combinations waiting for you to
                   complete.
                 </Text>
                 <HStack>
-                  <Image src={'/bacon.svg'} w="5em" />
-                  <Image src={'/rosemarry.svg'} w="5em" />
+                  <Image src={'/bacon.svg'} w="5em" alt="bacon" />
+                  <Image src={'/rosemarry.svg'} w="5em" alt="rosemarry" />
                 </HStack>
               </Stack>
             )}
-          </VStack>
+            {isEnterLeaderboard && (
+              <VStack
+                color="gray.700"
+                spacing={1}
+                bg="gray.100"
+                borderRadius="3xl"
+                p="5"
+                flex={1}
+              >
+                <Text fontSize="20px">Congratulations!</Text>
+                <Text textAlign="center" fontWeight={500}>
+                  {isEnterLeaderboard
+                    ? ` You've made it to the top 10 of the leaderboard! Sign Up now to secure your impressive record.`
+                    : ` 'Want to track your scores? Go ahead and register now!'`}
+                </Text>
+                <Box mt="0.5em">
+                  <Button
+                    size="sm"
+                    borderRadius="xl"
+                    colorScheme="red"
+                    variant="outline"
+                    onClick={() => router.push('/register')}
+                  >
+                    Sign Up
+                  </Button>
+                </Box>
+              </VStack>
+            )}
+          </HStack>
           <Button
             type="submit"
             bg="red.500"

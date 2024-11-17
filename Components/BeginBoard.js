@@ -1,14 +1,6 @@
 'use client';
 
-import {
-  Box,
-  Button,
-  Center,
-  HStack,
-  Image,
-  Text,
-  VStack,
-} from '@chakra-ui/react';
+import { Box, Button, HStack, Image, Text, VStack } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 import React from 'react';
 import { signOut } from 'next-auth/react';
