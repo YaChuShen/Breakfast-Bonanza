@@ -6,6 +6,7 @@ const LevelUp = ({ endBoardVariants }) => {
       alignItems="center"
       color="gray.700"
       bg="white"
+      justifyContent="center"
       {...endBoardVariants}
     >
       <Text fontSize="20px">Unlock new ingredients!</Text>

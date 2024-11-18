@@ -1,4 +1,13 @@
-import { Box, Divider, Grid, Icon, Text, VStack } from '@chakra-ui/react';
+import {
+  Box,
+  Divider,
+  Grid,
+  Icon,
+  Text,
+  VStack,
+  Skeleton,
+} from '@chakra-ui/react';
+import _ from 'lodash';
 import {
   TbSquareRoundedNumber1Filled,
   TbSquareRoundedNumber2Filled,
@@ -15,26 +24,54 @@ const numberIcon = {
   5: { icon: TbSquareRoundedNumber5Filled, color: 'gray.600' },
 };
 
-const Leaderboard = ({ newRankBoard, endBoardVariants }) => {
+const LEADERBOARD_ITEMS = 5;
+
+const Leaderboard = ({
+  newRankBoard,
+  endBoardVariants,
+  isEnterLeaderboard,
+  isLoading,
+  isLogin,
+}) => {
+  const isMyRank = isLogin && isEnterLeaderboard - 1;
   return (
-    <VStack alignItems="flex-start" flex={1} {...endBoardVariants} bg="white">
-      {newRankBoard?.map((item, i) => {
-        return (
-          <Box key={i} w="100%">
-            <Grid templateColumns="30px 1fr 80px" gap={2}>
-              <Icon
-                as={numberIcon[item.rank].icon}
-                w="1.5em"
-                h="1.5em"
-                color={numberIcon[item.rank].color}
-              />
-              <Text>{item.name}</Text>
-              <Text textAlign="right">{item.score}</Text>
+    <VStack alignItems="flex-start" {...endBoardVariants} bg="white">
+      {isLoading ? (
+        <VStack spacing={4} w="100%" minW="200px">
+          {Array.from({ length: LEADERBOARD_ITEMS }).map((_, i) => (
+            <Grid key={i} templateColumns="30px 1fr 80px" gap={2} w="100%">
+              <Skeleton h="20px" w="20px" />
+              <Skeleton h="20px" />
+              <Skeleton h="20px" w="60px" />
             </Grid>
-            {i !== newRankBoard.length - 1 && <Divider pt="0.5em" />}
-          </Box>
-        );
-      })}
+          ))}
+        </VStack>
+      ) : (
+        newRankBoard?.map((item, i) => {
+          return (
+            <Box key={i} w="100%">
+              <Grid
+                templateColumns="30px 1fr 80px"
+                gap={2}
+                bg={isMyRank ? 'red.500' : 'white'}
+                color={isMyRank ? 'white' : 'black'}
+                p={{ lg: 1, '2xl': 2 }}
+                borderRadius="xl"
+              >
+                <Icon
+                  as={numberIcon[item.rank].icon}
+                  w="1.5em"
+                  h="1.5em"
+                  color={numberIcon[item.rank].color}
+                />
+                <Text>{item.name}</Text>
+                <Text textAlign="right">{item.score}</Text>
+              </Grid>
+              {i !== newRankBoard.length - 1 && <Divider pt="0.5em" />}
+            </Box>
+          );
+        })
+      )}
     </VStack>
   );
 };

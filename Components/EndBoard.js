@@ -56,8 +56,8 @@ const EndBoard = ({ score, isRunning, session, isLevel2, ...props }) => {
 
         if (leaderboardResult.status === 'fulfilled') {
           const data = await leaderboardResult.value.json();
-          console.log('排行榜結果:', data);
-          setIsEnterLeaderboard(data.isTopTen);
+          console.log('data', data);
+          setIsEnterLeaderboard(data.isTopFive ?? data.newRank);
           setNewRankBoard(data.rankings);
           return data;
         } else {
@@ -71,10 +71,9 @@ const EndBoard = ({ score, isRunning, session, isLevel2, ...props }) => {
   }, []);
 
   const showLevelUpMessege = score > LEVEL2_SCORE && !isLevel2;
-
   return (
     <MotionComponent
-      py={{ md: '2em', xl: '2.5em' }}
+      py={{ md: '1em', xl: '1.5em' }}
       bg="rgba(255, 255, 255, 0.9)"
       w="60%"
       pos="fixed"
@@ -95,22 +94,25 @@ const EndBoard = ({ score, isRunning, session, isLevel2, ...props }) => {
       {...props}
     >
       {!isRunning && (
-        <VStack w="100%" spacing="2em" fontWeight={700}>
-          <TotalScore showLevelUpMessege={showLevelUpMessege} score={score} />
+        <VStack w="100%" spacing={{ lg: '1em', '2xl': '2em' }} fontWeight={700}>
+          <TotalScore
+            showLevelUpMessege={showLevelUpMessege}
+            score={score}
+            isEnterLeaderboard={isEnterLeaderboard}
+            isLogin={session?.profileId}
+          />
           <HStack alignItems="stretch" px="2em" spacing={5}>
             {showLevelUpMessege && (
               <LevelUp endBoardVariants={endBoardVariants} />
             )}
-            {isEnterLeaderboard && (
-              <GuestLeaderboard
-                isEnterLeaderboard={isEnterLeaderboard}
-                endBoardVariants={endBoardVariants}
-              />
-            )}
-            {newRankBoard && (
+
+            {(newRankBoard || !isRunning) && (
               <Leaderboard
                 newRankBoard={newRankBoard}
                 endBoardVariants={endBoardVariants}
+                isEnterLeaderboard={isEnterLeaderboard}
+                isLoading={!newRankBoard}
+                isLogin={session?.profileId}
               />
             )}
           </HStack>

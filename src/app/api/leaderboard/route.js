@@ -70,14 +70,14 @@ export async function POST(request) {
     }
     // for not login user
     else {
-      const isTopTen =
+      const isTopFive =
         score > lowestTopScore || currentRankings.length < TOP_RANKINGS;
 
       return NextResponse.json({
         status: 200,
         rankings: currentRankings,
-        isTopTen,
-        message: isTopTen
+        isTopFive,
+        message: isTopFive
           ? 'Score qualifies for top 5! Please login to save.'
           : 'Score not in top 5',
       });
