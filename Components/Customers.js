@@ -14,7 +14,7 @@ const Customers = ({ currentData }) => {
       <Image src="./window.svg" w="70em" minW="70em" alt="game" />
       <HStack
         pos="absolute"
-        zIndex={10}
+        zIndex={1}
         spacing={20}
         alignItems="center"
         justifyContent="center"

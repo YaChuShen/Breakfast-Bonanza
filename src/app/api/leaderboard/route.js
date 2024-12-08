@@ -1,25 +1,40 @@
 import admin from 'functions/admin';
 import { NextResponse } from 'next/server';
+import { getServerSession } from 'next-auth';
+import { NextAuthOptions } from 'pages/api/auth/[...nextauth]';
 
 const TOP_RANKINGS = 5;
 
 export async function POST(request) {
   try {
-    const body = await request.json().catch(() => ({}));
-    const { profileId, score, name } = body;
+    const { profileId, score, name, timerStatus, timestamp } =
+      await request.json();
+    const timeDiff = Date.now() - timestamp;
+
+    if (timerStatus !== 'end' && timeDiff > 5000) {
+      return NextResponse.json(
+        {
+          status: 400,
+          error: 'Suspicious game duration',
+        },
+        { status: 400 }
+      );
+    }
+
+    const session = await getServerSession(NextAuthOptions);
+
     const realtimeDb = admin.database();
     const db = admin.firestore();
 
     const rankingsSnapshot = await realtimeDb.ref('rankings').once('value');
     const currentRankings = rankingsSnapshot.val() || [];
-
-    // 取得當前第5名的分數
+    // Get the current 5th place score
     const lowestTopScore =
       currentRankings.length >= TOP_RANKINGS
         ? currentRankings[currentRankings.length - 1].score
         : 0;
 
-    if (profileId) {
+    if (profileId && session) {
       await db.collection('leaderboard').doc(profileId).set({
         score,
         updatedAt: admin.firestore.FieldValue.serverTimestamp(),
@@ -27,9 +42,9 @@ export async function POST(request) {
         name,
       });
 
-      // 只有當分數可能進入前5名時才更新排行榜
+      // Only update the leaderboard if the score might make it to top 5
       if (score > lowestTopScore || currentRankings.length < TOP_RANKINGS) {
-        // 找到玩家目前是否在排行榜中
+        // Check if the player is currently on the leaderboard
         const playerRankIndex = currentRankings.findIndex(
           (r) => r.profileId === profileId
         );
@@ -65,6 +80,7 @@ export async function POST(request) {
 
       return NextResponse.json({
         status: 200,
+        rankings: currentRankings,
         message: 'Score updated but not in top 5',
       });
     }

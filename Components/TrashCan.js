@@ -45,8 +45,8 @@ const TrashCan = ({ ...props }) => {
   return (
     <Box
       pos="absolute"
-      right="-7"
-      top="-4em"
+      right={{ base: '25em', lg: '18em' }}
+      top={{ base: '-7em', lg: '-4em' }}
       userSelect="none"
       onDragLeave={() => {
         setOpen(false);

@@ -29,25 +29,27 @@ const LEADERBOARD_ITEMS = 5;
 const Leaderboard = ({
   newRankBoard,
   endBoardVariants,
-  isEnterLeaderboard,
   isLoading,
-  isLogin,
+  profileId,
 }) => {
-  const isMyRank = isLogin && isEnterLeaderboard - 1;
   return (
     <VStack alignItems="flex-start" {...endBoardVariants} bg="white">
       {isLoading ? (
-        <VStack spacing={4} w="100%" minW="200px">
+        <VStack spacing={4} w="100%" minW="200px" p={{ lg: 2, '2xl': 4 }}>
+          <Text fontSize="xs" color="gray.500">
+            Leaderboard coming soon...
+          </Text>
           {Array.from({ length: LEADERBOARD_ITEMS }).map((_, i) => (
-            <Grid key={i} templateColumns="30px 1fr 80px" gap={2} w="100%">
+            <Grid key={i} templateColumns="30px 1fr" gap={2} w="100%">
               <Skeleton h="20px" w="20px" />
               <Skeleton h="20px" />
-              <Skeleton h="20px" w="60px" />
             </Grid>
           ))}
         </VStack>
       ) : (
         newRankBoard?.map((item, i) => {
+          const isMyRank = profileId === item.profileId;
+
           return (
             <Box key={i} w="100%">
               <Grid
@@ -55,7 +57,7 @@ const Leaderboard = ({
                 gap={2}
                 bg={isMyRank ? 'red.500' : 'white'}
                 color={isMyRank ? 'white' : 'black'}
-                p={{ lg: 1, '2xl': 2 }}
+                p={2}
                 borderRadius="xl"
               >
                 <Icon

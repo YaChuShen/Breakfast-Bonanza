@@ -1,12 +1,26 @@
 import admin from 'functions/admin';
 import { NextResponse } from 'next/server';
 import { LEVEL2_SCORE } from 'contents/rules';
+import { getServerSession } from 'next-auth';
+import { NextAuthOptions } from 'pages/api/auth/[...nextauth]';
 
 export async function POST(request) {
-  const { profileId, score } = await request?.json();
+  const { profileId, score, timerStatus } = await request?.json();
   const db = admin.firestore();
 
-  if (profileId) {
+  if (timerStatus !== 'end') {
+    return NextResponse.json(
+      {
+        status: 400,
+        error: 'Suspicious game duration',
+      },
+      { status: 400 }
+    );
+  }
+
+  const session = await getServerSession(NextAuthOptions);
+
+  if (profileId && session) {
     try {
       let isLevel2 = false;
       const userDocumentSnapshot = await db
@@ -45,7 +59,7 @@ export async function POST(request) {
     }
   } else {
     return NextResponse.json({
-      status: 400,
+      status: 401,
       message: 'No profileId',
     });
   }

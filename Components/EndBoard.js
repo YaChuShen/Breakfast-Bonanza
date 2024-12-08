@@ -1,16 +1,15 @@
 'use client';
 
-import { Box, Button, VStack, HStack } from '@chakra-ui/react';
-import { motion } from 'framer-motion';
+import { Button, VStack, HStack, Flex } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import { LEVEL2_SCORE } from 'contents/rules';
 
 import TotalScore from './endBoard/TotalScore';
 import LevelUp from './endBoard/LevelUp';
-import GuestLeaderboard from './endBoard/GuestLeaderboard';
 import Leaderboard from './endBoard/Leaderboard';
-
-const MotionComponent = motion(Box);
+import { selectGameConfig } from 'store/features/gameConfigSlice';
+import { useSelector } from 'react-redux';
+import MotionBoard from './MotionBoard';
 
 const endBoardVariants = {
   borderRadius: '3xl',
@@ -22,6 +21,7 @@ const endBoardVariants = {
 const EndBoard = ({ score, isRunning, session, isLevel2, ...props }) => {
   const [isEnterLeaderboard, setIsEnterLeaderboard] = useState(false);
   const [newRankBoard, setNewRankBoard] = useState(null);
+  const { timerStatus } = useSelector(selectGameConfig);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -35,6 +35,7 @@ const EndBoard = ({ score, isRunning, session, isLevel2, ...props }) => {
             body: JSON.stringify({
               score: score ?? 0,
               profileId: session?.profileId,
+              timerStatus,
             }),
           }),
           fetch('/api/leaderboard', {
@@ -46,6 +47,8 @@ const EndBoard = ({ score, isRunning, session, isLevel2, ...props }) => {
               score: score ?? 0,
               profileId: session?.profileId,
               name: session?.name,
+              timerStatus,
+              timestamp: Date.now(),
             }),
           }),
         ]);
@@ -72,27 +75,7 @@ const EndBoard = ({ score, isRunning, session, isLevel2, ...props }) => {
 
   const showLevelUpMessege = score > LEVEL2_SCORE && !isLevel2;
   return (
-    <MotionComponent
-      py={{ md: '1em', xl: '1.5em' }}
-      bg="rgba(255, 255, 255, 0.9)"
-      w="60%"
-      pos="fixed"
-      top="10%"
-      left="18.5%"
-      zIndex={20}
-      initial={{ opacity: 0.2, x: 0, y: -600, scale: 0.8 }}
-      animate={{ opacity: 1, x: 0, y: 0, scale: 1 }}
-      exit={{
-        opacity: 0,
-        y: -300,
-        scale: 0.8,
-        transition: { duration: 0.3, type: 'spring' },
-      }}
-      transition={{ duration: 0.5, type: 'spring', stiffness: 200 }}
-      borderRadius="80px"
-      border="10px solid #db542c"
-      {...props}
-    >
+    <MotionBoard {...props}>
       {!isRunning && (
         <VStack w="100%" spacing={{ lg: '1em', '2xl': '2em' }} fontWeight={700}>
           <TotalScore
@@ -110,9 +93,8 @@ const EndBoard = ({ score, isRunning, session, isLevel2, ...props }) => {
               <Leaderboard
                 newRankBoard={newRankBoard}
                 endBoardVariants={endBoardVariants}
-                isEnterLeaderboard={isEnterLeaderboard}
                 isLoading={!newRankBoard}
-                isLogin={session?.profileId}
+                profileId={session?.profileId}
               />
             )}
           </HStack>
@@ -133,7 +115,7 @@ const EndBoard = ({ score, isRunning, session, isLevel2, ...props }) => {
           </Button>
         </VStack>
       )}
-    </MotionComponent>
+    </MotionBoard>
   );
 };
 

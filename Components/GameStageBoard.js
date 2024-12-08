@@ -1,7 +1,7 @@
 'use client';
 
 import { AnimatePresence } from 'framer-motion';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import BeginBoard from 'Components/BeginBoard';
 import EndBoard from 'Components/EndBoard';
 import useExpiryTimer from 'hooks/useExpiryTimer';
@@ -10,10 +10,18 @@ import { selectGameConfig } from 'store/features/gameConfigSlice';
 import { useSelector } from 'react-redux';
 import ReadyStartBoard from './ReadyStartBoard';
 import { dispatchAction } from '../helpers/dispatchAction';
+import { Box } from '@chakra-ui/react';
+import { Suspense } from 'react';
+import Loading from './Loading';
 
 const GameStageBoard = ({ session, score, isLevel2 }) => {
-  const { seconds, minutes, isRunning, timerStart, restart } = useExpiryTimer();
+  const { seconds, minutes, isRunning, timerStart } = useExpiryTimer();
   const { timerStatus } = useSelector(selectGameConfig);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    setIsLoading(false);
+  }, []);
 
   useEffect(() => {
     const initialTimerStatus = sessionStorage.getItem('isTour')
@@ -36,14 +44,17 @@ const GameStageBoard = ({ session, score, isLevel2 }) => {
         score={score}
         isRunning={isRunning}
         session={session}
-        restart={restart}
         isLevel2={isLevel2}
       />
     ),
   };
 
+  if (isLoading) {
+    return <Loading />;
+  }
+
   return (
-    <>
+    <Suspense fallback={<Loading />}>
       <AnimatePresence>{boardList[timerStatus]}</AnimatePresence>
       <ScoreSection
         score={score}
@@ -52,7 +63,19 @@ const GameStageBoard = ({ session, score, isLevel2 }) => {
         profileId={session?.profileId ?? session?.id}
         isSingin={session}
       />
-    </>
+      {/* {!isRunning && (
+        <Box
+          pos="fixed"
+          bottom="0"
+          top="0"
+          left="0"
+          right="0"
+          bg="black"
+          opacity="0.3"
+          zIndex="2"
+        />
+      )} */}
+    </Suspense>
   );
 };
 

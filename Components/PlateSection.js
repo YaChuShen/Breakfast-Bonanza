@@ -15,7 +15,7 @@ const PlateSection = () => {
       w="100%"
       justifyContent="center"
       pos="absolute"
-      bottom={plate}
+      top="-1.5em"
     >
       {range(plateData?.plate).map((e, i) => (
         <Plate

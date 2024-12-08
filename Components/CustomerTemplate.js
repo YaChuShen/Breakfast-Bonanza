@@ -180,7 +180,7 @@ const CustomerTemplate = ({
         h="4em"
         userSelect="none"
       >
-        <Image src={`/${wishFood}.svg`} w="100%" zIndex={2} draggable={false} />
+        <Image src={`/${wishFood}.svg`} w="100%" draggable={false} />
       </Center>
       <Circle
         bg={statusColor[status]}
