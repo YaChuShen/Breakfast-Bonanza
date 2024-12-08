@@ -19,7 +19,7 @@ const ScoreSection = ({ score, seconds, minutes, profileId, isSingin }) => {
 
   return (
     <Box
-      zIndex={1}
+      zIndex={99}
       boxShadow="md"
       bg="gray.50"
       pt="2"

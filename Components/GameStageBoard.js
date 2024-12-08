@@ -11,7 +11,6 @@ import { useSelector } from 'react-redux';
 import ReadyStartBoard from './ReadyStartBoard';
 import { dispatchAction } from '../helpers/dispatchAction';
 import { Box } from '@chakra-ui/react';
-import { Suspense } from 'react';
 import Loading from './Loading';
 
 const GameStageBoard = ({ session, score, isLevel2 }) => {
@@ -54,7 +53,7 @@ const GameStageBoard = ({ session, score, isLevel2 }) => {
   }
 
   return (
-    <Suspense fallback={<Loading />}>
+    <>
       <AnimatePresence>{boardList[timerStatus]}</AnimatePresence>
       <ScoreSection
         score={score}
@@ -63,7 +62,7 @@ const GameStageBoard = ({ session, score, isLevel2 }) => {
         profileId={session?.profileId ?? session?.id}
         isSingin={session}
       />
-      {/* {!isRunning && (
+      {!isRunning && (
         <Box
           pos="fixed"
           bottom="0"
@@ -74,8 +73,8 @@ const GameStageBoard = ({ session, score, isLevel2 }) => {
           opacity="0.3"
           zIndex="2"
         />
-      )} */}
-    </Suspense>
+      )}
+    </>
   );
 };
 

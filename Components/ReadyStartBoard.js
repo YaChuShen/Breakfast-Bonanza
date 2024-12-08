@@ -53,7 +53,7 @@ const ReadyStartBoard = ({ session, timerStart }) => {
         >
           Start
         </Button>
-        {!session ? (
+        {!session && (
           <Link href="/auth/signin">
             <Text
               cursor="pointer"
@@ -64,16 +64,6 @@ const ReadyStartBoard = ({ session, timerStart }) => {
               Go to login
             </Text>
           </Link>
-        ) : (
-          <Text
-            _hover={{
-              color: 'gray.400',
-            }}
-            onClick={() => signOut()}
-            cursor="pointer"
-          >
-            Logout
-          </Text>
         )}
       </VStack>
     </MotionBoard>

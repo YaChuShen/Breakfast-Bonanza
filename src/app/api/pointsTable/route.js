@@ -35,11 +35,16 @@ export async function POST(request) {
         console.log(`No document found for profileId: ${profileId}`);
       }
 
+      const newScoreRecord = {
+        score: score,
+        time: Date.now(),
+      };
+
       await db
         .collection('users')
         .doc(profileId)
         .update({
-          score: admin.firestore.FieldValue.arrayUnion(score),
+          score: admin.firestore.FieldValue.arrayUnion(newScoreRecord),
           lastPlayTime: admin.firestore.FieldValue.serverTimestamp(),
           isLevel2,
         });

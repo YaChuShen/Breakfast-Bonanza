@@ -12,7 +12,7 @@ const MobileAlertPage = () => {
         <Image src="/breakfast_bonanza_logo.svg" w="100%" alt="sereneShen" />
         <Box pt="8" pr="8">
           <video autoPlay muted playsInline loop width={130}>
-            <source src={`loading.mp4`} type="video/mp4" />
+            <source src="/loading.mp4" type="video/mp4" />
           </video>
         </Box>
         <Text textAlign="center">
