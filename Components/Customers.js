@@ -18,7 +18,7 @@ const Customers = ({ currentData }) => {
         spacing={20}
         alignItems="center"
         justifyContent="center"
-        py="20"
+        py={{ lg: 0, '2xl': 20 }}
       >
         {range(customers).map((e, i) => (
           <CustomerTemplate

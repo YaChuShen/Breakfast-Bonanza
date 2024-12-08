@@ -158,6 +158,7 @@ const Toaster = ({ tool, w = '14em', ...props }) => {
               cursor={(isDone || isOver) && 'pointer'}
               userSelect="none"
               w={w}
+              alt="toaster"
             />
           </Box>
         ) : (
@@ -167,6 +168,7 @@ const Toaster = ({ tool, w = '14em', ...props }) => {
               pointerEvents={'none'}
               userSelect="none"
               w={w}
+              alt="toaster"
             />
           </Box>
         )}
