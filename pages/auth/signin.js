@@ -102,7 +102,7 @@ export default function SignIn({ providers, csrfToken }) {
             )}
           </VStack>
         </form>
-        <Text textAlign="center">Other Log In</Text>
+        <Text textAlign="center">Other LogIn</Text>
         {Object.values(providers)
           .slice(1, 2)
           .map((provider) => (
