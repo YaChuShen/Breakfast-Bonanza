@@ -23,25 +23,33 @@ function HomePage({ dbData, profileId }) {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getInitCustomersState({ isLevel2 }));
-  }, []);
+    try {
+      dispatch(getInitCustomersState({ isLevel2 }));
+    } catch (error) {
+      console.error('Failed to initialize customer state:', error);
+    }
+  }, [dispatch, isLevel2]);
 
   useEffect(() => {
-    if (session) {
-      const tokenExpiry = session.expjwt * 1000;
-      const currentTime = Date.now();
+    if (!session) return;
 
-      if (tokenExpiry <= currentTime) {
-        console.log('過期了拉');
-        signOut();
-      } else {
-        //確保在 token 還未過期的情況下，讓 setTimeout 延遲登出，直到 token 到期為止。
-        const timeUntilExpiry = tokenExpiry - currentTime;
-        setTimeout(() => {
-          console.log('過期了拉');
-        }, timeUntilExpiry);
-      }
+    const tokenExpiry = session.expjwt * 1000;
+    const currentTime = Date.now();
+    let logoutTimer;
+
+    if (tokenExpiry <= currentTime) {
+      console.log('Token expired');
+      signOut();
     }
+
+    // Set timer to sign out when token expires
+    const timeUntilExpiry = tokenExpiry - currentTime;
+    logoutTimer = setTimeout(() => {
+      console.log('Token expired');
+      signOut();
+    }, timeUntilExpiry);
+
+    return () => clearTimeout(logoutTimer);
   }, [session]);
 
   return (
