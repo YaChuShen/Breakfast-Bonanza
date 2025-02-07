@@ -17,3 +17,4 @@ export const CUSTOMERNEXTORDER = 5000;
 export const CUSTOMEROVERTIME = 20000;
 export const customers = 3;
 export const plate = 3;
+export const TOP_RANKINGS = 5;

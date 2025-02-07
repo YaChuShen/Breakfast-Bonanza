@@ -10,6 +10,7 @@ import Leaderboard from './endBoard/Leaderboard';
 import { selectGameConfig } from 'store/features/gameConfigSlice';
 import { useSelector } from 'react-redux';
 import MotionBoard from './MotionBoard';
+import calculateRanking from 'helpers/calculateRanking';
 
 const endBoardVariants = {
   borderRadius: '3xl',
@@ -18,7 +19,14 @@ const endBoardVariants = {
   boxShadow: '0px 2px 20px 1px rgba(0, 0, 0, 0.15)',
 };
 
-const EndBoard = ({ score, isRunning, session, isLevel2, ...props }) => {
+const EndBoard = ({
+  score,
+  isRunning,
+  session,
+  isLevel2,
+  currentLeaderboard,
+  ...props
+}) => {
   const [isEnterLeaderboard, setIsEnterLeaderboard] = useState(false);
   const [newRankBoard, setNewRankBoard] = useState(null);
   const { timerStatus } = useSelector(selectGameConfig);
@@ -59,7 +67,6 @@ const EndBoard = ({ score, isRunning, session, isLevel2, ...props }) => {
 
         if (leaderboardResult.status === 'fulfilled') {
           const data = await leaderboardResult.value.json();
-          console.log('data', data);
           setIsEnterLeaderboard(data.isTopFive ?? data.newRank);
           setNewRankBoard(data.rankings);
           return data;
@@ -73,6 +80,12 @@ const EndBoard = ({ score, isRunning, session, isLevel2, ...props }) => {
     fetchData();
   }, []);
 
+  const { newLeaderboard, isTopFive } = calculateRanking(
+    score,
+    currentLeaderboard,
+    session?.profileId
+  );
+
   const showLevelUpMessege = score > LEVEL2_SCORE && !isLevel2;
   return (
     <MotionBoard {...props}>
@@ -81,19 +94,18 @@ const EndBoard = ({ score, isRunning, session, isLevel2, ...props }) => {
           <TotalScore
             showLevelUpMessege={showLevelUpMessege}
             score={score}
-            isEnterLeaderboard={isEnterLeaderboard}
+            isEnterLeaderboard={isTopFive}
             isLogin={session?.profileId}
           />
           <HStack alignItems="stretch" px="2em" spacing={5}>
             {showLevelUpMessege && (
               <LevelUp endBoardVariants={endBoardVariants} />
             )}
-
             {(newRankBoard || !isRunning) && (
               <Leaderboard
-                newRankBoard={newRankBoard}
+                newLeaderboard={newLeaderboard}
                 endBoardVariants={endBoardVariants}
-                isLoading={!newRankBoard}
+                isLoading={!newLeaderboard}
                 profileId={session?.profileId}
               />
             )}

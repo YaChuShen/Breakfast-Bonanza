@@ -27,11 +27,12 @@ function Badge({ children }) {
   );
 }
 
-function Close({ onClick, onClickStartGame }) {
+function Close({ onClickStartGame }) {
+  const { setIsOpen } = useTour();
   return (
     <button
       onClick={() => {
-        onClick();
+        setIsOpen(false);
         onClickStartGame();
       }}
       style={{ position: 'absolute', right: 15, top: 10 }}
@@ -114,9 +115,7 @@ const Tour = ({ children, profileId }) => {
       showDots={false}
       components={{
         Badge,
-        Close: ({ onClickStartGame }) => (
-          <Close onClickStartGame={onClickStartGame} />
-        ),
+        Close: () => <Close onClickStartGame={onClickStartGame} />,
         Content,
       }}
       disableDotsNavigation={false}

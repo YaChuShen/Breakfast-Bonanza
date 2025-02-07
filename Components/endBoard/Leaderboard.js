@@ -27,7 +27,7 @@ const numberIcon = {
 const LEADERBOARD_ITEMS = 5;
 
 const Leaderboard = ({
-  newRankBoard,
+  newLeaderboard,
   endBoardVariants,
   isLoading,
   profileId,
@@ -47,9 +47,8 @@ const Leaderboard = ({
           ))}
         </VStack>
       ) : (
-        newRankBoard?.map((item, i) => {
+        newLeaderboard?.map((item, i) => {
           const isMyRank = profileId === item.profileId;
-
           return (
             <Box key={i} w="100%">
               <Grid
@@ -69,7 +68,7 @@ const Leaderboard = ({
                 <Text>{item.name}</Text>
                 <Text textAlign="right">{item.score}</Text>
               </Grid>
-              {i !== newRankBoard.length - 1 && <Divider pt="0.5em" />}
+              {i !== newLeaderboard.length - 1 && <Divider pt="0.5em" />}
             </Box>
           );
         })
