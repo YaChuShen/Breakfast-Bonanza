@@ -2,6 +2,7 @@ import { ChakraProviders } from './chakraProviders';
 import { ReduxProviders } from './reduxProviders';
 import { SessionProviders } from './sessionProviders';
 import { Globals } from './GlobalProviders';
+import MixpanelProvider from './mixpanel-provider';
 
 export default function RootLayout({ children }) {
   return (
@@ -10,10 +11,12 @@ export default function RootLayout({ children }) {
         <main>
           <ReduxProviders>
             <SessionProviders>
-              <ChakraProviders>
-                {children}
-                <Globals />
-              </ChakraProviders>
+              <MixpanelProvider>
+                <ChakraProviders>
+                  {children}
+                  <Globals />
+                </ChakraProviders>
+              </MixpanelProvider>
             </SessionProviders>
           </ReduxProviders>
         </main>
