@@ -17,6 +17,7 @@ const GameStageBoard = ({ session, score, isLevel2 }) => {
   const { seconds, minutes, isRunning, timerStart } = useExpiryTimer();
   const { timerStatus } = useSelector(selectGameConfig);
   const [isLoading, setIsLoading] = useState(true);
+  const [currentLeaderboard, setCurrentLeaderboard] = useState([]);
 
   useEffect(() => {
     setIsLoading(false);
@@ -32,6 +33,15 @@ const GameStageBoard = ({ session, score, isLevel2 }) => {
     });
   }, []);
 
+  useEffect(() => {
+    const getLeaderboard = async () => {
+      const res = await fetch('/api/getCurrentLeaderboard');
+      const data = await res.json();
+      setCurrentLeaderboard(data);
+    };
+    getLeaderboard();
+  }, [timerStatus]);
+
   const boardList = {
     initial: <BeginBoard session={session} />,
     touring: '',
@@ -44,6 +54,7 @@ const GameStageBoard = ({ session, score, isLevel2 }) => {
         isRunning={isRunning}
         session={session}
         isLevel2={isLevel2}
+        currentLeaderboard={currentLeaderboard}
       />
     ),
   };

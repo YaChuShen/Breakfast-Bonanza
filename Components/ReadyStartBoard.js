@@ -12,12 +12,12 @@ const ReadyStartBoard = ({ session, timerStart }) => {
 
   return (
     <MotionBoard py={{ md: '2em', xl: '6em' }} px="2em">
-      <VStack w="100%" spacing={10}>
+      <VStack w="100%" spacing={10} fontWeight={500}>
         <VStack w="100%">
           <Image src="/breakfast_bonanza_logo.svg" w="60%" alt="sereneShen" />
         </VStack>
         {session ? (
-          <VStack fontWeight={500}>
+          <VStack>
             <Text color="gray.700">
               Hi,{' '}
               <Text as="span" fontWeight={900} fontSize="2xl">
@@ -30,7 +30,7 @@ const ReadyStartBoard = ({ session, timerStart }) => {
           <VStack textAlign="center">
             <Text>You are not logged in yet.</Text>
             <Text>
-              Log in or sign up now to record your game score and enter the
+              Log in or Sign up now to record your game score and enter the
               leaderboard!
             </Text>
           </VStack>
