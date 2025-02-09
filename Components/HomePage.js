@@ -57,18 +57,16 @@ function HomePage({ dbData, profileId }) {
       <Media greaterThanOrEqual="md">
         <FormProvider {...methods}>
           <Tour profileId={profileId}>
-            <Box as="form">
-              <GameStageBoard
-                session={session}
-                isTour={dbData.isTour}
-                score={currentData.score}
-                isLevel2={isLevel2}
-              />
-              <Customers currentData={currentData} />
-              <Box pos="fixed" bottom="0" left="0" width="100%">
-                <Grass1 />
-                <Table isLevel2={isLevel2} />
-              </Box>
+            <GameStageBoard
+              session={session}
+              isTour={dbData.isTour}
+              score={currentData.score}
+              isLevel2={isLevel2}
+            />
+            <Customers currentData={currentData} />
+            <Box pos="fixed" bottom="0" left="0" width="100%">
+              <Grass1 />
+              <Table isLevel2={isLevel2} />
             </Box>
           </Tour>
         </FormProvider>

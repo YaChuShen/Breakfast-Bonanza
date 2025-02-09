@@ -1,15 +1,15 @@
+'use client';
 import React from 'react';
 
-import { Button, Image, Text, VStack } from '@chakra-ui/react';
+import { Button, HStack, Image, Text, VStack } from '@chakra-ui/react';
 import { useDispatch } from 'react-redux';
 import { timerStatus } from 'store/features/gameConfigSlice';
-import Link from 'next/link';
 import MotionBoard from './MotionBoard';
-import { signOut } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
 const ReadyStartBoard = ({ session, timerStart }) => {
   const dispatch = useDispatch();
-
+  const router = useRouter();
   return (
     <MotionBoard py={{ md: '2em', xl: '6em' }} px="2em">
       <VStack w="100%" spacing={10} fontWeight={500}>
@@ -17,7 +17,7 @@ const ReadyStartBoard = ({ session, timerStart }) => {
           <Image src="/breakfast_bonanza_logo.svg" w="60%" alt="sereneShen" />
         </VStack>
         {session ? (
-          <VStack>
+          <VStack fontWeight={700}>
             <Text color="gray.700">
               Hi,{' '}
               <Text as="span" fontWeight={900} fontSize="2xl">
@@ -54,16 +54,25 @@ const ReadyStartBoard = ({ session, timerStart }) => {
           Start
         </Button>
         {!session && (
-          <Link href="/auth/signin">
-            <Text
+          <HStack>
+            <Button
               cursor="pointer"
-              textDecoration="underline"
+              borderRadius="12px"
               color="red.500"
-              onClick={() => window.open('auth/signin', '_self')}
+              onClick={() => router.push('auth/signin')}
             >
-              Go to login
-            </Text>
-          </Link>
+              Login
+            </Button>
+            <Button
+              borderRadius="12px"
+              border=" 2px solid #978e8b"
+              flex={1}
+              onClick={() => router.push('/register')}
+              variant="outline"
+            >
+              Sign Up
+            </Button>
+          </HStack>
         )}
       </VStack>
     </MotionBoard>

@@ -2,31 +2,25 @@
 
 import React, { useState } from 'react';
 import {
-  Box,
-  Center,
-  ChakraProvider,
   HStack,
-  Image,
   Text,
   VStack,
   Button,
-  Flex,
-  Container,
   Input,
   Stack,
   InputGroup,
   InputRightElement,
 } from '@chakra-ui/react';
-import { signIn, useSession } from 'next-auth/react';
+import { signIn } from 'next-auth/react';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { string } from 'prop-types';
-import { useRouter } from 'next/router';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import {
   emailMessage,
   passwordMessage,
 } from 'contents/emailPasswordErrorMessage';
 import CustomContainer from 'Components/CustomContainer';
+import { trackEvent } from 'lib/mixpanel';
 
 type Inputs = {
   email: string;
@@ -34,23 +28,24 @@ type Inputs = {
   name: string;
 };
 
-const Index = () => {
-  // const { data: session } = useSession();
+const Page = () => {
   const router = useRouter();
-  const [loading, setLoading] = useState<boolean>(false);
+  const searchParams = useSearchParams();
   const [show, setShow] = useState(false);
   const handleClick = () => setShow(!show);
+  const source = searchParams?.get('source') ?? null;
+  const score = searchParams?.get('score') ?? null;
+  const [loading, setLoading] = useState(false);
 
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm<Inputs>();
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
+
     setLoading(true);
-    console.log(data);
 
     const res = await fetch('/api/auth/register', {
       method: 'POST',
@@ -60,25 +55,48 @@ const Index = () => {
       body: JSON.stringify({ data }),
     });
 
+    
+    try {
+      if (res.ok) {
+        trackEvent('Registration Successful', {
+          timestamp: new Date().toISOString(),
+          registrationSource: source || 'direct',
+          score: score || undefined,
+          email: data.email,
+          name: data.name || '',
+        });
+      }
+      else {
+        trackEvent('Registration Failed', {
+          timestamp: new Date().toISOString(),
+          registrationSource: source || 'direct',
+          error: await res.text()
+        });
+      }
+    } catch (error) {
+      console.error('Failed to track event:', error);
+    }
+  
+
     const userInfo = await res.json();
+
     signIn('credentials', {
       ...userInfo,
       callbackUrl: '/',
     })
       .then((res) => {
-        router.push('/');
+        // router.push('/');
       })
       .catch((error) => {
         router.push('/');
         console.log(error);
-        // 處理網絡錯誤或其他問題
       });
-
     setLoading(false);
-    // router.push('/');
   };
 
-  // const emailType = errors?.email?.type;
+  const onError = (errors: any) => {
+    console.log('Form errors:', errors);
+  };
 
   return (
     <CustomContainer>
@@ -86,7 +104,7 @@ const Index = () => {
         <Text textAlign="center" fontWeight={700} fontSize="30px">
           Sign Up
         </Text>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onSubmit, onError)}>
           <VStack spacing={5} w="100%">
             <Input
               {...register('name', { required: true, maxLength: 12 })}
@@ -120,11 +138,16 @@ const Index = () => {
                 </Button>
               </InputRightElement>
             </InputGroup>
-            <Button type="submit" w="100%">
+            <Button type="submit" w="100%" isLoading={loading}>
               SUBMIT
             </Button>
           </VStack>
           <VStack py="2" alignItems="start">
+          {errors.name && (
+            <Text fontSize="14px" color="red.600">
+              {errors.name.type === 'required' ? 'Name is required' : 'Name must be less than 12 characters'}
+            </Text>
+          )}
             {errors.password && (
               <Text fontSize="14px" color="red.600">
                 {passwordMessage[errors.password.type ?? '']}
@@ -146,7 +169,7 @@ const Index = () => {
               color="red.500"
               onClick={() => router.push('auth/signin')}
             >
-              Go to login
+              Login
             </Text>
           </Link>
         </HStack>
@@ -155,4 +178,4 @@ const Index = () => {
   );
 };
 
-export default Index;
+export default Page;

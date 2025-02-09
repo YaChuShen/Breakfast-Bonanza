@@ -35,7 +35,7 @@ const TotalScore = ({
             `You've made it to the top 5 !! Sign Up now to secure your impressive record.`
           )
         ) : (
-          !isLogin && 'Want to track your scores? Go ahead and register now!'
+          !isLogin && 'Sign up to save your score!'
         )}
       </Text>
     </VStack>

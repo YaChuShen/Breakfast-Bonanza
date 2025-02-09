@@ -8,6 +8,7 @@ import { useDispatch } from 'react-redux';
 import { timerStatus } from 'store/features/gameConfigSlice';
 import { useTour } from '@reactour/tour';
 import MotionBoard from './MotionBoard';
+import mixpanel from 'mixpanel-browser';
 
 const BeginBoard = ({ session }) => {
   const router = useRouter();
@@ -24,15 +25,15 @@ const BeginBoard = ({ session }) => {
           </Text>
         </VStack>
         {session && (
-          <VStack fontWeight={500}>
-            <Text color="gray.700">
+          <>
+            <Text color="gray.700" as="span" fontWeight={700}>
               Hi,{' '}
               <Text as="span" fontWeight={900} fontSize="2xl">
                 {session?.user?.name}
-              </Text>
+              </Text>{' '}
+              {`Ready to play?`}
             </Text>
-            <Text>{`Let's start the game!`}</Text>
-          </VStack>
+          </>
         )}
         <Button
           onClick={() => {
@@ -54,7 +55,14 @@ const BeginBoard = ({ session }) => {
         </Button>
         <VStack spacing={0}>
           {session ? (
-            <Text onClick={signOut} textDecoration="underline" cursor="pointer">
+            <Text
+              onClick={() => {
+                signOut();
+                mixpanel.reset();
+              }}
+              textDecoration="underline"
+              cursor="pointer"
+            >
               logout
             </Text>
           ) : (
@@ -67,15 +75,6 @@ const BeginBoard = ({ session }) => {
                 onClick={() => router.push('auth/signin')}
               >
                 LogIn
-              </Button>
-              <Button
-                borderRadius="12px"
-                border=" 2px solid #978e8b"
-                flex={1}
-                onClick={() => router.push('/register')}
-                variant="outline"
-              >
-                Sign Up
               </Button>
             </HStack>
           )}

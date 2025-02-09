@@ -1,13 +1,16 @@
 import { TOP_RANKINGS } from 'contents/rules';
 
-const calculateRanking = (score, currentLeaderboard, profileId) => {
+const calculateRanking = (score, currentLeaderboard, profileId, name) => {
   const lowestTopScore =
     currentLeaderboard.length >= TOP_RANKINGS
       ? currentLeaderboard[currentLeaderboard.length - 1].score
       : 0;
 
+  const isTopFive =
+    score > lowestTopScore || currentLeaderboard.length < TOP_RANKINGS;
+
   if (profileId) {
-    if (score > lowestTopScore || currentLeaderboard.length < TOP_RANKINGS) {
+    if (isTopFive) {
       // Check if the player is currently on the leaderboard
       const playerRankIndex = currentLeaderboard.findIndex(
         (r) => r.profileId === profileId
@@ -30,27 +33,17 @@ const calculateRanking = (score, currentLeaderboard, profileId) => {
           rank: index + 1,
         }));
 
-      const newRank =
-        newRankings.find((r) => r.profileId === profileId)?.rank || null;
-
       return {
-        status: 200,
-        rankings: newRankings,
-        newRank,
+        newLeaderboard: newRankings,
+        isTopFive,
       };
-
-      // await realtimeDb.ref('rankings').set(newRankings);
-
-      // return NextResponse.json({
-      //   status: 200,
-      //   rankings: newRankings,
-      //   newRank,
-      // });
     }
-  } else {
-    const isTopFive =
-      score > lowestTopScore || currentLeaderboard.length < TOP_RANKINGS;
 
+    return {
+      newLeaderboard: currentLeaderboard,
+      isTopFive,
+    };
+  } else {
     return {
       newLeaderboard: currentLeaderboard,
       isTopFive,

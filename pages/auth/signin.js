@@ -31,7 +31,6 @@ import CustomContainer from 'Components/CustomContainer';
 export default function SignIn({ providers, csrfToken }) {
   const router = useRouter();
   const [loginError, setLoginError] = useState();
-  console.log(loginError);
 
   const {
     register,

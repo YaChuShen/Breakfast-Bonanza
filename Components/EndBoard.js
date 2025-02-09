@@ -11,6 +11,8 @@ import { selectGameConfig } from 'store/features/gameConfigSlice';
 import { useSelector } from 'react-redux';
 import MotionBoard from './MotionBoard';
 import calculateRanking from 'helpers/calculateRanking';
+import { trackEvent } from 'lib/mixpanel';
+import { useRouter } from 'next/navigation';
 
 const endBoardVariants = {
   borderRadius: '3xl',
@@ -27,9 +29,8 @@ const EndBoard = ({
   currentLeaderboard,
   ...props
 }) => {
-  const [isEnterLeaderboard, setIsEnterLeaderboard] = useState(false);
-  const [newRankBoard, setNewRankBoard] = useState(null);
   const { timerStatus } = useSelector(selectGameConfig);
+  const router = useRouter();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -67,8 +68,6 @@ const EndBoard = ({
 
         if (leaderboardResult.status === 'fulfilled') {
           const data = await leaderboardResult.value.json();
-          setIsEnterLeaderboard(data.isTopFive ?? data.newRank);
-          setNewRankBoard(data.rankings);
           return data;
         } else {
           console.error('Leaderboard API failed:', leaderboardResult.reason);
@@ -80,10 +79,21 @@ const EndBoard = ({
     fetchData();
   }, []);
 
+  useEffect(() => {
+    trackEvent('Game Completion', {
+      timestamp: new Date().toISOString(),
+      score,
+      isUser: session?.profileId ? true : false,
+      isLevel2,
+      profileId: session?.profileId,
+    });
+  }, []);
+
   const { newLeaderboard, isTopFive } = calculateRanking(
     score,
     currentLeaderboard,
-    session?.profileId
+    session?.profileId,
+    session?.user?.name
   );
 
   const showLevelUpMessege = score > LEVEL2_SCORE && !isLevel2;
@@ -101,7 +111,7 @@ const EndBoard = ({
             {showLevelUpMessege && (
               <LevelUp endBoardVariants={endBoardVariants} />
             )}
-            {(newRankBoard || !isRunning) && (
+            {(newLeaderboard || !isRunning) && (
               <Leaderboard
                 newLeaderboard={newLeaderboard}
                 endBoardVariants={endBoardVariants}
@@ -110,21 +120,34 @@ const EndBoard = ({
               />
             )}
           </HStack>
-          <Button
-            type="submit"
-            bg="red.500"
-            color="white"
-            fontSize="24px"
-            py="5"
-            px="10"
-            size="xl"
-            borderRadius="20px"
-            letterSpacing="1px"
-            _hover={{ bg: 'red.700', color: 'white' }}
-            fontWeight={900}
-          >
-            Re-START
-          </Button>
+          <HStack>
+            <Button
+              bg="red.500"
+              color="white"
+              fontSize="20px"
+              size="lg"
+              borderRadius="xl"
+              letterSpacing="1px"
+              _hover={{ bg: 'red.600', color: 'white' }}
+              fontWeight={900}
+              onClick={() => router.push(`/`)}
+            >
+              Re-START
+            </Button>
+            {!session?.profileId && (
+              <Button
+                border="2px solid #978e8b"
+                borderRadius="xl"
+                fontSize="20px"
+                size="lg"
+                onClick={() =>
+                  router.push(`/register?source=game_completion&score=${score}`)
+                }
+              >
+                Sign Up
+              </Button>
+            )}
+          </HStack>
         </VStack>
       )}
     </MotionBoard>
