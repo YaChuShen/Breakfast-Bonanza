@@ -7,21 +7,18 @@ const TotalScore = ({
   isLogin,
 }) => {
   return (
-    <VStack w="100%" color="red.500" spacing={0}>
-      <Text fontSize="36px">
-        {showLevelUpMessege ? 'Level up !!' : 'Game over'}
+    <VStack w="100%" spacing={0}>
+      <Text fontSize="xl">
+        {showLevelUpMessege ? 'Level up !!' : 'Game over'}, Your total scroe is
       </Text>
-      <Text fontSize="20px" color="gray.700">
-        Your total scroe is
-        <Text
-          color="red.500"
-          fontSize={{ lg: '40px', '2xl': '50px' }}
-          textAlign="center"
-        >
-          {score}
-        </Text>
+      <Text
+        color="red.500"
+        fontSize={{ lg: '60px', '2xl': '50px' }}
+        textAlign="center"
+      >
+        {score}
       </Text>
-      <Text textAlign="center" fontWeight={500} color="gray.700">
+      <Text textAlign="center" fontWeight={500}>
         {isEnterLeaderboard ? (
           isLogin ? (
             <Text as="span">

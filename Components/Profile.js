@@ -54,7 +54,8 @@ const Profile = ({ data, profileId }) => {
               bg="white"
               borderRadius="80px"
               mt="1em"
-              border="10px solid #db542c"
+              border="10px solid"
+              borderColor="red.500"
               fontWeight={500}
               color="gray.500"
             >

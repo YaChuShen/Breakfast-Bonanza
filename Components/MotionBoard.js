@@ -22,7 +22,8 @@ const MotionBoard = ({ children, py = '1.5em', minH = '20em', ...props }) => {
         minH={minH}
         transition={{ duration: 0.5, type: 'spring', stiffness: 200 }}
         borderRadius="80px"
-        border="10px solid #db542c"
+        border="10px solid"
+        borderColor="red.500"
         {...props}
       >
         {children}
