@@ -40,7 +40,7 @@ export default function MixpanelProvider({
   useEffect(() => {
     const isPageRefresh = sessionStorage.getItem('hasLoaded');
     const source = searchParams?.get('utm_source') || 'direct';
-    if (!isPageRefresh && mixpanel) {
+    if (!isPageRefresh) {
       trackEvent("Page View", {
         path: pathname,
         source
