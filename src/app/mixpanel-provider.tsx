@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect } from "react";
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname ,useSearchParams} from "next/navigation";
 import { initMixpanel, identifyUser, trackEvent } from "../../lib/mixpanel";
 import { useSession } from "next-auth/react";
 import mixpanel from "mixpanel-browser";
@@ -35,11 +35,16 @@ export default function MixpanelProvider({
     } 
   }, []);
 
+  const searchParams = useSearchParams();
 
   useEffect(() => {
     const isPageRefresh = sessionStorage.getItem('hasLoaded');
+    const source = searchParams?.get('utm_source') || 'direct';
     if (!isPageRefresh) {
-      trackEvent("Page View", { path: pathname });
+      trackEvent("Page View", {
+        path: pathname,
+        source
+      });      
       sessionStorage.setItem('hasLoaded', 'true');
     }  }, []);
 
