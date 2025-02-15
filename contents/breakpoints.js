@@ -9,7 +9,7 @@ const bp = [
   140, // 4xl => 2240px
 ].map((em) => em * 16);
 
-export const chakraBpNames = ["sm", "md", "lg", "xl", "2xl", "3xl", "4xl"];
+export const chakraBpNames = ['sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl'];
 const breakpoints = chakraBpNames.reduce((bps, name, i) => {
   bps[name] = `${bp[i + 1]}px`;
   return bps;

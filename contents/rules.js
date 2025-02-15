@@ -1,6 +1,6 @@
-export const timer = 15;
-export const trashCanNoList = ['coffee'];
-export const plateToDropFood = [
+export const GAME_TIMEER = 120;
+export const TRASH_CAN_NO_LIST = ['coffee'];
+export const PLATE_TO_DROP_FOOD = [
   'sunnyEgg',
   'hotDog',
   'toast',
@@ -9,12 +9,12 @@ export const plateToDropFood = [
   'bacon',
   'rosemarry',
 ];
-export const materialList = ['egg', 'coffee', 'hotDog0', 'toast0', 'bacon0'];
+export const MATERIAL_LIST = ['egg', 'coffee', 'hotDog0', 'toast0', 'bacon0'];
 export const LEVEL2_SCORE = 150;
-export const MUTURITYTIME = 2000;
-export const OVERTIME = 5000;
-export const CUSTOMERNEXTORDER = 5000;
-export const CUSTOMEROVERTIME = 20000;
-export const customers = 3;
-export const plate = 3;
+export const MUTURITY_TIME = 2000;
+export const OVERTIME = 8000;
+export const CUSTOMER_NEXT_ORDER = 5000;
+export const CUSTOMER_OVERTIME = 20000;
+export const MAX_CUSTOMERS = 3;
+export const MAX_PLATE = 3;
 export const TOP_RANKINGS = 5;

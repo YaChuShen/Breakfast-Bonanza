@@ -6,7 +6,7 @@ import FoodTemplate from './FoodTemplate';
 import onDragEnter from '../helpers/cook/onDragEnter';
 import onDrop from '../helpers/cook/onDrop';
 import passToPlate from '../helpers/cook/passToPlate';
-import { MUTURITYTIME, OVERTIME } from 'contents/rules';
+import { MUTURITY_TIME, OVERTIME } from 'contents/rules';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { selectPlate } from 'store/features/plateSlice';
@@ -40,7 +40,7 @@ const Toaster = ({ tool, w = '14em', ...props }) => {
     if (isCooking) {
       const s = setTimeout(() => {
         setStatus('maturity');
-      }, [MUTURITYTIME]);
+      }, [MUTURITY_TIME]);
       return () => clearTimeout(s);
     }
     if (isMaturity) {
@@ -124,7 +124,7 @@ const Toaster = ({ tool, w = '14em', ...props }) => {
       <Box pos="relative" cursor={(isDone || isOverDone) && 'pointer'}>
         {(isCooking || isMaturity) && (
           <Progress
-            time={MUTURITYTIME / 20}
+            time={MUTURITY_TIME / 20}
             pos="absolute"
             size="30px"
             top={0}

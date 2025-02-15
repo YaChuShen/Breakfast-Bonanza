@@ -2,7 +2,6 @@ import { HStack } from '@chakra-ui/react';
 import React from 'react';
 import Plate from './Plate';
 import { range } from 'lodash';
-import { plate } from '../helpers/rwd';
 import { selectPlate } from 'store/features/plateSlice';
 import { useSelector } from 'react-redux';
 

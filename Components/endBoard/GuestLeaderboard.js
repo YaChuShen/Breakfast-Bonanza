@@ -12,7 +12,7 @@ const GuestLeaderboard = ({
 
   return (
     <VStack color="gray.700" spacing={1} bg="gray.50" {...endBoardVariants}>
-      <Text fontSize="20px">Congratulations!</Text>
+      <Text fontSize="xl">Congratulations!</Text>
       <Text textAlign="center" fontWeight={500}>
         {isEnterLeaderboard ? (
           isLogin ? (
@@ -21,7 +21,7 @@ const GuestLeaderboard = ({
               <Text
                 as="span"
                 fontWeight={800}
-                fontSize="30px"
+                fontSize="3xl"
                 color="orange.400"
               >
                 {isEnterLeaderboard}

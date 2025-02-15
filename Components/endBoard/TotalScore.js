@@ -13,7 +13,7 @@ const TotalScore = ({
       </Text>
       <Text
         color="red.500"
-        fontSize={{ lg: '60px', '2xl': '50px' }}
+        fontSize={{ lg: '6xl', '2xl': '5xl' }}
         textAlign="center"
       >
         {score}
@@ -23,7 +23,7 @@ const TotalScore = ({
           isLogin ? (
             <Text as="span">
               {`You've made it to the top`}{' '}
-              <Text as="span" fontWeight={800} fontSize="30px" color="red.500">
+              <Text as="span" fontWeight={800} fontSize="3xl" color="red.500">
                 {isEnterLeaderboard}
               </Text>{' '}
               of the leaderboard!

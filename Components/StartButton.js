@@ -6,7 +6,7 @@ const StartButton = ({ onClick, ...props }) => {
       onClick={onClick}
       bg="red.500"
       color="white"
-      fontSize="24px"
+      fontSize="2xl"
       py="5"
       px="12"
       size="xl"

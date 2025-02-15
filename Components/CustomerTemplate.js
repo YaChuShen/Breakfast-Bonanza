@@ -1,7 +1,7 @@
 import { Box, Center, Circle, Image, Text } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import { isEqual } from 'lodash';
-import { CUSTOMERNEXTORDER, CUSTOMEROVERTIME } from 'contents/rules';
+import { CUSTOMER_NEXT_ORDER, CUSTOMER_OVERTIME } from 'contents/rules';
 import scoreList from 'contents/scoreList';
 import { motion } from 'framer-motion';
 import { useDispatch } from 'react-redux';
@@ -87,7 +87,7 @@ const CustomerTemplate = ({
         dispatch(minusScore());
         setGetScoreAni(true);
         dispatch(handleCustomStatus({ id, status: 'errors' }));
-      }, [CUSTOMEROVERTIME]);
+      }, [CUSTOMER_OVERTIME]);
 
       if (status === 'eating') clearTimeout(t);
 
@@ -119,7 +119,7 @@ const CustomerTemplate = ({
     dispatch(handleCustomStatus({ id, status: 'eating' }));
     setTimeout(() => {
       dispatch(getNextOrder({ id, isLevel2 }));
-    }, [CUSTOMERNEXTORDER]);
+    }, [CUSTOMER_NEXT_ORDER]);
     dispatch(getScore({ score: targetScore }));
     setGetScoreAni(true);
   };

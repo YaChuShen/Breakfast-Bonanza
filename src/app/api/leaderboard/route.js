@@ -51,7 +51,6 @@ export async function POST(request) {
 
         let newRankings = [...currentRankings];
 
-        // 如果玩家已在排行榜中，先移除舊記錄
         if (playerRankIndex !== -1) {
           newRankings.splice(playerRankIndex, 1);
         }

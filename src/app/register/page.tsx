@@ -84,9 +84,6 @@ const Page = () => {
       ...userInfo,
       callbackUrl: '/',
     })
-      .then((res) => {
-        // router.push('/');
-      })
       .catch((error) => {
         router.push('/');
         console.log(error);

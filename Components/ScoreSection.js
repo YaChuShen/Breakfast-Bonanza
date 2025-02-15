@@ -65,7 +65,7 @@ const ScoreSection = ({ score, seconds, minutes, profileId, isSingin }) => {
                   userSelect="none"
                   py="2"
                   fontWeight={500}
-                  fontSize="14px"
+                  fontSize="md"
                 >
                   <Link href={`/profile/${profileId}`}>
                     <Text

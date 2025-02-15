@@ -1,9 +1,9 @@
 'use client';
 import { createSlice } from '@reduxjs/toolkit';
 import { range } from 'lodash';
-import { plate } from 'contents/rules';
+import { MAX_PLATE } from 'contents/rules';
 
-const p = range(plate).reduce((all, curr, i) => {
+const p = range(MAX_PLATE).reduce((all, curr, i) => {
   all[`plateContent${i + 1}`] = [];
   return all;
 }, {});
@@ -13,7 +13,7 @@ const initialState = {
   status: 'idle',
   targetItem: '',
   targetPlate: '',
-  plate: plate,
+  plate: MAX_PLATE,
 };
 
 export const plateSlice = createSlice({

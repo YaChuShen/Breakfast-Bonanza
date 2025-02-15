@@ -18,7 +18,7 @@ const calculateRanking = (score, currentLeaderboard, profileId, name) => {
 
       let newRankings = [...currentLeaderboard];
 
-      // 如果玩家已在排行榜中，先移除舊記錄
+      // If player is already on the leaderboard, remove the old record first
       if (playerRankIndex !== -1) {
         newRankings.splice(playerRankIndex, 1);
       }
