@@ -42,6 +42,7 @@ const CustomerImg = ({ src }) => {
       src={`${src}.svg`}
       w={`${customerW}em`}
       alt=""
+      draggable="false"
     />
   );
 };

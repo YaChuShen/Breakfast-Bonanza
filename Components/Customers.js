@@ -11,7 +11,13 @@ const CustomerTemplate = dynamic(() => import('Components/CustomerTemplate'), {
 const Customers = ({ currentData }) => {
   return (
     <Center pt="3em" pos="relative">
-      <Image src="./window.svg" w="70em" minW="70em" alt="game" />
+      <Image
+        src="./window.svg"
+        w="70em"
+        minW="70em"
+        alt="game"
+        draggable="false"
+      />
       <HStack
         pos="absolute"
         zIndex={1}

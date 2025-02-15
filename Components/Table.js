@@ -14,6 +14,7 @@ const Table = ({ isLevel2 }) => {
         bottom="-1em"
         w="100em"
         minW="100em"
+        draggable="false"
       >
         <LittleTree />
         <Kitchen isLevel2={isLevel2} />

@@ -14,6 +14,7 @@ const Grass1 = () => {
         left="-5em"
         bottom={BigTree}
         zIndex={1}
+        draggable={false}
       />
     </Media>
   );
