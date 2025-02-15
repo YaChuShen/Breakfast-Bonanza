@@ -8,7 +8,7 @@ import {
   VStack,
   useDisclosure,
 } from '@chakra-ui/react';
-import React from 'react';
+import React, { useEffect } from 'react';
 import Timer from 'Components/Timer';
 import { MdArrowDropDown } from 'react-icons/md';
 import Link from 'next/link';
@@ -19,7 +19,7 @@ const ScoreSection = ({ score, seconds, minutes, profileId, isSingin }) => {
 
   return (
     <Box
-      zIndex={1}
+      zIndex={99}
       boxShadow="md"
       bg="gray.50"
       pt="2"
@@ -65,6 +65,7 @@ const ScoreSection = ({ score, seconds, minutes, profileId, isSingin }) => {
                   userSelect="none"
                   py="2"
                   fontWeight={500}
+                  fontSize="md"
                 >
                   <Link href={`/profile/${profileId}`}>
                     <Text

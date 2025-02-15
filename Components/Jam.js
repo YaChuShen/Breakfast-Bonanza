@@ -31,6 +31,7 @@ const Jam = () => {
             width={50}
             height={60}
             pointerEvents="none"
+            draggable={false}
             alt="jam"
           />
         </Box>

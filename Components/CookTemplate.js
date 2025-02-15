@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import stoveList from '../contents/cookedList';
 import Progress from './Progress';
-import { MUTURITYTIME, OVERTIME } from '../contents/rules';
+import { MUTURITY_TIME, OVERTIME } from '../contents/rules';
 import onDragEnter from '../helpers/cook/onDragEnter';
 import onDrop from '../helpers/cook/onDrop';
 import passToPlate from '../helpers/cook/passToPlate';
@@ -34,7 +34,7 @@ const CookTemplate = ({ tool, w = '14em', isLevel2, ...props }) => {
     if (isCooking) {
       const s = setTimeout(() => {
         setStatus('maturity');
-      }, [MUTURITYTIME]);
+      }, [MUTURITY_TIME]);
       return () => clearTimeout(s);
     }
     if (isMaturity) {
@@ -82,7 +82,7 @@ const CookTemplate = ({ tool, w = '14em', isLevel2, ...props }) => {
         />
         {(isCooking || isMaturity) && (
           <Progress
-            time={MUTURITYTIME / 20}
+            time={MUTURITY_TIME / 20}
             pos="absolute"
             size="30px"
             top={5}

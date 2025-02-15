@@ -1,6 +1,6 @@
 import { Box, Image } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
-import { trashCanNoList } from '../contents/rules';
+import { TRASH_CAN_NO_LIST } from '../contents/rules';
 import {
   selectGameConfig,
   handleTrashCan,
@@ -32,7 +32,7 @@ const TrashCan = ({ ...props }) => {
   }, [trashCanOpen]);
 
   const onDrop = () => {
-    if (!trashCanNoList.includes(targetItem) && open) {
+    if (!TRASH_CAN_NO_LIST.includes(targetItem) && open) {
       if (targetPlate) {
         dispatch(addFood({ id: targetPlate, targetItem: [] }));
         dispatch(setTargetPlate({ index: null }));
@@ -45,8 +45,8 @@ const TrashCan = ({ ...props }) => {
   return (
     <Box
       pos="absolute"
-      right="-7"
-      top="-4em"
+      right={{ base: '25em', lg: '18em' }}
+      top={{ base: '-7em', lg: '-4em' }}
       userSelect="none"
       onDragLeave={() => {
         setOpen(false);

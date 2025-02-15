@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { range, sample } from 'lodash';
 import menuList from 'contents/menuList';
 import { menuInfo } from 'contents/menuList';
-import { customers } from 'contents/rules';
+import { MAX_CUSTOMERS } from 'contents/rules';
 
 const initialState = {
   score: 0,
@@ -46,7 +46,7 @@ export const customerSlice = createSlice({
         .filter((e) => !e.level2)
         .map((e) => e.ingredient);
 
-      const defaultSetting = range(customers).reduce((all, curr, i) => {
+      const defaultSetting = range(MAX_CUSTOMERS).reduce((all, curr, i) => {
         all[`customer${i + 1}`] = {
           order: isLevel2 ? sample(menuList) : sample(basicList),
           status: 'waiting',

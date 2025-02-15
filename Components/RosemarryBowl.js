@@ -7,7 +7,7 @@ const RosemarryBowl = () => {
   const dispatch = useDispatch();
 
   return (
-    <Box position="absolute" top={{ base: '1em', lg: '-1em' }} right="5em">
+    <Box position="absolute" top={{ base: '1em', lg: '-1em' }} right="25em">
       <Image
         src="./rosemarryBowl.svg"
         w="5.5em"
