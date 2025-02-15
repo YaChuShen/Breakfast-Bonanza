@@ -39,7 +39,7 @@ export default function MixpanelProvider({
   useEffect(() => {
     const isPageRefresh = sessionStorage.getItem('hasLoaded');
     if (!isPageRefresh) {
-      trackEvent("Page View", { path: pathname });
+      trackEvent("Page View", { path: pathname ,source: mixpanel.helpers.getQueryParam("utm_source")});
       sessionStorage.setItem('hasLoaded', 'true');
     }  }, []);
 
