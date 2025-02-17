@@ -72,6 +72,9 @@ export const NextAuthOptions = NextAuth({
           prompt: 'consent',
           access_type: 'offline',
           response_type: 'code',
+          redirect_uri: process.env.NEXTAUTH_URL
+            ? `${process.env.NEXTAUTH_URL}/api/auth/callback/google`
+            : `https://${process.env.VERCEL_URL}/api/auth/callback/google`,
         },
       },
     }),
