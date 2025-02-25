@@ -1,34 +1,36 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Breakfast Bonanza 🍳
 
-## Getting Started
+A fast-paced breakfast cooking game where players race against time to prepare and serve breakfast orders to customers. Built with React, Next.js and Firebase.
 
-First, run the development server:
+Open [https://game-angp-git-featrelease-annshens-projects.vercel.app](https://game-angp-git-featrelease-annshens-projects.vercel.app/?utm_source=readme) with your browser to start playing!
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+## 🎮 System
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- **User Authentication**: Supports Email or Google sign-in for convenient player access.
+- **Global Leaderboard**: Player scores update in real time, fostering friendly competition.
+- **Analytics**: Uses Mixpanel to track various user interactions and game events
+- **Player Profiles**: Track gameplay progress, record high scores, and monitor achievements.
+- **Interactive Tutorial**: Onboarding guide to help new players learn the controls and rules.
+- **Real-Time Score Updates**: Scores are displayed live on the game screen for instant feedback.
+- **Progressive Difficulty**: Two levels of gameplay challenge
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## 🛠️ Tech Stack
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+- **Frontend**: Next.js, React, Chakra UI, Framer Motion
+- **State Management**: Redux Toolkit
+- **Authentication**: NextAuth.js
+- **Backend**: Firebase (Firestore, Realtime Database)
+- **Analytics**: Mixpanel
+- **Styling**: Chakra UI, Emotion
+  
+## 🎯 Gameplay
 
-## Learn More
+- **Real-Time Cooking Mechanics**: Utilize intuitive drag-and-drop actions for quick and easy learning.
+- **Variety of Breakfast Combinations**: Master multiple dishes while managing time and orders.
+- **Time-Based Scoring**: Earn points based on cooking efficiency and accuracy to climb the leaderboard.
+- **Two Difficulty Levels**: Progress through two challenges; unlock Level 2 to earn the “Eggcellent Chef” title.-
+- **Simultaneous Order Management**: Handle multiple orders without burning food, adding excitement and complexity.
 
-To learn more about Next.js, take a look at the following resources:
+  ## 👩‍💻 Author
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- **Serene Shen**
