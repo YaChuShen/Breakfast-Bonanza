@@ -3,24 +3,21 @@ import Profile from 'Components/Profile';
 
 const Page = async ({ params }) => {
   const db = admin.firestore();
-  const profieSnaps = await db.collection('users').doc(params.id).get();
-  const data = profieSnaps.data();
+  const profileSnaps = await db.collection('users').doc(params.id).get();
+  const safeData = profileSnaps.exists
+    ? JSON.parse(JSON.stringify(profileSnaps.data()))
+    : {};
 
-  return (
-    <Profile
-      data={JSON.parse(JSON.stringify(data ?? {}) ?? {})}
-      profileId={params.id}
-    />
-  );
+  return <Profile data={safeData} profileId={params.id} />;
 };
 
 export default Page;
 
 export async function generateStaticParams() {
   const db = admin.firestore();
-  const profieSnaps = await db.collection('users').get();
+  const profileSnaps = await db.collection('users').get();
 
-  const paths = profieSnaps.docs.map((doc) => ({
+  const paths = profileSnaps.docs.map((doc) => ({
     params: { id: doc.id },
   }));
 

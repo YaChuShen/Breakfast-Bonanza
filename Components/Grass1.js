@@ -8,12 +8,13 @@ const Grass1 = () => {
     <Media greaterThanOrEqual="xl">
       <Image
         src="/gress2.svg"
-        w="18em"
+        w={{ base: '14em', '2xl': '18em' }}
         alt=""
         pos="absolute"
-        left="-7em"
+        left="-5em"
         bottom={BigTree}
         zIndex={1}
+        draggable={false}
       />
     </Media>
   );

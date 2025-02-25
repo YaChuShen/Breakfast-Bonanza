@@ -4,8 +4,22 @@ import { extendTheme } from '@chakra-ui/react';
 const theme = extendTheme({
   colors: {
     red: {
-      500: '#db542c',
-      700: '#e64e37',
+      300: '#f5b795',
+      500: '#f59e6e',
+    },
+    gray: {
+      500: '#978e8b',
+    },
+  },
+  styles: {
+    global: {
+      body: {
+        color: '#635b5b',
+        background: '#F2DBC2',
+        overflow: 'hidden',
+        margin: 0,
+        padding: 0,
+      },
     },
   },
 });

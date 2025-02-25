@@ -1,8 +1,8 @@
 import { Box, Center, HStack, Image } from '@chakra-ui/react';
 import React from 'react';
 import FoodTemplate from './FoodTemplate';
-import { plateToDropFood } from 'contents/rules';
-import { materialList } from 'contents/rules';
+import { PLATE_TO_DROP_FOOD } from 'contents/rules';
+import { MATERIAL_LIST } from 'contents/rules';
 import { useDispatch } from 'react-redux';
 import {
   addFood,
@@ -54,7 +54,7 @@ const Plate = ({ data, index, className }) => {
   const key = `plateContent${index + 1}`;
   const food = data[key];
   const { targetPlate, targetItem } = data;
-  const isValide = food?.every((e) => plateToDropFood.includes(e));
+  const isValide = food?.every((e) => PLATE_TO_DROP_FOOD.includes(e));
   const toastFirst = food?.[0] === 'toast';
   const jam = food?.[1] === 'blueberry' || food?.[1] === 'butter';
 
@@ -81,7 +81,7 @@ const Plate = ({ data, index, className }) => {
         if (
           !targetPlate &&
           !targetItem?.includes('2') &&
-          !materialList?.includes(targetItem)
+          !MATERIAL_LIST?.includes(targetItem)
         ) {
           dispatch(addFood({ id: index + 1, targetItem }));
           dispatch(setTargetItem({ target: null }));

@@ -1,104 +1,162 @@
-import {
-  Box,
-  Button,
-  Image,
-  Text,
-  VStack,
-  HStack,
-  Stack,
-  Flex,
-} from '@chakra-ui/react';
-import { motion } from 'framer-motion';
+'use client';
+
+import { Button, VStack, HStack } from '@chakra-ui/react';
 import React, { useEffect } from 'react';
 import { LEVEL2_SCORE } from 'contents/rules';
 
-const MotionComponent = motion(Box);
+import TotalScore from './endBoard/TotalScore';
+import LevelUp from './endBoard/LevelUp';
+import Leaderboard from './endBoard/Leaderboard';
+import { selectGameConfig } from 'store/features/gameConfigSlice';
+import { useSelector } from 'react-redux';
+import MotionBoard from './MotionBoard';
+import calculateRanking from 'helpers/calculateRanking';
+import { trackEvent } from 'lib/mixpanel';
+import { useRouter } from 'next/navigation';
+import SignUpButton from './SignUpButton';
+const endBoardVariants = {
+  borderRadius: '3xl',
+  p: '5',
+  flex: 1,
+  boxShadow: '0px 2px 20px 1px rgba(0, 0, 0, 0.15)',
+};
 
-const EndBoard = ({ score, isRunning, session, isLevel2, ...props }) => {
+const EndBoard = ({
+  score,
+  isRunning,
+  session,
+  isLevel2,
+  currentLeaderboard,
+  ...props
+}) => {
+  const { timerStatus } = useSelector(selectGameConfig);
+  const router = useRouter();
+
   useEffect(() => {
     const fetchData = async () => {
-      await fetch('/api/pointsTable', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          score: score ?? 0,
-          profileId: session?.profileId,
-        }),
-      });
+      try {
+        const [pointsResult, leaderboardResult] = await Promise.allSettled([
+          fetch('/api/pointsTable', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              score: score ?? 0,
+              profileId: session?.profileId,
+              timerStatus,
+            }),
+          }),
+          fetch('/api/leaderboard', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              score: score ?? 0,
+              profileId: session?.profileId,
+              name: session?.name,
+              timerStatus,
+              timestamp: Date.now(),
+            }),
+          }),
+        ]);
+
+        if (pointsResult.status === 'rejected') {
+          console.error('Points API failed:', pointsResult.reason);
+        }
+
+        if (leaderboardResult.status === 'fulfilled') {
+          const data = await leaderboardResult.value.json();
+          return data;
+        } else {
+          console.error('Leaderboard API failed:', leaderboardResult.reason);
+        }
+      } catch (error) {
+        console.error('Error in fetchData:', error);
+      }
     };
     fetchData();
   }, []);
 
-  const showLevelUpMessege = score > LEVEL2_SCORE && !isLevel2;
+  useEffect(() => {
+    trackEvent('Game Completion', {
+      timestamp: new Date().toISOString(),
+      score,
+      isUser: session?.profileId ? true : false,
+      isLevel2,
+      profileId: session?.profileId,
+    });
+  }, []);
 
+  const { newLeaderboard, isTopFive } = calculateRanking(
+    score,
+    currentLeaderboard,
+    session?.profileId,
+    session?.user?.name
+  );
+
+  const showLevelUpMessege = score > LEVEL2_SCORE && !isLevel2;
   return (
-    <MotionComponent
-      py={{ md: '5em', xl: '7em' }}
-      bg="rgba(255, 255, 255, 0.9)"
-      w="60%"
-      pos="fixed"
-      top="10%"
-      left="18.5%"
-      zIndex={20}
-      initial={{ opacity: 0.2, x: 0, y: -600, scale: 0.8 }}
-      animate={{ opacity: 1, x: 0, y: 0, scale: 1 }}
-      exit={{
-        opacity: 0,
-        y: -300,
-        scale: 0.8,
-        transition: { duration: 0.3, type: 'spring' },
-      }}
-      transition={{ duration: 0.5, type: 'spring', stiffness: 200 }}
-      borderRadius="80px"
-      border="10px solid #db542c"
-      {...props}
-    >
+    <MotionBoard {...props}>
       {!isRunning && (
-        <VStack w="100%" spacing={10} fontWeight={700}>
-          <VStack w="100%" color="red.500">
-            <Text fontSize="50px">
-              {showLevelUpMessege ? 'Level up !!' : 'Game over'}
-            </Text>
-            <Text fontSize="20px" color="gray.700">
-              Your total scroe is
-              <Text color="red.500" fontSize="4em" textAlign="center">
-                {score}
-              </Text>
-            </Text>
+        <VStack
+          w="100%"
+          spacing={{ lg: '1.5em', '2xl': '2em' }}
+          fontWeight={700}
+        >
+          <TotalScore
+            showLevelUpMessege={showLevelUpMessege}
+            score={score}
+            isEnterLeaderboard={isTopFive}
+            isLogin={session?.profileId}
+          />
+          <HStack alignItems="stretch" px="2em" spacing={5}>
             {showLevelUpMessege && (
-              <Stack alignItems="center" color="gray.700">
-                <Text fontSize="20px">Unlock new ingredients!</Text>
-                <Text>
-                  Next, there are various combinations waiting for you to
-                  complete.
-                </Text>
-                <HStack>
-                  <Image src={'/bacon.svg'} w="5em" />
-                  <Image src={'/rosemarry.svg'} w="5em" />
-                </HStack>
-              </Stack>
+              <LevelUp endBoardVariants={endBoardVariants} />
             )}
-          </VStack>
-          <Button
-            type="submit"
-            bg="red.500"
-            color="white"
-            fontSize="24px"
-            py="5"
-            px="10"
-            size="xl"
-            borderRadius="20px"
-            letterSpacing="1px"
-            _hover={{ bg: 'red.700', color: 'white' }}
-            fontWeight={900}
-          >
-            Re-START
-          </Button>
+            {(newLeaderboard || !isRunning) && (
+              <Leaderboard
+                newLeaderboard={newLeaderboard}
+                endBoardVariants={endBoardVariants}
+                isLoading={!newLeaderboard}
+                profileId={session?.profileId}
+              />
+            )}
+          </HStack>
+          <HStack>
+            <Button
+              bg="red.500"
+              color="white"
+              fontSize="20px"
+              size="lg"
+              borderRadius="xl"
+              letterSpacing="1px"
+              _hover={{ bg: 'red.300', color: 'white' }}
+              fontWeight={900}
+              onClick={() => {
+                try {
+                  console.log('Redirecting to home...');
+                  window.location.reload();
+                } catch (error) {
+                  console.error('Navigation error:', error);
+                }
+              }}
+            >
+              Re-START
+            </Button>
+            {!session?.profileId && (
+              <SignUpButton
+                onClick={() =>
+                  router.push(`/register?source=game_completion&score=${score}`)
+                }
+                size="lg"
+              />
+            )}
+          </HStack>
         </VStack>
       )}
-    </MotionComponent>
+    </MotionBoard>
   );
 };
 

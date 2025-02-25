@@ -2,36 +2,41 @@
 
 import {
   Button,
-  Center,
   HStack,
   Image,
   Input,
   Link,
   Stack,
   Text,
-  useRadio,
   VStack,
 } from '@chakra-ui/react';
-import {
-  getServerSession,
-  getProviders,
-  signIn,
-  getCsrfToken,
-} from 'next-auth/react';
-import { useRouter } from 'next/router';
+import { signIn } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import {
   emailMessage,
   passwordMessage,
 } from 'contents/emailPasswordErrorMessage';
-import PasswordInput from '../../Components/PasswordInput';
-import { useState } from 'react';
+import PasswordInput from 'Components/PasswordInput';
+import { useEffect, useState } from 'react';
 import CustomContainer from 'Components/CustomContainer';
+import { getAuthData } from './action';
 
-export default function SignIn({ providers, csrfToken }) {
+export default function SignIn() {
   const router = useRouter();
   const [loginError, setLoginError] = useState();
-  console.log(loginError);
+  const [providers, setProviders] = useState({});
+  const [csrfToken, setCsrfToken] = useState();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const { providers: providersData, csrfToken: csrfTokenData } =
+        await getAuthData();
+      setProviders(providersData);
+      setCsrfToken(csrfTokenData);
+    };
+    fetchData();
+  }, []);
 
   const {
     register,
@@ -102,7 +107,7 @@ export default function SignIn({ providers, csrfToken }) {
             )}
           </VStack>
         </form>
-        <Text textAlign="center">Other Log In</Text>
+        <Text textAlign="center">Other LogIn</Text>
         {Object.values(providers)
           .slice(1, 2)
           .map((provider) => (
@@ -111,7 +116,7 @@ export default function SignIn({ providers, csrfToken }) {
               key={provider.name}
             >
               <HStack>
-                <Image src="/google.svg" w="2em"></Image>
+                <Image src="/google.svg" w="2em" alt="google"></Image>
                 <Text>Sign in with {provider.name}</Text>
               </HStack>
             </Button>
@@ -127,13 +132,4 @@ export default function SignIn({ providers, csrfToken }) {
       </Stack>
     </CustomContainer>
   );
-}
-
-export async function getServerSideProps(context) {
-  const csrfToken = (await getCsrfToken(context)) ?? null;
-  const providers = await getProviders();
-
-  return {
-    props: { providers: providers || [], csrfToken },
-  };
 }

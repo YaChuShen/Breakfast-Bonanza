@@ -1,7 +1,7 @@
 import { Center, HStack, Image } from '@chakra-ui/react';
 import { range } from 'lodash';
 import React from 'react';
-import { customers } from 'contents/rules';
+import { MAX_CUSTOMERS } from 'contents/rules';
 import dynamic from 'next/dynamic';
 
 const CustomerTemplate = dynamic(() => import('Components/CustomerTemplate'), {
@@ -11,16 +11,22 @@ const CustomerTemplate = dynamic(() => import('Components/CustomerTemplate'), {
 const Customers = ({ currentData }) => {
   return (
     <Center pt="3em" pos="relative">
-      <Image src="./window.svg" w="70em" minW="70em" alt="game" />
+      <Image
+        src="./window.svg"
+        w="70em"
+        minW="70em"
+        alt="game"
+        draggable="false"
+      />
       <HStack
         pos="absolute"
-        zIndex={10}
+        zIndex={1}
         spacing={20}
         alignItems="center"
         justifyContent="center"
-        py="20"
+        py={{ lg: 0, '2xl': 20 }}
       >
-        {range(customers).map((e, i) => (
+        {range(MAX_CUSTOMERS).map((e, i) => (
           <CustomerTemplate
             isLevel2={currentData?.isLevel2}
             wishFood={currentData[`customer${i + 1}`]?.order}

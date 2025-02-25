@@ -1,11 +1,11 @@
 import { useTimer } from 'react-timer-hook';
-import { timer } from 'contents/rules';
+import { GAME_TIMEER } from 'contents/rules';
 import { useDispatch } from 'react-redux';
 import { timerStatus } from 'store/features/gameConfigSlice';
 
 const useExpiryTimer = () => {
   const time = new Date();
-  time.setSeconds(time.getSeconds() + timer);
+  time.setSeconds(time.getSeconds() + GAME_TIMEER);
   const dispatch = useDispatch();
 
   const {

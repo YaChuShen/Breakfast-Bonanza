@@ -1,10 +1,11 @@
 export const emailMessage = {
-  pattern: '請檢查信箱格式',
-  required: '請填寫信箱',
+  pattern: 'Please check email format',
+  required: 'Please enter your email',
 };
 
 export const passwordMessage = {
-  pattern: '密碼請勿設定特殊符號，請設定英文或數字',
-  required: '請設定密碼',
-  minLength: '密碼至少要6碼',
+  pattern:
+    'Password should only contain letters and numbers, no special characters',
+  required: 'Please set a password',
+  minLength: 'Password must be at least 6 characters',
 };

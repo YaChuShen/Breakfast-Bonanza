@@ -1,4 +1,4 @@
-import { HStack } from '@chakra-ui/react';
+import { Center, HStack } from '@chakra-ui/react';
 import React from 'react';
 import LittleTree from 'Components/LittleTree';
 import ToasterSection from './ToasterSection';
@@ -9,8 +9,13 @@ import { tool } from 'helpers/rwd';
 
 const Kitchen = ({ isLevel2 }) => {
   return (
-    <HStack pos="absolute" bottom={tool} spacing={0}>
-      <LittleTree />
+    <HStack
+      spacing={0}
+      pos="absolute"
+      top="3em"
+      w="100%"
+      justifyContent="center"
+    >
       <ToasterSection isLevel2={isLevel2} />
       <MaterialSection isLevel2={isLevel2} />
       {isLevel2 && <RosemarryBowl />}
