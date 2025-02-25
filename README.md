@@ -1,10 +1,10 @@
-# Breakfast Bonanza 🍳
+![Image](https://github.com/user-attachments/assets/1a7f3ebc-f6b9-4f9a-9867-ee889024d650)
 
 A fast-paced breakfast cooking game where players race against time to prepare and serve breakfast orders to customers. Built with React, Next.js and Firebase.
 
 Open [https://game-angp-git-featrelease-annshens-projects.vercel.app](https://game-angp-git-featrelease-annshens-projects.vercel.app/?utm_source=readme) with your browser to start playing!
 
-## 🎮 System
+## 🍳 System
 
 - **User Authentication**: Supports Email or Google sign-in for convenient player access.
 - **Global Leaderboard**: Player scores update in real time, fostering friendly competition.
@@ -31,6 +31,8 @@ Open [https://game-angp-git-featrelease-annshens-projects.vercel.app](https://ga
 - **Two Difficulty Levels**: Progress through two challenges; unlock Level 2 to earn the “Eggcellent Chef” title.-
 - **Simultaneous Order Management**: Handle multiple orders without burning food, adding excitement and complexity.
 
-  ## 👩‍💻 Author
+## 👩‍💻 Author
 
-- **Serene Shen**
+**Serene Shen**
+yazu0419@gmail.com
+
