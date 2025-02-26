@@ -1,4 +1,4 @@
-export const GAME_TIMEER = 120;
+export const GAME_TIMEER = 80;
 export const TRASH_CAN_NO_LIST = ['coffee'];
 export const PLATE_TO_DROP_FOOD = [
   'sunnyEgg',
@@ -10,7 +10,7 @@ export const PLATE_TO_DROP_FOOD = [
   'rosemarry',
 ];
 export const MATERIAL_LIST = ['egg', 'coffee', 'hotDog0', 'toast0', 'bacon0'];
-export const LEVEL2_SCORE = 150;
+export const LEVEL2_SCORE = 500;
 export const MUTURITY_TIME = 2000;
 export const OVERTIME = 8000;
 export const CUSTOMER_NEXT_ORDER = 5000;
