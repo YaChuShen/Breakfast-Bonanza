@@ -35,6 +35,8 @@ const numberIcon = {
 
 const Profile = ({ data, profileId }) => {
   const isLevel2 = data?.isLevel2;
+  const sortedScores = data?.score?.sort((a, b) => b.score - a.score) || [];
+
   return (
     <>
       <Media greaterThanOrEqual="md">
@@ -50,7 +52,7 @@ const Profile = ({ data, profileId }) => {
               w="100%"
               px="3em"
               pt="3em"
-              pb="1em"
+              pb="2em"
               bg="white"
               borderRadius="80px"
               mt="1em"
@@ -96,13 +98,13 @@ const Profile = ({ data, profileId }) => {
                 </HStack>
               </VStack>
               <Divider borderColor="gray.500" py="0.5em" />
-              <HStack w="100%" alignItems="flex-start" pt="1em">
+              <HStack w="100%" alignItems="flex-start" py="1em">
                 <VStack w="100%">
                   <Text fontWeight={800} fontSize="24px">
                     Record
                   </Text>
                   {data?.score?.length > 0 ? (
-                    data?.score.slice(0, 5).map((item, index) => (
+                    sortedScores.slice(0, 5).map((item, index) => (
                       <Grid
                         templateColumns="30px 1fr 2fr"
                         gap={1}
@@ -118,7 +120,7 @@ const Profile = ({ data, profileId }) => {
                           h="1.3em"
                           color={numberIcon[index + 1].color}
                         />
-                        <Text>{item.score}</Text>
+                        <Text w="4em">{item.score}</Text>
                         <Text
                           textAlign="right"
                           fontSize="14px"
@@ -137,7 +139,7 @@ const Profile = ({ data, profileId }) => {
                     Highest Score
                   </Text>
                   <Text fontSize="24px" fontWeight={700} color="red.500">
-                    11100
+                    {sortedScores[0]?.score}
                   </Text>
                 </VStack>
               </HStack>
@@ -145,7 +147,7 @@ const Profile = ({ data, profileId }) => {
                 src="/sunnyEgg&toast.svg"
                 w="4em"
                 alt="sereneShen"
-                pt={{ md: '2em', xl: '3em' }}
+                pt={{ md: '3em', xl: '5em' }}
               />
               <Text fontSize="14px">Product by Serene Shen</Text>
             </VStack>
