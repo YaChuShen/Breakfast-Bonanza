@@ -11,6 +11,7 @@ const PasswordInput = ({ register }) => {
       })}
       bg="white"
       placeholder="Min. 6 characters including numbers and letters"
+      type="password"
     ></Input>
   );
 };

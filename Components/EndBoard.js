@@ -14,6 +14,7 @@ import calculateRanking from 'helpers/calculateRanking';
 import { trackEvent } from 'lib/mixpanel';
 import { useRouter } from 'next/navigation';
 import SignUpButton from './SignUpButton';
+
 const endBoardVariants = {
   borderRadius: '3xl',
   p: '5',
@@ -31,6 +32,13 @@ const EndBoard = ({
 }) => {
   const { timerStatus } = useSelector(selectGameConfig);
   const router = useRouter();
+
+  const { newLeaderboard, isTopFive } = calculateRanking(
+    score,
+    currentLeaderboard,
+    session?.profileId,
+    session?.user?.name
+  );
 
   useEffect(() => {
     const fetchData = async () => {
@@ -58,6 +66,7 @@ const EndBoard = ({
               name: session?.name,
               timerStatus,
               timestamp: Date.now(),
+              newLeaderboard,
             }),
           }),
         ]);
@@ -88,13 +97,6 @@ const EndBoard = ({
       profileId: session?.profileId,
     });
   }, []);
-
-  const { newLeaderboard, isTopFive } = calculateRanking(
-    score,
-    currentLeaderboard,
-    session?.profileId,
-    session?.user?.name
-  );
 
   const showLevelUpMessege = score > LEVEL2_SCORE && !isLevel2;
   return (
