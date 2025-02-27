@@ -2,7 +2,7 @@
 
 A fast-paced breakfast cooking game where players race against time to prepare and serve breakfast orders to customers. Built with React, Next.js and Firebase.
 
-Open [https://game-angp-git-featrelease-annshens-projects.vercel.app](https://game-angp-git-featrelease-annshens-projects.vercel.app/?utm_source=readme) with your browser to start playing!
+Open [https://game-angp-nzi6zijkq-annshens-projects.vercel.app](https://game-angp-nzi6zijkq-annshens-projects.vercel.app/?utm_source=readme) with your browser to start playing!
 
 ## 🍳 System
 
