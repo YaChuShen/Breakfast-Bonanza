@@ -11,17 +11,7 @@ const calculateRanking = (score, currentLeaderboard, profileId, name) => {
 
   if (profileId) {
     if (isTopFive) {
-      // Check if the player is currently on the leaderboard
-      const playerRankIndex = currentLeaderboard.findIndex(
-        (r) => r.profileId === profileId
-      );
-
       let newRankings = [...currentLeaderboard];
-
-      // If player is already on the leaderboard, remove the old record first
-      if (playerRankIndex !== -1) {
-        newRankings.splice(playerRankIndex, 1);
-      }
 
       newRankings.push({ profileId, score, name });
 

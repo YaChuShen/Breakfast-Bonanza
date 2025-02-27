@@ -8,15 +8,14 @@ import {
   VStack,
   useDisclosure,
 } from '@chakra-ui/react';
-import React, { useEffect } from 'react';
+import React from 'react';
 import Timer from 'Components/Timer';
 import { MdArrowDropDown } from 'react-icons/md';
-import Link from 'next/link';
 import { signOut } from 'next-auth/react';
-
+import { useRouter } from 'next/navigation';
 const ScoreSection = ({ score, seconds, minutes, profileId, isSingin }) => {
   const { isOpen, onToggle, onOpen } = useDisclosure();
-
+  const router = useRouter();
   return (
     <Box
       zIndex={99}
@@ -67,15 +66,16 @@ const ScoreSection = ({ score, seconds, minutes, profileId, isSingin }) => {
                   fontWeight={500}
                   fontSize="md"
                 >
-                  <Link href={`/profile/${profileId}`}>
-                    <Text
-                      _hover={{
-                        color: 'gray.400',
-                      }}
-                    >
-                      Profile
-                    </Text>
-                  </Link>
+                  <Text
+                    _hover={{
+                      color: 'gray.400',
+                    }}
+                    onClick={() => {
+                      router.push(`/profile/${profileId}`);
+                    }}
+                  >
+                    Profile
+                  </Text>
                   <Divider />
                   <Text
                     _hover={{
