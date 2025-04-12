@@ -1,19 +1,52 @@
 {
   "extends": [
-    "next/core-web-vitals"
+    "next/core-web-vitals",
+    "plugin:@typescript-eslint/recommended"
   ],
+  "parser": "@typescript-eslint/parser",
   "rules": {
     "no-undef": "error",
-    "react/display-name": "off"
+    "react/display-name": "off",
+    "@typescript-eslint/no-unused-vars": "warn",
+    "@typescript-eslint/no-require-imports": "warn",
+    "@typescript-eslint/no-unused-expressions": "warn",
+    "ui-testing/missing-assertion-in-test": "off",
+    "import/order": ["warn", {
+      "newlines-between": "always",
+      "groups": [
+        "builtin",
+        "external",
+        "internal",
+        "parent",
+        "sibling",
+        "index",
+        "object"
+      ],
+      "pathGroups": [
+        {
+          "pattern": "Components/**",
+          "group": "internal"
+        },
+        {
+          "pattern": "{contents,helpers,hooks,lib,functions}/**",
+          "group": "internal",
+          "position": "after"
+        },
+      ],
+      "alphabetize": {
+        "order": "asc"
+      }
+    }],
   },
   "globals": {
     "Promise": true
   },
-  // "plugins": [
-  //   ""
-  // ],
+  "plugins": [
+    "@typescript-eslint"
+  ],
   "env": {
-    "jest": true
-  }
+    "jest": true,
+    "es6": true
+  },
   
 }

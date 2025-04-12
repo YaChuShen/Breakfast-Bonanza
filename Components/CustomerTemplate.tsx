@@ -47,6 +47,16 @@ const CustomerImg = ({ src }) => {
   );
 };
 
+type CustomerTemplateProps = {
+  wishFood: string;
+  status: string;
+  overtime: boolean;
+  id: string;
+  src: string;
+  className: string;
+  isLevel2: boolean;
+};
+
 const CustomerTemplate = ({
   wishFood,
   status,
@@ -55,10 +65,11 @@ const CustomerTemplate = ({
   src,
   className,
   isLevel2,
-}) => {
+}: CustomerTemplateProps) => {
+
   const dispatch = useDispatch();
   const isCoffee = wishFood === 'coffee';
-  const [getScoreAni, setGetScoreAni] = useState();
+  const [getScoreAni, setGetScoreAni] = useState<boolean>(false);
   const plateData = useSelector(selectPlate);
   const { timerStatus } = useSelector(selectGameConfig);
   const isGameRunning = timerStatus === 'gameRunning';
@@ -71,7 +82,7 @@ const CustomerTemplate = ({
       if (status === s && !overtime) {
         const t = setTimeout(() => {
           dispatch(handleCustomStatus({ id, status: 'waiting' }));
-        }, [time]);
+        }, time);
         return () => clearTimeout(t);
       }
     };
@@ -87,7 +98,7 @@ const CustomerTemplate = ({
         dispatch(minusScore());
         setGetScoreAni(true);
         dispatch(handleCustomStatus({ id, status: 'errors' }));
-      }, [CUSTOMER_OVERTIME]);
+      }, CUSTOMER_OVERTIME);
 
       if (status === 'eating') clearTimeout(t);
 
@@ -110,7 +121,7 @@ const CustomerTemplate = ({
     if (getScoreAni) {
       setTimeout(() => {
         setGetScoreAni(false);
-      }, [500]);
+      }, 500);
     }
   }, [getScoreAni]);
 
@@ -119,7 +130,7 @@ const CustomerTemplate = ({
     dispatch(handleCustomStatus({ id, status: 'eating' }));
     setTimeout(() => {
       dispatch(getNextOrder({ id, isLevel2 }));
-    }, [CUSTOMER_NEXT_ORDER]);
+    }, CUSTOMER_NEXT_ORDER);
     dispatch(getScore({ score: targetScore }));
     setGetScoreAni(true);
   };
@@ -185,8 +196,7 @@ const CustomerTemplate = ({
       </Center>
       <Circle
         bg={statusColor[status]}
-        w={`${circleW}em`}
-        h={`${circleW}em`}
+        size={`${circleW}em`}
         pos="relative"
       >
         {overtime ? (
