@@ -24,7 +24,11 @@ import { selectGameConfig } from 'store/features/gameConfigSlice';
 
 const MotionComponent = motion(Box);
 
-const statusColor = {
+type StatusColor = {
+  [key: string]: string;
+};
+
+const statusColor: StatusColor = {
   eating: '#EDDDD6',
   waiting: '#92AA8D',
   errors: '#CE5242',
@@ -33,7 +37,19 @@ const statusColor = {
 const circleW = 9.56;
 const customerW = 9;
 
-const CustomerImg = ({ src }) => {
+type CustomerTemplateProps = {
+  wishFood: string;
+  status: string;
+  overtime: boolean;
+  id: string;
+  src: string;
+  className: string;
+  isLevel2: boolean;
+};
+
+
+
+const CustomerImg = ({ src }: {src: string}) => {
   return (
     <Image
       top={1}
@@ -45,16 +61,6 @@ const CustomerImg = ({ src }) => {
       draggable="false"
     />
   );
-};
-
-type CustomerTemplateProps = {
-  wishFood: string;
-  status: string;
-  overtime: boolean;
-  id: string;
-  src: string;
-  className: string;
-  isLevel2: boolean;
 };
 
 const CustomerTemplate = ({
@@ -69,7 +75,7 @@ const CustomerTemplate = ({
 
   const dispatch = useDispatch();
   const isCoffee = wishFood === 'coffee';
-  const [getScoreAni, setGetScoreAni] = useState<boolean>(false);
+  const [getScoreAni, setGetScoreAni] = useState(false);
   const plateData = useSelector(selectPlate);
   const { timerStatus } = useSelector(selectGameConfig);
   const isGameRunning = timerStatus === 'gameRunning';
@@ -78,7 +84,7 @@ const CustomerTemplate = ({
     scoreList[[...splitCategories(plateData.targetItem)].sort().join('&')];
 
   useEffect(() => {
-    const controlTime = (s, time) => {
+    const controlTime = (s: string, time: number) => {
       if (status === s && !overtime) {
         const t = setTimeout(() => {
           dispatch(handleCustomStatus({ id, status: 'waiting' }));

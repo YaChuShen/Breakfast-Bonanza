@@ -1,0 +1,37 @@
+import { Box, HStack } from '@chakra-ui/react';
+import React from 'react';
+import CookTemplate from 'Components/CookTemplate';
+import smartSize from 'helpers/smartSize';
+import FoodPlateSection from 'Components/FoodPlateSection';
+import FoodTemplate from 'Components/FoodTemplate';
+
+type MaterialSectionProps = {
+  isLevel2: boolean;
+};
+
+const MaterialSection = ({ isLevel2 }: MaterialSectionProps) => {
+  return (
+    <HStack spacing={0}>
+      <CookTemplate
+        tool={'pan'}
+        w={smartSize({ base: '9em', lg: '11em', isLevel2 })}
+        zIndex={1}
+        isLevel2={isLevel2}
+      />
+      {isLevel2 && (
+        <CookTemplate
+          tool={'pan'}
+          w={smartSize({ base: '9em', lg: '11em', isLevel2 })}
+          zIndex={1}
+          isLevel2={isLevel2}
+        />
+      )}
+      <FoodPlateSection isLevel2={isLevel2} />
+      <Box pl="4">
+        <FoodTemplate value={'coffee'} src={'coffee'} />
+      </Box>
+    </HStack>
+  );
+};
+
+export default MaterialSection;

@@ -43,6 +43,7 @@
   "devDependencies": {
     "@babel/core": "^7.20.2",
     "@babel/eslint-parser": "^7.19.1",
+    "@types/mixpanel-browser": "^2.54.0",
     "@typescript-eslint/eslint-plugin": "^8.29.1",
     "@typescript-eslint/parser": "^8.29.1",
     "eslint": "^8.44.0",
