@@ -14,8 +14,25 @@ import GameStageBoard from 'Components/GameStageBoard';
 import Tour from 'Components/Tour';
 import Customers from 'Components/Customers';
 import MobileAlertPage from 'Components/MobileAlertPage';
+import { Session } from 'next-auth';
 
-function HomePage({ dbData, profileId }) {
+type ExtendedSession = Session & {
+  profileId?: string;
+  id?: string;
+  expjwt?: number;
+};
+
+interface DbData {
+  isLevel2: boolean;
+  isTour?: boolean;
+}
+
+interface HomePageProps {
+  dbData: DbData;
+  profileId: string;
+}
+
+function HomePage({ dbData, profileId }: HomePageProps) {
   const methods = useForm();
   const { data: session } = useSession();
   const currentData = useSelector(selectCustomer);
@@ -33,9 +50,12 @@ function HomePage({ dbData, profileId }) {
   useEffect(() => {
     if (!session) return;
 
-    const tokenExpiry = session.expjwt * 1000;
+    const extendedSession = session as ExtendedSession;
+    if (!extendedSession.expjwt) return;
+
+    const tokenExpiry = extendedSession.expjwt * 1000;
     const currentTime = Date.now();
-    let logoutTimer;
+    let logoutTimer: NodeJS.Timeout;
 
     if (tokenExpiry <= currentTime) {
       console.log('Token expired');
@@ -58,8 +78,7 @@ function HomePage({ dbData, profileId }) {
         <FormProvider {...methods}>
           <Tour profileId={profileId}>
             <GameStageBoard
-              session={session}
-              isTour={dbData.isTour}
+              session={session as ExtendedSession}
               score={currentData.score}
               isLevel2={isLevel2}
             />
@@ -78,4 +97,4 @@ function HomePage({ dbData, profileId }) {
   );
 }
 
-export default HomePage;
+export default HomePage; 

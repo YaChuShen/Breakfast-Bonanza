@@ -48,10 +48,17 @@ export const NextAuthOptions = NextAuth({
         console.log('Successful login');
         delete user.password;
 
+        // Generate Firebase custom token
+        const customToken = await admin
+          .auth()
+          .createCustomToken(userRef.docs[0]?.id);
+        console.log('Generated Firebase custom token:', customToken);
+
         const token = jwt.sign(
           {
             email: user.email,
             profileId: userRef.docs[0]?.id,
+            firebaseToken: customToken,
           },
           process.env.NEXTAUTH_SECRET,
           { expiresIn: '3d' }
@@ -60,7 +67,8 @@ export const NextAuthOptions = NextAuth({
         return {
           ...user,
           profileId: userRef.docs[0]?.id,
-          accessToken: token,
+          firebaseToken: customToken,
+          token,
         };
       },
     }),

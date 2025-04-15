@@ -17,7 +17,7 @@ type FoodTemplateProps = {
   className?: string;
   zIndex?: number;
   pos?: 'absolute' | 'relative' | 'fixed' | 'sticky' | 'static';
-  left?: number;
+  left?: number | string;
   bottom?: number;
   top?: number;
 };

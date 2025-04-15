@@ -25,15 +25,34 @@ import {
 import Media from 'Components/Media';
 import MobileAlertPage from 'Components/MobileAlertPage';
 
+interface Score {
+  score: number;
+  time: string;
+}
+
+interface ProfileData {
+  isLevel2: boolean;
+  name: string;
+  email: string;
+  avatar?: string;
+  image?: string;
+  score?: Score[];
+}
+
+interface ProfileProps {
+  data: ProfileData;
+  profileId: string;
+}
+
 const numberIcon = {
   1: { icon: TbSquareRoundedNumber1Filled, color: 'gray.400' },
   2: { icon: TbSquareRoundedNumber2Filled, color: 'gray.400' },
   3: { icon: TbSquareRoundedNumber3Filled, color: 'gray.400' },
   4: { icon: TbSquareRoundedNumber4Filled, color: 'gray.400' },
   5: { icon: TbSquareRoundedNumber5Filled, color: 'gray.400' },
-};
+} as const;
 
-const Profile = ({ data, profileId }) => {
+const Profile: React.FC<ProfileProps> = ({ data, profileId }) => {
   const isLevel2 = data?.isLevel2;
   const sortedScores = data?.score?.sort((a, b) => b.score - a.score) || [];
 
@@ -103,7 +122,7 @@ const Profile = ({ data, profileId }) => {
                   <Text fontWeight={800} fontSize="24px">
                     Record
                   </Text>
-                  {data?.score?.length > 0 ? (
+                  {data?.score && data.score.length > 0 ? (
                     sortedScores.slice(0, 5).map((item, index) => (
                       <Grid
                         templateColumns="30px 1fr 2fr"
@@ -115,10 +134,10 @@ const Profile = ({ data, profileId }) => {
                         alignItems="center"
                       >
                         <Icon
-                          as={numberIcon[index + 1].icon}
+                          as={numberIcon[(index + 1) as keyof typeof numberIcon].icon}
                           w="1.3em"
                           h="1.3em"
-                          color={numberIcon[index + 1].color}
+                          color={numberIcon[(index + 1) as keyof typeof numberIcon].color}
                         />
                         <Text w="4em">{item.score}</Text>
                         <Text
@@ -161,4 +180,4 @@ const Profile = ({ data, profileId }) => {
   );
 };
 
-export default Profile;
+export default Profile; 

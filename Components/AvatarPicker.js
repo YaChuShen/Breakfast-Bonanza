@@ -7,32 +7,62 @@ import { BiCamera } from 'react-icons/bi';
 import { storage } from '../firebase.config';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import postMethod from 'helpers/postMethod';
+import { useSession } from 'next-auth/react';
+import { getAuth, signInWithCustomToken } from 'firebase/auth';
 
 const AvatarPicker = ({ profileId, avatar }) => {
   const prevUrl = useRef();
   const { register, watch } = useForm({});
   const [isLoading, setIsLoading] = useState(false);
   const file = watch('avatar');
+  const { data: session } = useSession();
+
+  useEffect(() => {
+    const initializeFirebaseAuth = async () => {
+      if (session?.firebaseToken) {
+        const auth = getAuth();
+        console.log(
+          'Attempting to sign in with Firebase token:',
+          session.firebaseToken
+        );
+        try {
+          const userCredential = await signInWithCustomToken(
+            auth,
+            session.firebaseToken
+          );
+          console.log('Firebase auth successful:', userCredential.user.uid);
+        } catch (error) {
+          console.error('Error signing in with Firebase token:', error);
+        }
+      }
+    };
+    initializeFirebaseAuth();
+  }, [session?.firebaseToken]);
 
   useEffect(() => {
     const handleUpload = async () => {
       if (file?.[0] && file instanceof FileList) {
         setIsLoading(true);
-        const imagesRef = ref(storage, `${profileId}/avatar`);
-        const upload = await uploadBytes(imagesRef, file[0]);
-        const publicURL = await getDownloadURL(upload.ref);
-        await postMethod({
-          path: '/api/postAvatar',
-          data: {
-            profileId,
-            publicURL,
-          },
-        });
-        setIsLoading(false);
+        try {
+          const imagesRef = ref(storage, `users/${profileId}/avatar`);
+          const upload = await uploadBytes(imagesRef, file[0]);
+          const publicURL = await getDownloadURL(upload.ref);
+          await postMethod({
+            path: '/api/postAvatar',
+            data: {
+              profileId,
+              publicURL,
+            },
+          });
+        } catch (error) {
+          console.error('Error uploading file:', error);
+        } finally {
+          setIsLoading(false);
+        }
       }
     };
     handleUpload();
-  }, [file?.[0]]);
+  }, [file?.[0], profileId]);
 
   const avatarURL = useMemo(() => {
     if (file?.[0]) {
