@@ -13,6 +13,7 @@ import { selectPlate } from 'store/features/plateSlice';
 import { setTargetItem } from 'store/features/plateSlice';
 import { handleTrashCan } from 'store/features/gameConfigSlice';
 import { ResponsiveValue } from '@chakra-ui/react';
+import ToastEjectBtn from './toastEjectBtn';
 
 const statusList: Record<string, string> = {
   cooking: 'toasterIn0',
@@ -132,8 +133,9 @@ const Toaster = ({  w = '14em', ...props }: ToasterProps) => {
       }}
       {...props}
       className="four-step"
+      onClick={turnOn}
     >
-      <Box pos="relative" cursor={(isDone || isOverDone) ? 'pointer' : undefined}>
+      <Box pos="relative" cursor='pointer'>
         {(isCooking || isMaturity) && (
           <Progress
             time={MUTURITY_TIME / 20}
@@ -184,15 +186,7 @@ const Toaster = ({  w = '14em', ...props }: ToasterProps) => {
             />
           </Box>
         )}
-        <Box
-          onClick={turnOn}
-          w="3em"
-          h="3em"
-          cursor="pointer"
-          pos="absolute"
-          bottom={'2em'}
-          right={-4}
-        />
+        <ToastEjectBtn onClick={turnOn} />
       </Box>
     </Box>
   );
