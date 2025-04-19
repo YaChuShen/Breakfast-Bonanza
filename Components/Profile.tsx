@@ -9,8 +9,10 @@ import {
   Text,
   VStack,
   Image,
+  Spinner,
+  Center,
 } from '@chakra-ui/react';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import AvatarPicker from 'Components/AvatarPicker';
 import CustomContainer from 'Components/CustomContainer';
 import { FaArrowLeftLong } from 'react-icons/fa6';
@@ -24,6 +26,7 @@ import {
 } from 'react-icons/tb';
 import Media from 'Components/Media';
 import MobileAlertPage from 'Components/MobileAlertPage';
+import { useParams } from 'next/navigation';
 
 interface Score {
   score: number;
@@ -32,16 +35,11 @@ interface Score {
 
 interface ProfileData {
   isLevel2: boolean;
-  name: string;
-  email: string;
+  name: string | null;
+  email: string | null;
   avatar?: string;
   image?: string;
   score?: Score[];
-}
-
-interface ProfileProps {
-  data: ProfileData;
-  profileId: string;
 }
 
 const numberIcon = {
@@ -52,7 +50,29 @@ const numberIcon = {
   5: { icon: TbSquareRoundedNumber5Filled, color: 'gray.400' },
 } as const;
 
-const Profile: React.FC<ProfileProps> = ({ data, profileId }) => {
+const Profile = () => {
+  const params = useParams();
+  const profileId = params?.id as string;
+  const [data, setData] = useState<ProfileData | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    if (!profileId) return;
+    
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`/api/profile/${profileId}`);
+        const data = await response.json();
+        setData(data);
+      } catch (error) {
+        console.error('Failed to fetch profile:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchData();
+  }, [profileId]);
+
   const isLevel2 = data?.isLevel2;
   const sortedScores = data?.score?.sort((a, b) => b.score - a.score) || [];
 
@@ -60,7 +80,7 @@ const Profile: React.FC<ProfileProps> = ({ data, profileId }) => {
     <>
       <Media greaterThanOrEqual="md">
         <CustomContainer>
-          <VStack w="100%" alignItems="flex-start">
+          <VStack w="100%" alignItems="flex-start" >
             <Link href="/">
               <HStack>
                 <Icon as={FaArrowLeftLong} />
@@ -79,96 +99,106 @@ const Profile: React.FC<ProfileProps> = ({ data, profileId }) => {
               borderColor="red.500"
               fontWeight={500}
               color="gray.500"
+              minH="80vh"
+              position="relative"
             >
-              <Image
-                src="/breakfast_bonanza_logo.svg"
-                w="60%"
-                alt="sereneShen"
-              />
-              <VStack pt="1em" w="100%">
-                <AvatarPicker
-                  profileId={profileId}
-                  avatar={data?.avatar ?? data?.image}
-                />
-                <Text fontWeight={700} fontSize="30px" color="gray.800">
-                  {data.name}
-                </Text>
-                <HStack
-                  color="gray.500"
-                  w="100%"
-                  justifyContent="center"
-                  spacing="0.5em"
-                >
-                  <Text>{data.email}</Text>
-                  <Text>|</Text>
-                  <HStack fontSize="14px">
-                    <Text
-                      bg={isLevel2 ? 'yellow.400' : 'gray.600'}
-                      px="0.5em"
-                      borderRadius="8px"
-                      color="white"
+              {isLoading ? (
+                <Center w="100%" h="100%" position="absolute">
+                  <Spinner size="xl" color="red.500" thickness="4px" />
+                </Center>
+              ) : (
+                <>
+                  <Image
+                    src="/breakfast_bonanza_logo.svg"
+                    w="60%"
+                    alt="sereneShen"
+                  />
+                  <VStack pt="1em" w="100%">
+                    <AvatarPicker
+                      profileId={profileId}
+                      avatar={data?.avatar ?? data?.image}
+                    />
+                    <Text fontWeight={700} fontSize="30px" color="gray.800">
+                      {data?.name}
+                    </Text>
+                    <HStack
+                      color="gray.500"
+                      w="100%"
+                      justifyContent="center"
+                      spacing="0.5em"
                     >
-                      {isLevel2 ? 'Level 2' : 'Level 1'}
-                    </Text>
-                    <Text>
-                      {isLevel2 ? 'Eggcellent Chef' : 'Morning Beginner'}
-                    </Text>
-                  </HStack>
-                </HStack>
-              </VStack>
-              <Divider borderColor="gray.500" py="0.5em" />
-              <HStack w="100%" alignItems="flex-start" py="1em">
-                <VStack w="100%">
-                  <Text fontWeight={800} fontSize="24px">
-                    Record
-                  </Text>
-                  {data?.score && data.score.length > 0 ? (
-                    sortedScores.slice(0, 5).map((item, index) => (
-                      <Grid
-                        templateColumns="30px 1fr 2fr"
-                        gap={1}
-                        bg="white"
-                        color="black"
-                        borderRadius="xl"
-                        key={item?.time}
-                        alignItems="center"
-                      >
-                        <Icon
-                          as={numberIcon[(index + 1) as keyof typeof numberIcon].icon}
-                          w="1.3em"
-                          h="1.3em"
-                          color={numberIcon[(index + 1) as keyof typeof numberIcon].color}
-                        />
-                        <Text w="4em">{item.score}</Text>
+                      <Text>{data?.email}</Text>
+                      <Text>|</Text>
+                      <HStack fontSize="14px">
                         <Text
-                          textAlign="right"
-                          fontSize="14px"
-                          color="gray.500"
+                          bg={isLevel2 ? 'yellow.400' : 'gray.600'}
+                          px="0.5em"
+                          borderRadius="8px"
+                          color="white"
                         >
-                          {format(new Date(item?.time), 'yyyy-MM-dd hh:mm')}
+                          {isLevel2 ? 'Level 2' : 'Level 1'}
                         </Text>
-                      </Grid>
-                    ))
-                  ) : (
-                    <Text>No record yet</Text>
-                  )}
-                </VStack>
-                <VStack w="100%">
-                  <Text fontWeight={800} fontSize="24px">
-                    Highest Score
-                  </Text>
-                  <Text fontSize="24px" fontWeight={700} color="red.500">
-                    {sortedScores[0]?.score}
-                  </Text>
-                </VStack>
-              </HStack>
-              <Image
-                src="/sunnyEgg&toast.svg"
-                w="4em"
-                alt="sereneShen"
-                pt={{ md: '3em', xl: '5em' }}
-              />
-              <Text fontSize="14px">Product by Serene Shen</Text>
+                        <Text>
+                          {isLevel2 ? 'Eggcellent Chef' : 'Morning Beginner'}
+                        </Text>
+                      </HStack>
+                    </HStack>
+                  </VStack>
+                  <Divider borderColor="gray.500" py="0.5em" />
+                  <HStack w="100%" alignItems="flex-start" py="1em">
+                    <VStack w="100%">
+                      <Text fontWeight={800} fontSize="24px">
+                        Record
+                      </Text>
+                      {data?.score && data.score.length > 0 ? (
+                        sortedScores.slice(0, 5).map((item, index) => (
+                          <Grid
+                            templateColumns="30px 1fr 2fr"
+                            gap={1}
+                            bg="white"
+                            color="black"
+                            borderRadius="xl"
+                            key={item?.time}
+                            alignItems="center"
+                          >
+                            <Icon
+                              as={numberIcon[(index + 1) as keyof typeof numberIcon].icon}
+                              w="1.3em"
+                              h="1.3em"
+                              color={numberIcon[(index + 1) as keyof typeof numberIcon].color}
+                            />
+                            <Text w="4em">{item.score}</Text>
+                            <Text
+                              textAlign="right"
+                              fontSize="14px"
+                              color="gray.500"
+                            >
+                              {format(new Date(item?.time), 'yyyy-MM-dd hh:mm')}
+                            </Text>
+                          </Grid>
+                        ))
+                      ) : (
+                        <Text>No record yet</Text>
+                      )}
+                    </VStack>
+                    <VStack w="100%">
+                      <Text fontWeight={800} fontSize="24px">
+                        Highest Score
+                      </Text>
+                      <Text fontSize="24px" fontWeight={700} color="red.500">
+                        {sortedScores[0]?.score}
+                      </Text>
+                    </VStack>
+                  </HStack>
+                  <Image
+                    src="/sunnyEgg&toast.svg"
+                    w="4em"
+                    alt="sereneShen"
+                    pt={{ md: '3em', xl: '5em' }}
+                  />
+                  <Text fontSize="14px">Product by Serene Shen</Text>
+                </>
+              )}
             </VStack>
           </VStack>
         </CustomContainer>
