@@ -1,6 +1,10 @@
-import { HStack, Image, Stack, Text } from '@chakra-ui/react';
+import { HStack, Image, Stack, Text, StackProps } from '@chakra-ui/react';
 
-const LevelUp = ({ endBoardVariants }) => {
+interface LevelUpProps {
+  endBoardVariants?: StackProps;
+}
+
+const LevelUp = ({ endBoardVariants }:LevelUpProps) => {
   return (
     <Stack
       alignItems="center"

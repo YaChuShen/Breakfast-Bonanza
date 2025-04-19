@@ -3,11 +3,17 @@
 import { Box, Button, Text, VStack } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
 
-const GuestLeaderboard = ({
+interface GuestLeaderboardProps {
+  isEnterLeaderboard: number | null;
+  endBoardVariants: Record<string, any>;
+  isLogin: boolean;
+}
+
+const GuestLeaderboard= ({
   isEnterLeaderboard,
   endBoardVariants,
   isLogin,
-}) => {
+}:GuestLeaderboardProps) => {
   const router = useRouter();
 
   return (
@@ -52,4 +58,4 @@ const GuestLeaderboard = ({
   );
 };
 
-export default GuestLeaderboard;
+export default GuestLeaderboard; 

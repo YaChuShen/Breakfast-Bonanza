@@ -1,7 +1,7 @@
 'use client';
 
 import { Circle, Spinner } from '@chakra-ui/react';
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { BiCamera } from 'react-icons/bi';
 import { storage } from '../firebase.config';
@@ -10,12 +10,24 @@ import postMethod from 'helpers/postMethod';
 import { useSession } from 'next-auth/react';
 import { getAuth, signInWithCustomToken } from 'firebase/auth';
 
-const AvatarPicker = ({ profileId, avatar }) => {
-  const prevUrl = useRef();
-  const { register, watch } = useForm({});
-  const [isLoading, setIsLoading] = useState(false);
+interface AvatarPickerProps {
+  profileId: string;
+  avatar?: string;
+}
+
+interface AvatarFormData {
+  avatar: FileList | null;
+}
+
+interface ExtendedSession {
+  firebaseToken?: string;
+}
+
+const AvatarPicker: React.FC<AvatarPickerProps> = ({ profileId, avatar }) => {
+  const { register, watch } = useForm<AvatarFormData>();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const file = watch('avatar');
-  const { data: session } = useSession();
+  const { data: session } = useSession() as { data: ExtendedSession | null };
 
   useEffect(() => {
     const initializeFirebaseAuth = async () => {
@@ -70,6 +82,7 @@ const AvatarPicker = ({ profileId, avatar }) => {
         return URL.createObjectURL(file[0]);
       }
     }
+    return undefined;
   }, [file]);
 
   return (
@@ -81,7 +94,7 @@ const AvatarPicker = ({ profileId, avatar }) => {
       size="6em"
       overflow="hidden"
       role="button"
-      bgImage={!isLoading && `url(${avatarURL ?? avatar})`}
+      bgImage={!isLoading ? `url(${avatarURL ?? avatar})` : undefined}
       bgSize="cover"
       bgPosition="center"
       bgRepeat="no-repeat"
@@ -92,11 +105,10 @@ const AvatarPicker = ({ profileId, avatar }) => {
         type="file"
         accept="image/*"
         hidden
-        ref={prevUrl}
         {...register('avatar')}
       />
     </Circle>
   );
 };
 
-export default AvatarPicker;
+export default AvatarPicker; 

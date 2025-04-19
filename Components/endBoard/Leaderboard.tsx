@@ -16,7 +16,26 @@ import {
   TbSquareRoundedNumber5Filled,
 } from 'react-icons/tb';
 
-const numberIcon = {
+interface LeaderboardItem {
+  rank: number;
+  name: string;
+  score: number;
+  profileId: string;
+}
+
+interface LeaderboardProps {
+  newLeaderboard?: LeaderboardItem[];
+  endBoardVariants?: Record<string, any>;
+  isLoading: boolean;
+  profileId: string;
+}
+
+interface NumberIcon {
+  icon: React.ComponentType;
+  color: string;
+}
+
+const numberIcon: Record<number, NumberIcon> = {
   1: { icon: TbSquareRoundedNumber1Filled, color: 'yellow.400' },
   2: { icon: TbSquareRoundedNumber2Filled, color: 'gray.400' },
   3: { icon: TbSquareRoundedNumber3Filled, color: 'gray.600' },
@@ -26,7 +45,7 @@ const numberIcon = {
 
 const LEADERBOARD_ITEMS = 5;
 
-const Leaderboard = ({
+const Leaderboard: React.FC<LeaderboardProps> = ({
   newLeaderboard,
   endBoardVariants,
   isLoading,
@@ -77,4 +96,4 @@ const Leaderboard = ({
   );
 };
 
-export default Leaderboard;
+export default Leaderboard; 

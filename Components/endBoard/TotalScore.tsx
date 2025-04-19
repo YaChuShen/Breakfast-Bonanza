@@ -1,6 +1,13 @@
 import { Text, VStack } from '@chakra-ui/react';
 
-const TotalScore = ({
+interface TotalScoreProps {
+  showLevelUpMessege: boolean;
+  score: number;
+  isEnterLeaderboard: number | null;
+  isLogin: boolean;
+}
+
+const TotalScore: React.FC<TotalScoreProps> = ({
   showLevelUpMessege,
   score,
   isEnterLeaderboard,

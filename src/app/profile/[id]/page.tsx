@@ -3,13 +3,37 @@ import Profile from 'Components/Profile';
 import { Suspense } from 'react';
 import Loading from 'Components/Loading';
 
-const Page = async ({ params }) => {
+interface PageProps {
+  params: {
+    id: string;
+  };
+}
+
+interface Score {
+  score: number;
+  time: string;
+}
+
+interface ProfileData {
+  isLevel2: boolean;
+  name: string;
+  email: string;
+  avatar?: string;
+  image?: string;
+  score?: Score[];
+}
+
+const Page = async ({ params }: PageProps) => {
   const db = admin.firestore();
 
   const profileSnaps = await db.collection('users').doc(params.id).get();
-  const safeData = profileSnaps.exists
+  const safeData: ProfileData = profileSnaps.exists
     ? JSON.parse(JSON.stringify(profileSnaps.data()))
-    : {};
+    : {
+        isLevel2: false,
+        name: '',
+        email: '',
+      };
 
   return (
     <Suspense fallback={<Loading />}>
@@ -20,7 +44,7 @@ const Page = async ({ params }) => {
 
 export default Page;
 
-export async function generateStaticParams() {
+export async function generateStaticParams(): Promise<{ params: { id: string } }[]> {
   const db = admin.firestore();
   const profileSnaps = await db.collection('users').get();
 
@@ -29,4 +53,4 @@ export async function generateStaticParams() {
   }));
 
   return paths;
-}
+} 

@@ -3,8 +3,10 @@ import { SessionProviders } from './sessionProviders';
 import { Globals } from './GlobalProviders';
 import MixpanelProvider from './mixpanel-provider';
 import ChakraUiProvider from './chakraUiProvider';
+import { Metadata } from 'next';
+import { ReactNode } from 'react';
 
-export const metadata = {
+export const metadata: Metadata = {
   title: {
     default: 'Breakfast Bonanza',
     template: '%s | Breakfast Bonanza',
@@ -43,13 +45,18 @@ export const metadata = {
   },
 };
 
-export default function RootLayout({ children }) {
+interface RootLayoutProps {
+  children: ReactNode;
+}
+
+export default async function RootLayout({ children }: RootLayoutProps) {
+  
   return (
     <html lang="en">
       <body>
         <main>
           <ReduxProviders>
-            <SessionProviders>
+            <SessionProviders >
               <MixpanelProvider>
                 <ChakraUiProvider>
                   {children}
