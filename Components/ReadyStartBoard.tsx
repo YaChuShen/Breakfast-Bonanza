@@ -1,12 +1,12 @@
 'use client';
 import React from 'react';
-
 import { Image, Text, VStack } from '@chakra-ui/react';
 import { useDispatch } from 'react-redux';
 import { timerStatus } from 'store/features/gameConfigSlice';
 import MotionBoard from './MotionBoard';
 import AuthSection from './AuthSection';
 import StartButton from './StartButton';
+import MutiplePlayerMode from './MutiplePlayerMode';
 
 type ReadyStartBoardProps = {
   session: any;
@@ -15,9 +15,11 @@ type ReadyStartBoardProps = {
 
 const ReadyStartBoard = ({ session, timerStart }: ReadyStartBoardProps) => {
   const dispatch = useDispatch();
+
   return (
     <MotionBoard py={{ md: '2em', xl: '6em' }} px="2em">
       <VStack w="100%" spacing={10} fontWeight={500}>
+        <MutiplePlayerMode />
         <VStack w="100%">
           <Image src="/breakfast_bonanza_logo.svg" w="60%" alt="sereneShen" />
         </VStack>

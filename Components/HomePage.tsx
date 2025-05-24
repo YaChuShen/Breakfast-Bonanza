@@ -15,6 +15,8 @@ import Tour from 'Components/Tour';
 import Customers from 'Components/Customers';
 import MobileAlertPage from 'Components/MobileAlertPage';
 import { Session } from 'next-auth';
+import { connectSocket } from 'lib/socket';
+import { setSocket } from 'store/features/socketSlice';
 
 type ExtendedSession = Session & {
   profileId?: string;
@@ -72,6 +74,16 @@ function HomePage({ dbData, profileId }: HomePageProps) {
     return () => clearTimeout(logoutTimer);
   }, [session]);
 
+  useEffect(() => {
+    const initSocket = async () => {
+      if (!session) return;
+      const socket = await connectSocket(session);
+      dispatch(setSocket(socket));
+    };
+
+    initSocket();
+  }, [session, dispatch]);
+
   return (
     <>
       <Media greaterThanOrEqual="md">
@@ -97,4 +109,4 @@ function HomePage({ dbData, profileId }: HomePageProps) {
   );
 }
 
-export default HomePage; 
+export default HomePage;

@@ -86,8 +86,8 @@ const GameStageBoard = ({ session, score, isLevel2 }: GameStageBoardProps) => {
         score={score}
         minutes={minutes}
         seconds={seconds}
-        profileId={session?.profileId ?? session?.id}
-        isSingin={session}
+        profileId={session?.profileId ?? session?.id ?? ''}
+        isSingin={!!session}
       />
       {!isRunning && (
         <Box

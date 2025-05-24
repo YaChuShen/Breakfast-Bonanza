@@ -45,7 +45,7 @@ const BeginBoard = ({ session }: { session: Session }) => {
           fontSize="24px"
           py="5"
           px="12"
-          size="xl"
+          size={{ base: 'md', md: 'lg' }}
           borderRadius="2xl"
           letterSpacing="1px"
           _hover={{ bg: 'red.300', color: 'white' }}
