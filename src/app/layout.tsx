@@ -50,21 +50,20 @@ interface RootLayoutProps {
 }
 
 export default async function RootLayout({ children }: RootLayoutProps) {
-  
   return (
     <html lang="en">
       <body>
         <main>
-          <ReduxProviders>
-            <SessionProviders >
-              <MixpanelProvider>
-                <ChakraUiProvider>
+          <SessionProviders>
+            <ReduxProviders>
+              <ChakraUiProvider>
+                <MixpanelProvider>
                   {children}
                   <Globals />
-                </ChakraUiProvider>
-              </MixpanelProvider>
-            </SessionProviders>
-          </ReduxProviders>
+                </MixpanelProvider>
+              </ChakraUiProvider>
+            </ReduxProviders>
+          </SessionProviders>
         </main>
       </body>
     </html>

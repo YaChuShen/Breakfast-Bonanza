@@ -29,7 +29,9 @@ interface UserData {
 }
 
 const Page = async () => {
-  const userSession: Session | null = await getServerSession(authOptions as unknown as AuthOptions);
+  const userSession: Session | null = await getServerSession(
+    authOptions as unknown as AuthOptions
+  );
 
   const db = admin.firestore();
   let data: UserData | undefined;
@@ -42,7 +44,6 @@ const Page = async () => {
 
   if (profieQuery.size) {
     data = profieQuery.docs[0].data() as UserData;
-    console.log(data);
     profileId = profieQuery.docs[0].id;
   }
 

@@ -18,7 +18,7 @@ const CreateRoom = ({ socketMethods }: CreateRoomProps) => {
       const newRoomId = Math.random().toString(36).substring(2, 8);
       dispatch(setRoomId(newRoomId));
       dispatch(setIsHost(true));
-      socketMethods.socket.emit('joinRoom', newRoomId);
+      socketMethods.socket.emit('createRoom', newRoomId);
     }
   };
   return <Button onClick={handleCreateRoom}>Create Room</Button>;

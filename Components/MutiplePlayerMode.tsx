@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Text, VStack, useToast } from '@chakra-ui/react';
+import { Badge, Button, Text, VStack, useToast } from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   selectSocket,
@@ -24,7 +24,31 @@ const MutiplePlayerMode = () => {
   const isOpponentConnected = useSelector(selectIsOpponentConnected);
   const isHostDisconnected = useSelector(selectIsHostDisconnected);
 
+  console.log({ isOpponentConnected });
+
   useMutipleModeSocketEvents(socketMethods, dispatch, isHost);
+
+  const hostSection =
+    !isOpponentConnected && competitorInfo ? (
+      <Text>OPPONENT DISCONNECTED!!!</Text>
+    ) : (
+      <VStack spacing={2}>
+        <Badge colorScheme="green">HOST</Badge>
+        <Text>Room ID: {roomId}</Text>
+        <Text>Share this room ID with your friend!</Text>
+        {competitorInfo && <Text>Competitor: {competitorInfo}</Text>}
+      </VStack>
+    );
+
+  const opponentSection = !isOpponentConnected ? (
+    <Text>HOST DISCONNECTED!!!</Text>
+  ) : (
+    <VStack spacing={2}>
+      <Text>Room ID: {roomId}</Text>
+      <Text>OPPONENT</Text>
+      {competitorInfo && <Text>Competitor: {competitorInfo}</Text>}
+    </VStack>
+  );
 
   return (
     <VStack spacing={4} bg="red.500" p={4} borderRadius="10px">
@@ -32,32 +56,16 @@ const MutiplePlayerMode = () => {
         Multiplayer Mode
       </Text>
       <Text>Compete with a friend in breakfast-making</Text>
-      {isHostDisconnected && !roomId && (
-        <Text color="white" fontWeight="bold">
-          Host disconnected! Please wait for them to rejoin or create a new
-          room.
-        </Text>
-      )}
       {!roomId ? (
         <VStack spacing={2}>
           <CreateRoom socketMethods={socketMethods} />
           <Text>or</Text>
           <JoinRoom socketMethods={socketMethods} />
         </VStack>
+      ) : isHost ? (
+        hostSection
       ) : (
-        <VStack spacing={2}>
-          <Text>Room ID: {roomId}</Text>
-          {isHost && <Text>Share this room ID with your friend!</Text>}
-          {competitorInfo && isOpponentConnected && (
-            <Text>Competitor: {competitorInfo}</Text>
-          )}
-          {!isOpponentConnected && (
-            <Text color="red.500" fontWeight="bold">
-              Opponent disconnected! Please wait for them to rejoin or create a
-              new room.
-            </Text>
-          )}
-        </VStack>
+        opponentSection
       )}
     </VStack>
   );

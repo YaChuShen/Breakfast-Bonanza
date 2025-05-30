@@ -1,12 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { SocketMessage } from 'lib/type/socketMessage';
 
 // 初始狀態
 const initialState = {
   competitorInfo: undefined,
   roomId: undefined,
   isHost: false,
-  isOpponentConnected: true,
+  isOpponentConnected: false,
   isHostDisconnected: false,
   socket: null,
 };
@@ -30,27 +29,25 @@ const socketSlice = createSlice({
     setIsHost: (state, action) => {
       state.isHost = action.payload;
     },
-    setOpponentConnected: (state, action) => {
-      state.isOpponentConnected = action.payload;
-    },
+
     setHostDisconnected: (state, action) => {
       state.isHostDisconnected = action.payload;
     },
     handlePlayerJoined: (state, action) => {
-      state.competitorInfo = action.payload.playerName;
-      state.isOpponentConnected = true;
+      if (action.payload.playerName) {
+        state.competitorInfo = action.payload.playerName;
+        state.isOpponentConnected = true;
+      }
     },
     handlePlayerDisconnected: (state, action) => {
       state.isOpponentConnected = false;
-      state.competitorInfo = undefined;
-      if (action.payload.roomId === state.roomId) {
-        state.roomId = undefined;
-      }
+      state.competitorInfo = action.payload.playerName;
       state.isHostDisconnected = action.payload.isHostDisconnected;
     },
     handleHostInfo: (state, action) => {
-      state.competitorInfo = action.payload.hostName;
-      state.isOpponentConnected = true;
+      if (action.payload.hostName) {
+        state.competitorInfo = action.payload.hostName;
+      }
     },
     resetState: (state) => {
       return initialState;
@@ -64,7 +61,6 @@ export const {
   setCompetitorInfo,
   setRoomId,
   setIsHost,
-  setOpponentConnected,
   setHostDisconnected,
   handlePlayerJoined,
   handlePlayerDisconnected,
