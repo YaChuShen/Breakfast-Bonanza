@@ -1,23 +1,17 @@
 import { Button } from '@chakra-ui/react';
 import { useDispatch } from 'react-redux';
 import { setRoomId, setIsHost } from 'store/features/socketSlice';
+import { useSocket } from '../../src/app/SocketProvider';
 
-interface JoinRoomProps {
-  socketMethods: {
-    socket: {
-      emit: (event: string, data: any) => void;
-    };
-  };
-}
-
-const JoinRoom = ({ socketMethods }: JoinRoomProps) => {
+const JoinRoom = () => {
   const dispatch = useDispatch();
+  const socket = useSocket();
 
   const handleJoinRoom = (existingRoomId: string) => {
-    if (socketMethods?.socket) {
+    if (socket) {
       dispatch(setRoomId(existingRoomId));
       dispatch(setIsHost(false));
-      socketMethods.socket.emit('joinRoom', existingRoomId);
+      socket.emit('joinRoom', existingRoomId);
     }
   };
   return (

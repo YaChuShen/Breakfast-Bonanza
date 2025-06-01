@@ -7,19 +7,14 @@ const initialState = {
   isHost: false,
   isOpponentConnected: false,
   isHostDisconnected: false,
-  socket: null,
+  isPlayerReady: false,
+  opponentScore: 0,
 };
 
 const socketSlice = createSlice({
   name: 'socket',
   initialState,
   reducers: {
-    setSocket: (state, action) => {
-      state.socket = action.payload;
-    },
-    clearSocket: (state) => {
-      state.socket = null;
-    },
     setCompetitorInfo: (state, action) => {
       state.competitorInfo = action.payload;
     },
@@ -30,9 +25,6 @@ const socketSlice = createSlice({
       state.isHost = action.payload;
     },
 
-    setHostDisconnected: (state, action) => {
-      state.isHostDisconnected = action.payload;
-    },
     handlePlayerJoined: (state, action) => {
       if (action.payload.playerName) {
         state.competitorInfo = action.payload.playerName;
@@ -47,35 +39,39 @@ const socketSlice = createSlice({
     handleHostInfo: (state, action) => {
       if (action.payload.hostName) {
         state.competitorInfo = action.payload.hostName;
+        state.isOpponentConnected = true;
       }
     },
-    resetState: (state) => {
-      return initialState;
+    handlePlayerReady: (state, action) => {
+      if (action.payload.playerName) {
+        state.isPlayerReady = true;
+      }
+    },
+    updateOpponentScore: (state, action) => {
+      state.opponentScore = action.payload.score;
     },
   },
 });
 
 export const {
-  setSocket,
-  clearSocket,
   setCompetitorInfo,
   setRoomId,
   setIsHost,
-  setHostDisconnected,
   handlePlayerJoined,
   handlePlayerDisconnected,
   handleHostInfo,
-  resetState,
+  handlePlayerReady,
+  updateOpponentScore,
 } = socketSlice.actions;
 
 // Add selectors
-export const selectSocket = (state) => state.socket;
+// export const selectSocket = (state) => state.socket;
 export const selectCompetitorInfo = (state) => state.socket.competitorInfo;
 export const selectRoomId = (state) => state.socket.roomId;
 export const selectIsHost = (state) => state.socket.isHost;
 export const selectIsOpponentConnected = (state) =>
   state.socket.isOpponentConnected;
-export const selectIsHostDisconnected = (state) =>
-  state.socket.isHostDisconnected;
+export const selectIsPlayerReady = (state) => state.socket.isPlayerReady;
+export const selectOpponentScore = (state) => state.socket.opponentScore;
 
 export default socketSlice.reducer;

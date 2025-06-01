@@ -16,7 +16,6 @@ import Customers from 'Components/Customers';
 import MobileAlertPage from 'Components/MobileAlertPage';
 import { Session } from 'next-auth';
 import { connectSocket } from 'lib/socket';
-import { setSocket } from 'store/features/socketSlice';
 
 type ExtendedSession = Session & {
   profileId?: string;
@@ -78,7 +77,6 @@ function HomePage({ dbData, profileId }: HomePageProps) {
     const initSocket = async () => {
       if (!session) return;
       const socket = await connectSocket(session);
-      dispatch(setSocket(socket));
     };
 
     initSocket();

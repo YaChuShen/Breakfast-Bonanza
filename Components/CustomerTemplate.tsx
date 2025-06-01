@@ -21,6 +21,8 @@ import { selectPlate } from 'store/features/plateSlice';
 import { useSelector } from 'react-redux';
 import splitCategories from 'helpers/splitCategories';
 import { selectGameConfig } from 'store/features/gameConfigSlice';
+import { selectRoomId } from 'store/features/socketSlice';
+import { useSocket } from '../src/app/SocketProvider';
 
 const MotionComponent = motion(Box);
 
@@ -47,9 +49,7 @@ type CustomerTemplateProps = {
   isLevel2: boolean;
 };
 
-
-
-const CustomerImg = ({ src }: {src: string}) => {
+const CustomerImg = ({ src }: { src: string }) => {
   return (
     <Image
       top={1}
@@ -72,13 +72,14 @@ const CustomerTemplate = ({
   className,
   isLevel2,
 }: CustomerTemplateProps) => {
-
   const dispatch = useDispatch();
   const isCoffee = wishFood === 'coffee';
   const [getScoreAni, setGetScoreAni] = useState(false);
   const plateData = useSelector(selectPlate);
+  const roomId = useSelector(selectRoomId);
   const { timerStatus } = useSelector(selectGameConfig);
   const isGameRunning = timerStatus === 'gameRunning';
+  const socket = useSocket();
 
   const targetScore =
     scoreList[[...splitCategories(plateData.targetItem)].sort().join('&')];
@@ -114,12 +115,26 @@ const CustomerTemplate = ({
 
   const handleValidateFood = () => {
     if (wishFood.includes('&')) {
-      return isEqual(
+      const isValid = isEqual(
         splitCategories(plateData.targetItem)?.sort(),
         splitCategories(wishFood)?.sort()
       );
+      if (isValid && socket) {
+        socket.emit('scoreUpdate', {
+          score: targetScore,
+          roomId,
+        });
+      }
+      return isValid;
     } else {
-      return wishFood === plateData.targetItem;
+      const isValid = wishFood === plateData.targetItem;
+      if (isValid && socket) {
+        socket.emit('scoreUpdate', {
+          score: targetScore,
+          roomId,
+        });
+      }
+      return isValid;
     }
   };
 
@@ -200,11 +215,7 @@ const CustomerTemplate = ({
       >
         <Image src={`/${wishFood}.svg`} w="100%" draggable={false} />
       </Center>
-      <Circle
-        bg={statusColor[status]}
-        size={`${circleW}em`}
-        pos="relative"
-      >
+      <Circle bg={statusColor[status]} size={`${circleW}em`} pos="relative">
         {overtime ? (
           <CustomerImg src={`${src}-angry`} />
         ) : (

@@ -5,6 +5,7 @@ import MixpanelProvider from './mixpanel-provider';
 import ChakraUiProvider from './chakraUiProvider';
 import { Metadata } from 'next';
 import { ReactNode } from 'react';
+import { SocketProvider } from './SocketProvider';
 
 export const metadata: Metadata = {
   title: {
@@ -58,8 +59,10 @@ export default async function RootLayout({ children }: RootLayoutProps) {
             <ReduxProviders>
               <ChakraUiProvider>
                 <MixpanelProvider>
-                  {children}
-                  <Globals />
+                  <SocketProvider>
+                    {children}
+                    <Globals />
+                  </SocketProvider>
                 </MixpanelProvider>
               </ChakraUiProvider>
             </ReduxProviders>

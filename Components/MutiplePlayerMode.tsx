@@ -1,32 +1,25 @@
 import React from 'react';
-import { Badge, Button, Text, VStack, useToast } from '@chakra-ui/react';
+import { Badge, Text, VStack } from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  selectSocket,
   selectCompetitorInfo,
   selectRoomId,
   selectIsHost,
   selectIsOpponentConnected,
-  selectIsHostDisconnected,
 } from 'store/features/socketSlice';
-import { timerStatus } from 'store/features/gameConfigSlice';
 import JoinRoom from './MutipleMode/JoinRoom';
 import CreateRoom from './MutipleMode/CreateRoom';
 import useMutipleModeSocketEvents from 'hooks/useMutipleModeSocketEvents';
-import { SocketMessage } from 'lib/type/socketMessage';
+import ReadyToPlay from './ReadyToPlay';
 
-const MutiplePlayerMode = () => {
+const MutiplePlayerMode = ({ timerStart }: { timerStart: () => void }) => {
   const dispatch = useDispatch();
-  const socketMethods = useSelector(selectSocket) as SocketMessage;
   const competitorInfo = useSelector(selectCompetitorInfo);
   const roomId = useSelector(selectRoomId);
   const isHost = useSelector(selectIsHost);
   const isOpponentConnected = useSelector(selectIsOpponentConnected);
-  const isHostDisconnected = useSelector(selectIsHostDisconnected);
 
-  console.log({ isOpponentConnected });
-
-  useMutipleModeSocketEvents(socketMethods, dispatch, isHost);
+  useMutipleModeSocketEvents(dispatch, isHost, timerStart);
 
   const hostSection =
     !isOpponentConnected && competitorInfo ? (
@@ -58,15 +51,16 @@ const MutiplePlayerMode = () => {
       <Text>Compete with a friend in breakfast-making</Text>
       {!roomId ? (
         <VStack spacing={2}>
-          <CreateRoom socketMethods={socketMethods} />
+          <CreateRoom />
           <Text>or</Text>
-          <JoinRoom socketMethods={socketMethods} />
+          <JoinRoom />
         </VStack>
       ) : isHost ? (
         hostSection
       ) : (
         opponentSection
       )}
+      <ReadyToPlay roomId={roomId} />
     </VStack>
   );
 };

@@ -1,24 +1,18 @@
 import { Button } from '@chakra-ui/react';
 import { useDispatch } from 'react-redux';
+import { useSocket } from 'src/app/SocketProvider';
 import { setRoomId, setIsHost } from 'store/features/socketSlice';
 
-interface CreateRoomProps {
-  socketMethods: {
-    socket: {
-      emit: (event: string, data: any) => void;
-    };
-  };
-}
-
-const CreateRoom = ({ socketMethods }: CreateRoomProps) => {
+const CreateRoom = () => {
   const dispatch = useDispatch();
+  const socket = useSocket();
 
   const handleCreateRoom = () => {
-    if (socketMethods?.socket) {
+    if (socket) {
       const newRoomId = Math.random().toString(36).substring(2, 8);
       dispatch(setRoomId(newRoomId));
       dispatch(setIsHost(true));
-      socketMethods.socket.emit('createRoom', newRoomId);
+      socket.emit('createRoom', newRoomId);
     }
   };
   return <Button onClick={handleCreateRoom}>Create Room</Button>;

@@ -2,9 +2,12 @@ import {
   handlePlayerJoined,
   handlePlayerDisconnected,
   handleHostInfo,
+  handlePlayerReady,
+  updateOpponentScore,
 } from 'store/features/socketSlice';
 import { useEffect } from 'react';
-import { SocketMessage } from 'lib/type/socketMessage';
+import { timerStatus } from 'store/features/gameConfigSlice';
+import { useSocket } from '../src/app/SocketProvider';
 
 interface PlayerData {
   playerName: string;
@@ -21,12 +24,13 @@ interface PlayerDisconnectedData {
 }
 
 const useMutipleModeSocketEvents = (
-  socketMethods: SocketMessage,
   dispatch: any,
-  isHost: boolean
+  isHost: boolean,
+  timerStart: () => void
 ) => {
+  const socket = useSocket();
   useEffect(() => {
-    if (!socketMethods?.socket) return;
+    if (!socket) return;
 
     const handlePlayerJoinedEvent = (data: PlayerData) => {
       dispatch(handlePlayerJoined(data));
@@ -40,22 +44,35 @@ const useMutipleModeSocketEvents = (
       dispatch(handleHostInfo(host));
     };
 
-    socketMethods.socket.on('playerJoined', handlePlayerJoinedEvent);
-    socketMethods.socket.on('hostInfo', handleHostInfoEvent);
-    socketMethods.socket.on(
-      'playerDisconnected',
-      handlePlayerDisconnectedEvent
-    );
+    const handlePlayerReadyEvent = (data: PlayerData) => {
+      dispatch(handlePlayerReady(data));
+    };
+
+    const handleGameStart = () => {
+      timerStart();
+      dispatch(timerStatus({ status: 'gameRunning' }));
+    };
+
+    const handleOpponentScoreUpdate = (data: { score: number }) => {
+      dispatch(updateOpponentScore(data));
+    };
+
+    socket.on('playerJoined', handlePlayerJoinedEvent);
+    socket.on('hostInfo', handleHostInfoEvent);
+    socket.on('playerDisconnected', handlePlayerDisconnectedEvent);
+    socket.on('opponentReady', handlePlayerReadyEvent);
+    socket.on('hostStartTheGame', handleGameStart);
+    socket.on('opponentScoreUpdate', handleOpponentScoreUpdate);
 
     return () => {
-      socketMethods.socket.off('playerJoined', handlePlayerJoinedEvent);
-      socketMethods.socket.off('hostInfo', handleHostInfoEvent);
-      socketMethods.socket.off(
-        'playerDisconnected',
-        handlePlayerDisconnectedEvent
-      );
+      socket.off('playerJoined', handlePlayerJoinedEvent);
+      socket.off('hostInfo', handleHostInfoEvent);
+      socket.off('playerDisconnected', handlePlayerDisconnectedEvent);
+      socket.off('playerReady', handlePlayerReadyEvent);
+      socket.off('gameStart', handleGameStart);
+      socket.off('opponentScoreUpdate', handleOpponentScoreUpdate);
     };
-  }, [socketMethods, dispatch, isHost]);
+  }, [socket, dispatch, isHost]);
 };
 
 export default useMutipleModeSocketEvents;

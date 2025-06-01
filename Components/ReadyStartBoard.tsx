@@ -19,7 +19,7 @@ const ReadyStartBoard = ({ session, timerStart }: ReadyStartBoardProps) => {
   return (
     <MotionBoard py={{ md: '2em', xl: '6em' }} px="2em">
       <VStack w="100%" spacing={10} fontWeight={500}>
-        <MutiplePlayerMode />
+        <MutiplePlayerMode timerStart={timerStart} />
         <VStack w="100%">
           <Image src="/breakfast_bonanza_logo.svg" w="60%" alt="sereneShen" />
         </VStack>

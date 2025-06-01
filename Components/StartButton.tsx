@@ -2,9 +2,10 @@ import { Button } from '@chakra-ui/react';
 
 type StartButtonProps = {
   onClick: () => void;
+  disabled?: boolean;
 };
 
-const StartButton = ({ onClick, ...props }: StartButtonProps) => {
+const StartButton = ({ onClick, disabled, ...props }: StartButtonProps) => {
   return (
     <Button
       onClick={onClick}
@@ -18,6 +19,7 @@ const StartButton = ({ onClick, ...props }: StartButtonProps) => {
       letterSpacing="1px"
       _hover={{ bg: 'red.300', color: 'white' }}
       fontWeight={900}
+      isDisabled={disabled}
       {...props}
     >
       Start

@@ -7,12 +7,15 @@ import {
   Text,
   VStack,
   useDisclosure,
+  HStack,
 } from '@chakra-ui/react';
 import React from 'react';
 import Timer from 'Components/Timer';
 import { MdArrowDropDown } from 'react-icons/md';
 import { signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import { useSelector } from 'react-redux';
+import { selectOpponentScore } from 'store/features/socketSlice';
 
 type ScoreSectionProps = {
   score: number;
@@ -21,85 +24,76 @@ type ScoreSectionProps = {
   profileId: string;
   isSingin: boolean;
 };
-const ScoreSection = ({ score, seconds, minutes, profileId, isSingin }: ScoreSectionProps) => {
-  const { isOpen, onToggle, onOpen } = useDisclosure();
+
+const ScoreSection = ({
+  score,
+  seconds,
+  minutes,
+  isSingin,
+}: ScoreSectionProps) => {
+  const { isOpen, onToggle } = useDisclosure();
   const router = useRouter();
+  const opponentScore = useSelector(selectOpponentScore);
+
   return (
     <Box
-      zIndex={99}
-      boxShadow="md"
-      bg="gray.50"
-      pt="2"
       pos="fixed"
-      right={10}
-      top={10}
-      w="100%"
-      maxW="8em"
-      borderRadius="13px"
+      top="0"
+      right="0"
+      // left="0"
+      zIndex="3"
+      bg="white"
+      boxShadow="0px 2px 20px 1px rgba(0, 0, 0, 0.15)"
     >
-      <VStack>
+      <HStack justify="space-between" px="2em" py="1em">
+        <VStack align="start" spacing={0}>
+          <Text fontSize="sm" color="gray.500">
+            Your Score
+          </Text>
+          <Text fontSize="2xl" fontWeight="bold" color="red.500">
+            {score}
+          </Text>
+        </VStack>
         <Timer seconds={seconds} minutes={minutes} />
-        <Divider borderWidth="1px" />
-        <Text fontSize="24px" fontWeight={700} color="gray.600">
-          {score ?? 0}
-        </Text>
-      </VStack>
-      {isSingin && (
-        <Center borderRadius="13px" flexDirection="column" pt="2" w="full">
-          <IconButton
-            as={MdArrowDropDown}
-            w="full"
-            size="xs"
-            onClick={onToggle}
-            cursor="pointer"
-            borderRadius="none"
-            borderBottomRadius="xl"
-            onMouseEnter={() => onOpen()}
-            aria-label="Toggle menu"
-          />
-          {isOpen && (
-            <Box w="full">
-              <SlideFade
-                in={isOpen}
-                transition={{
-                  enter: { duration: 0.5 },
-                  exit: { duration: 0.5 },
-                }}
-              >
-                <VStack
-                  w="full"
-                  textAlign="center"
-                  cursor="pointer"
-                  userSelect="none"
-                  py="2"
-                  fontWeight={500}
-                  fontSize="md"
-                >
-                  <Text
-                    _hover={{
-                      color: 'gray.400',
-                    }}
-                    onClick={() => {
-                      router.push(`/profile/${profileId}`);
-                    }}
-                  >
-                    Profile
-                  </Text>
-                  <Divider />
-                  <Text
-                    _hover={{
-                      color: 'gray.400',
-                    }}
-                    onClick={() => signOut()}
-                  >
-                    Logout
-                  </Text>
-                </VStack>
-              </SlideFade>
-            </Box>
+        <VStack align="end" spacing={0}>
+          <Text fontSize="sm" color="gray.500">
+            Opponent Score
+          </Text>
+          <Text fontSize="2xl" fontWeight="bold" color="blue.500">
+            {opponentScore}
+          </Text>
+        </VStack>
+      </HStack>
+      <Divider />
+      <Center>
+        <IconButton
+          aria-label="Toggle menu"
+          icon={<MdArrowDropDown />}
+          variant="ghost"
+          onClick={onToggle}
+          transform={isOpen ? 'rotate(180deg)' : 'rotate(0deg)'}
+          transition="transform 0.2s"
+        />
+      </Center>
+      <SlideFade in={isOpen}>
+        <Box p={4} bg="white">
+          {isSingin ? (
+            <Text
+              cursor="pointer"
+              onClick={() => {
+                signOut();
+                router.push('/');
+              }}
+            >
+              Sign Out
+            </Text>
+          ) : (
+            <Text cursor="pointer" onClick={() => router.push('/register')}>
+              Sign Up
+            </Text>
           )}
-        </Center>
-      )}
+        </Box>
+      </SlideFade>
     </Box>
   );
 };
