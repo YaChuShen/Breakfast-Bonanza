@@ -7,7 +7,7 @@ import {
 } from 'store/features/socketSlice';
 import { useEffect } from 'react';
 import { timerStatus } from 'store/features/gameConfigSlice';
-import { useSocket } from '../src/app/SocketProvider';
+import { useSocket } from '../src/app/socketIoProvider';
 
 interface PlayerData {
   playerName: string;
@@ -53,16 +53,11 @@ const useMutipleModeSocketEvents = (
       dispatch(timerStatus({ status: 'gameRunning' }));
     };
 
-    const handleOpponentScoreUpdate = (data: { score: number }) => {
-      dispatch(updateOpponentScore(data));
-    };
-
     socket.on('playerJoined', handlePlayerJoinedEvent);
     socket.on('hostInfo', handleHostInfoEvent);
     socket.on('playerDisconnected', handlePlayerDisconnectedEvent);
     socket.on('opponentReady', handlePlayerReadyEvent);
     socket.on('hostStartTheGame', handleGameStart);
-    socket.on('opponentScoreUpdate', handleOpponentScoreUpdate);
 
     return () => {
       socket.off('playerJoined', handlePlayerJoinedEvent);
@@ -70,7 +65,6 @@ const useMutipleModeSocketEvents = (
       socket.off('playerDisconnected', handlePlayerDisconnectedEvent);
       socket.off('playerReady', handlePlayerReadyEvent);
       socket.off('gameStart', handleGameStart);
-      socket.off('opponentScoreUpdate', handleOpponentScoreUpdate);
     };
   }, [socket, dispatch, isHost]);
 };

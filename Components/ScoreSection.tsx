@@ -9,20 +9,24 @@ import {
   useDisclosure,
   HStack,
 } from '@chakra-ui/react';
-import React from 'react';
+import React, { useEffect } from 'react';
 import Timer from 'Components/Timer';
 import { MdArrowDropDown } from 'react-icons/md';
-import { signOut } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { useSelector } from 'react-redux';
-import { selectOpponentScore } from 'store/features/socketSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  updateOpponentScore,
+  selectMutipleModeData,
+} from 'store/features/socketSlice';
+import { useSocket } from 'src/app/socketIoProvider';
 
 type ScoreSectionProps = {
   score: number;
   seconds: number;
   minutes: number;
-  profileId: string;
   isSingin: boolean;
+  profileId: string;
 };
 
 const ScoreSection = ({
@@ -30,10 +34,34 @@ const ScoreSection = ({
   seconds,
   minutes,
   isSingin,
+  profileId,
 }: ScoreSectionProps) => {
   const { isOpen, onToggle } = useDisclosure();
   const router = useRouter();
-  const opponentScore = useSelector(selectOpponentScore);
+  const mutipleModeData = useSelector(selectMutipleModeData);
+  const socket = useSocket();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const handleOpponentScoreUpdate = (data: {
+      score: number;
+      playerName: string;
+      playerId: string;
+    }) => {
+      if (data.playerId !== profileId) {
+        dispatch(updateOpponentScore(data));
+      }
+    };
+    if (socket) {
+      socket.on('opponentScoreUpdate', handleOpponentScoreUpdate);
+    }
+
+    return () => {
+      if (socket) {
+        socket.off('opponentScoreUpdate', handleOpponentScoreUpdate);
+      }
+    };
+  }, [socket, dispatch]);
 
   return (
     <Box
@@ -57,10 +85,12 @@ const ScoreSection = ({
         <Timer seconds={seconds} minutes={minutes} />
         <VStack align="end" spacing={0}>
           <Text fontSize="sm" color="gray.500">
-            Opponent Score
+            {mutipleModeData.opponentName
+              ? `${mutipleModeData.opponentName}'s Score`
+              : 'Opponent Score'}
           </Text>
           <Text fontSize="2xl" fontWeight="bold" color="blue.500">
-            {opponentScore}
+            {mutipleModeData.opponentScore}
           </Text>
         </VStack>
       </HStack>

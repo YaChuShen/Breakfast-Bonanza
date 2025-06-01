@@ -4,7 +4,7 @@ import { selectIsHost } from 'store/features/socketSlice';
 import { useState } from 'react';
 import StartButton from './StartButton';
 import { selectIsPlayerReady } from 'store/features/socketSlice';
-import { useSocket } from '../src/app/SocketProvider';
+import { useSocket } from '../src/app/socketIoProvider';
 
 interface ReadyToPlayProps {
   roomId: string;

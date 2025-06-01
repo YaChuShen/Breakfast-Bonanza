@@ -14,6 +14,7 @@ type CustomersProps = {
       order: string;
       status: string;
       overtime: boolean;
+      score: number;
     };
   } & {
     isLevel2: boolean;

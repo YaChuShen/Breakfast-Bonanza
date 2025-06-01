@@ -22,7 +22,8 @@ import { useSelector } from 'react-redux';
 import splitCategories from 'helpers/splitCategories';
 import { selectGameConfig } from 'store/features/gameConfigSlice';
 import { selectRoomId } from 'store/features/socketSlice';
-import { useSocket } from '../src/app/SocketProvider';
+import { useSocket } from '../src/app/socketIoProvider';
+import { selectCustomer } from 'store/features/customerSlice';
 
 const MotionComponent = motion(Box);
 
@@ -77,12 +78,23 @@ const CustomerTemplate = ({
   const [getScoreAni, setGetScoreAni] = useState(false);
   const plateData = useSelector(selectPlate);
   const roomId = useSelector(selectRoomId);
+  const wholeGameData = useSelector(selectCustomer);
   const { timerStatus } = useSelector(selectGameConfig);
   const isGameRunning = timerStatus === 'gameRunning';
   const socket = useSocket();
 
   const targetScore =
     scoreList[[...splitCategories(plateData.targetItem)].sort().join('&')];
+
+  const deductedPoint = () => {
+    if (socket) {
+      socket.emit('scoreUpdate', {
+        score: wholeGameData.score - 30,
+        roomId,
+      });
+    }
+    dispatch(minusScore());
+  };
 
   useEffect(() => {
     const controlTime = (s: string, time: number) => {
@@ -102,7 +114,7 @@ const CustomerTemplate = ({
     if (!overtime && isGameRunning) {
       const t = setTimeout(() => {
         dispatch(handleOvertime({ id, status: true }));
-        dispatch(minusScore());
+        deductedPoint();
         setGetScoreAni(true);
         dispatch(handleCustomStatus({ id, status: 'errors' }));
       }, CUSTOMER_OVERTIME);
@@ -119,21 +131,10 @@ const CustomerTemplate = ({
         splitCategories(plateData.targetItem)?.sort(),
         splitCategories(wishFood)?.sort()
       );
-      if (isValid && socket) {
-        socket.emit('scoreUpdate', {
-          score: targetScore,
-          roomId,
-        });
-      }
+
       return isValid;
     } else {
       const isValid = wishFood === plateData.targetItem;
-      if (isValid && socket) {
-        socket.emit('scoreUpdate', {
-          score: targetScore,
-          roomId,
-        });
-      }
       return isValid;
     }
   };
@@ -153,6 +154,12 @@ const CustomerTemplate = ({
       dispatch(getNextOrder({ id, isLevel2 }));
     }, CUSTOMER_NEXT_ORDER);
     dispatch(getScore({ score: targetScore }));
+    if (socket) {
+      socket.emit('scoreUpdate', {
+        score: wholeGameData.score + targetScore,
+        roomId,
+      });
+    }
     setGetScoreAni(true);
   };
 
@@ -160,7 +167,8 @@ const CustomerTemplate = ({
     if (status === 'eating') return;
     dispatch(handleCustomStatus({ id, status: 'errors' }));
     dispatch(setTargetItem({ target: null }));
-    dispatch(minusScore());
+    deductedPoint();
+
     setGetScoreAni(true);
   };
 

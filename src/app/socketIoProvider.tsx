@@ -1,5 +1,11 @@
 'use client';
-import React, { createContext, useContext, useRef, useEffect } from 'react';
+import React, {
+  createContext,
+  useContext,
+  useRef,
+  useEffect,
+  useState,
+} from 'react';
 import { io, Socket } from 'socket.io-client';
 import { ReactNode } from 'react';
 import { connectSocket } from 'lib/socket';
@@ -7,9 +13,9 @@ import { useSession } from 'next-auth/react';
 
 const SocketContext = createContext<Socket | null>(null);
 
-export const SocketProvider = ({ children }: { children: ReactNode }) => {
-  const socketRef = useRef<Socket | null>(null);
+export const SocketIoProvider = ({ children }: { children: ReactNode }) => {
   const { data: session } = useSession();
+  const [socket, setSocket] = useState<Socket | null>(null);
 
   useEffect(() => {
     const initSocket = async () => {
@@ -17,13 +23,13 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
 
       try {
         const socket = await connectSocket(session);
-        socketRef.current = socket;
+        setSocket(socket);
 
         // Cleanup function
         return () => {
-          if (socketRef.current) {
-            socketRef.current.disconnect();
-            socketRef.current = null;
+          if (socket) {
+            socket.disconnect();
+            setSocket(null);
           }
         };
       } catch (error) {
@@ -35,16 +41,12 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
   }, [session]);
 
   return (
-    <SocketContext.Provider value={socketRef.current}>
-      {children}
-    </SocketContext.Provider>
+    <SocketContext.Provider value={socket}>{children}</SocketContext.Provider>
   );
 };
 
 export const useSocket = () => {
   const socket = useContext(SocketContext);
-  if (!socket) {
-    throw new Error('useSocket must be used within a SocketProvider');
-  }
+
   return socket;
 };

@@ -64,14 +64,12 @@ export const {
   updateOpponentScore,
 } = socketSlice.actions;
 
-// Add selectors
-// export const selectSocket = (state) => state.socket;
 export const selectCompetitorInfo = (state) => state.socket.competitorInfo;
 export const selectRoomId = (state) => state.socket.roomId;
 export const selectIsHost = (state) => state.socket.isHost;
 export const selectIsOpponentConnected = (state) =>
   state.socket.isOpponentConnected;
 export const selectIsPlayerReady = (state) => state.socket.isPlayerReady;
-export const selectOpponentScore = (state) => state.socket.opponentScore;
+export const selectMutipleModeData = (state) => state.socket;
 
 export default socketSlice.reducer;

@@ -1,6 +1,6 @@
 import { Button } from '@chakra-ui/react';
 import { useDispatch } from 'react-redux';
-import { useSocket } from 'src/app/SocketProvider';
+import { useSocket } from 'src/app/socketIoProvider';
 import { setRoomId, setIsHost } from 'store/features/socketSlice';
 
 const CreateRoom = () => {
